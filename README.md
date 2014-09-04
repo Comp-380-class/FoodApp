@@ -1,4 +1,3 @@
 FoodApp
 =======
-
-Ifnromation subject to change
+Information subject to change
