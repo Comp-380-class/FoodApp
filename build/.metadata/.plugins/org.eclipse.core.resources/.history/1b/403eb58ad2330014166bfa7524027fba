@@ -4,6 +4,5 @@
     <string name="app_name">24Eats</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_list_view">ListView</string>
 
 </resources>

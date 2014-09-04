@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.google.android.gms.common.GooglePlayServicesClient"/>
+<fullyQualifiedTypeName name="com.google.android.gms.location.LocationClient"/>
+<fullyQualifiedTypeName name="com.google.android.gms.location.LocationRequest"/>
+<fullyQualifiedTypeName name="android.content.IntentSender"/>
+<fullyQualifiedTypeName name="android.location.Address"/>
+</qualifiedTypeNameHistroy>

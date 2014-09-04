@@ -17,7 +17,7 @@ import com.google.android.gms.location.LocationRequest;
 
 /**
  * 
- * @author David Greenberg
+ * @author David
  * @version 0.0.1 Object for getting the location of the user from the google
  *          play services.
  */
