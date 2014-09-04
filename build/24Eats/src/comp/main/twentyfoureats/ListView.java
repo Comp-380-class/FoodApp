@@ -1,9 +1,11 @@
 package comp.main.twentyfoureats;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 public class ListView extends ActionBarActivity {
 
@@ -11,6 +13,9 @@ public class ListView extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_view);
+		Intent intent = getIntent();
+		CharSequence currentList = intent.getCharSequenceExtra(Form.EXTRA_MESSAGE);
+		fillInList(currentList);
 	}
 
 	@Override
@@ -30,5 +35,10 @@ public class ListView extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void fillInList(CharSequence values){
+		Button listOne = (Button) findViewById(R.id.list_button);
+		listOne.setText(values);
 	}
 }
