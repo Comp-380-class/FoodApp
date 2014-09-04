@@ -5,4 +5,7 @@
 <fullyQualifiedTypeName name="com.google.android.gms.location.LocationRequest"/>
 <fullyQualifiedTypeName name="android.content.IntentSender"/>
 <fullyQualifiedTypeName name="android.location.Address"/>
+<fullyQualifiedTypeName name="android.widget.TextView"/>
+<fullyQualifiedTypeName name="comp.main.twentyfoureats.R.id"/>
+<fullyQualifiedTypeName name="android.view.View"/>
 </qualifiedTypeNameHistroy>
