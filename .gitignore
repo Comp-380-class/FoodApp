@@ -12,7 +12,14 @@
 hs_err_pid*
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #folder
 libproject/
 appcompat_v7/
 >>>>>>> origin/Homework2Branch
+=======
+#folders
+libproject/
+google-play-services/*
+appcompat_v7/*
+>>>>>>> Homework2Branch
