@@ -1,13 +1,17 @@
 package comp.main.twentyfoureats;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 
 public class Form extends ActionBarActivity {
-
+	public final static String EXTRA_MESSAGE = "Form.message";
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,5 +36,14 @@ public class Form extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    
+    //Switch between current activity and new activity with a given value
+    public void switchActivityWithIntent(View test){
+    	CharSequence valueToPass = ((TextView)findViewById(R.id.Location)).getText(); 
+    	Intent switchToListAct = new Intent(this,ListView.class);
+    	switchToListAct.setAction("FILL_LIST");
+    	switchToListAct.putExtra(EXTRA_MESSAGE, valueToPass);
+    	startActivity(switchToListAct);
     }
 }

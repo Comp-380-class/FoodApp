@@ -1,0 +1,206 @@
+﻿Merge remote-tracking branch 'origin/Homework2Branch'
+
+Conflicts:
+	.gitignore
+	build/24Eats/.classpath
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	modified:   .gitignore
+#	modified:   build/.metadata/.log
+#	new file:   build/.metadata/.plugins/com.android.ide.eclipse.adt/dialog_settings.xml
+#	modified:   build/.metadata/.plugins/org.eclipse.cdt.core/.log
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/10/0039cce4103300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/13/30d0aa1cd3330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/19/000895160b3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/1b/403eb58ad2330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/28/b00a0b80d7330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/2c/90d14ecfd4330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/35/c0bcab26103300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/38/f04cce300f3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/45/b0355ae00c3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/57/70f6f392d5330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/59/8032dc0ed5330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/6/60aaf47c103300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/68/00618c7dd5330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/70/00e22d6ad5330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/7d/306e862f103300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/7d/909b55d30a3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/89/a08b00a4d4330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/8a/0059c116d8330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/9b/704628d50f3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/a2/00138442d5330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/a3/20b8fb130e3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/a4/00b275c80f3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/a7/a06e91ef0b3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/a7/d0180e010d3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/b0/d0193823103300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/b7/4050305ed6330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/ba/30fd2ed50f3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/ba/e07c87410c3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/bf/801145e2d7330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/c2/905127b40b3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/c2/905832d50f3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/c4/3092d0add7330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/ce/20933694d6330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/cf/207519a3123300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/d4/109fa326133300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/da/b04eaf4dd6330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/de/b0e1756fd3330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/e6/c0919c80d6330014166bfa7524027fba
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/ea/900b0f18103300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/f6/10267f30103300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/fa/806a78f90c3300141fd2913c266d3d5d
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.history/fd/90aeae8ad2330014166bfa7524027fba
+#	deleted:    build/.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.jdt.core.external.folders/.markers.snap
+#	deleted:    build/.metadata/.plugins/org.eclipse.core.resources/.projects/.org.eclipse.jdt.core.external.folders/.syncinfo.snap
+#	modified:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/a0/5f/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/a0/d6/history.index
+#	modified:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/a0/d6/properties.index
+#	modified:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/a0/de/history.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/e4/48/history.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/e4/f/b9/32/history.index
+#	modified:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/history.index
+#	modified:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.markers
+#	deleted:    build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.markers.snap
+#	deleted:    build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.syncinfo.snap
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/org.eclipse.jdt.core/state.dat
+#	deleted:    build/.metadata/.plugins/org.eclipse.core.resources/.projects/appcompat_v7/.markers.snap
+#	deleted:    build/.metadata/.plugins/org.eclipse.core.resources/.projects/appcompat_v7/.syncinfo.snap
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/appcompat_v7/org.eclipse.jdt.core/state.dat
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/7/26/history.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/1/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/11/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/12/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/16/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/17/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/1c/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/1d/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/1f/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/30/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/32/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/38/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/3a/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/3e/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/44/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/47/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/48/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/49/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/4a/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/5/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/50/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/62/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/63/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/68/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/6b/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/6d/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/71/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/74/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/79/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/7f/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/8e/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/91/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/9f/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/a9/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/b2/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/b4/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/b7/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/ba/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/c1/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/c2/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/c7/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/ce/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/d8/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/da/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/de/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/df/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/eb/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/ed/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/f4/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/f7/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/f8/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/fc/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/fd/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/a0/fe/properties.index
+#	renamed:    build/.metadata/.plugins/org.eclipse.core.resources/.projects/24Eats/.indexes/properties.index -> build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.indexes/properties.index
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/.location
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/org.eclipse.egit.core/GitProjectData.properties
+#	new file:   build/.metadata/.plugins/org.eclipse.core.resources/.projects/google-play-services_lib/org.eclipse.jdt.core/state.dat
+#	modified:   build/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/properties.index
+#	deleted:    build/.metadata/.plugins/org.eclipse.core.resources/.root/.markers.snap
+#	renamed:    build/.metadata/.plugins/org.eclipse.core.resources/.root/2.tree -> build/.metadata/.plugins/org.eclipse.core.resources/.root/4.tree
+#	modified:   build/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+#	deleted:    build/.metadata/.plugins/org.eclipse.core.resources/.snap
+#	modified:   build/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.android.ide.eclipse.adt.prefs
+#	new file:   build/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.android.ide.eclipse.ddms.prefs
+#	new file:   build/.metadata/.plugins/org.eclipse.core.runtime/.settings/com.genymobile.genymotion.ide.eclipse.plugin.prefs
+#	modified:   build/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.debug.ui.prefs
+#	new file:   build/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.debug.ui.prefs
+#	modified:   build/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.jdt.ui.prefs
+#	modified:   build/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.wst.sse.core.prefs
+#	new file:   build/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.wst.sse.ui.prefs
+#	new file:   build/.metadata/.plugins/org.eclipse.debug.core/.launches/New_configuration.launch
+#	new file:   build/.metadata/.plugins/org.eclipse.debug.ui/dialog_settings.xml
+#	new file:   build/.metadata/.plugins/org.eclipse.debug.ui/launchConfigurationHistory.xml
+#	modified:   build/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+#	new file:   build/.metadata/.plugins/org.eclipse.egit.ui/dialog_settings.xml
+#	new file:   build/.metadata/.plugins/org.eclipse.jdt.core/1593829757.index
+#	new file:   build/.metadata/.plugins/org.eclipse.jdt.core/4241859439.index
+#	modified:   build/.metadata/.plugins/org.eclipse.jdt.core/59404593.index
+#	new file:   build/.metadata/.plugins/org.eclipse.jdt.core/848856923.index
+#	modified:   build/.metadata/.plugins/org.eclipse.jdt.core/externalLibsTimeStamps
+#	modified:   build/.metadata/.plugins/org.eclipse.jdt.core/nonChainingJarsCache
+#	modified:   build/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt
+#	modified:   build/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat
+#	new file:   build/.metadata/.plugins/org.eclipse.jdt.debug.ui/dialog_settings.xml
+#	modified:   build/.metadata/.plugins/org.eclipse.jdt.ui/OpenTypeHistory.xml
+#	modified:   build/.metadata/.plugins/org.eclipse.jdt.ui/QualifiedTypeNameHistory.xml
+#	modified:   build/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml
+#	new file:   build/.metadata/.plugins/org.eclipse.ltk.core.refactoring/.refactorings/.workspace/2014/9/36/refactorings.history
+#	new file:   build/.metadata/.plugins/org.eclipse.ltk.core.refactoring/.refactorings/.workspace/2014/9/36/refactorings.index
+#	new file:   build/.metadata/.plugins/org.eclipse.ltk.core.refactoring/.refactorings/24Eats/2014/9/36/refactorings.history
+#	new file:   build/.metadata/.plugins/org.eclipse.ltk.core.refactoring/.refactorings/24Eats/2014/9/36/refactorings.index
+#	new file:   build/.metadata/.plugins/org.eclipse.ltk.ui.refactoring/dialog_settings.xml
+#	new file:   build/.metadata/.plugins/org.eclipse.ui.editors/dialog_settings.xml
+#	modified:   build/.metadata/.plugins/org.eclipse.ui.ide/dialog_settings.xml
+#	new file:   build/.metadata/.plugins/org.eclipse.ui.workbench.texteditor/dialog_settings.xml
+#	modified:   build/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+#	modified:   build/.metadata/.plugins/org.eclipse.ui.workbench/workingsets.xml
+#	new file:   build/.metadata/.plugins/org.eclipse.wst.sse.ui/dialog_settings.xml
+#	modified:   build/24Eats/.classpath
+#	modified:   build/24Eats/AndroidManifest.xml
+#	new file:   build/24Eats/bin/24Eats.apk
+#	modified:   build/24Eats/bin/AndroidManifest.xml
+#	modified:   build/24Eats/bin/R.txt
+#	new file:   build/24Eats/bin/classes.dex
+#	new file:   build/24Eats/bin/res/crunch/drawable-hdpi/ic_launcher.png
+#	new file:   build/24Eats/bin/res/crunch/drawable-mdpi/ic_launcher.png
+#	new file:   build/24Eats/bin/res/crunch/drawable-xhdpi/ic_launcher.png
+#	new file:   build/24Eats/bin/res/crunch/drawable-xxhdpi/ic_launcher.png
+#	new file:   build/24Eats/bin/resources.ap_
+#	modified:   build/24Eats/gen/android/support/v7/appcompat/R.java
+#	modified:   build/24Eats/gen/comp/main/twentyfoureats/R.java
+#	modified:   build/24Eats/res/layout/activity_form.xml
+#	new file:   build/24Eats/res/layout/activity_list_view.xml
+#	new file:   build/24Eats/res/menu/list_view.xml
+#	modified:   build/24Eats/res/values/strings.xml
+#	modified:   build/24Eats/src/comp/main/twentyfoureats/Form.java
+#	new file:   build/24Eats/src/comp/main/twentyfoureats/ListView.java
+#	new file:   build/24Eats/src/google_maps_api/Addresses.java
+#	new file:   build/24Eats/src/google_maps_api/AddressesModifier.java
+#	new file:   build/24Eats/src/google_maps_api/GoogleMaps.java
+#
+
