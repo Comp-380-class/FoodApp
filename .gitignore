@@ -17,4 +17,5 @@ appcompat_v7/
 google-play-services/*
 build/appcompat_v7/*
 build/.meta*
-build/*metadata/*
+build/.metadata/*
+build/.metadata/.plugins/*
