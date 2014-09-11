@@ -18,3 +18,5 @@ google-play-services/*
 build/appcompat_v7/*
 build/.meta*
 build/.metadata/*
+android-support-v7-appcompat/
+google-play-services_lib/
