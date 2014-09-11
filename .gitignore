@@ -14,9 +14,7 @@ hs_err_pid*
 #folder
 libproject/
 appcompat_v7/
-=======
-#folders
-libproject/
 google-play-services/*
 build/appcompat_v7/*
 build/.meta*
+build/*metadata/*
