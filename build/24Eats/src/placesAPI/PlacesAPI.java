@@ -1,4 +1,4 @@
-package comp.main.twentyfoureats;
+package placesAPI;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,19 +11,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PlacesAPI {
+
+public class PlacesAPI{
 	private static final String API_KEY = "SOEMTJHGOSJG";
 	private static final String PLACES_BASE = "https://maps.googleapis.com/maps/api/place/";
 	private static final String NEARBY = "nearbysearch/json?";
+	private static final String DETAILS = "details/json?";
 	
 	private ArrayList<Place> places;
+	private String morePlacesToken;
 	
 	public PlacesAPI()
 	{
-		
+		this.places = new ArrayList<Place>(); 
 	}
 	
-	public void setUpPlaces(String latitude, String longitude)
+	public ArrayList<Place> getPlaces(String latitude, String longitude)
 	{
 
 		StringBuilder urlSB = new StringBuilder(PLACES_BASE+NEARBY);
@@ -36,14 +39,57 @@ public class PlacesAPI {
 		try {
 			URL url = new URL(urlSB.toString());
 			
-			readRestaurantList(getJSON(url));
+			this.places = readRestaurantList(getJSON(url));
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return this.places;
 	}
 	
+	public ArrayList<Place> getMorePlaces()
+	{
+		ArrayList<Place> updated = new ArrayList<Place>();
+		StringBuilder urlSB = new StringBuilder(PLACES_BASE+NEARBY);
+		urlSB.append("key="+API_KEY);
+		urlSB.append("&pagetoken="+morePlacesToken);
+		
+		URL url;
+		try {
+			url = new URL(urlSB.toString());
+			updated = readRestaurantList(getJSON(url));
+			
+			this.places.addAll(updated);
+			
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return updated;
+	}
+	
+	public void getDetails(Place place)
+	{
+		StringBuilder urlSB = new StringBuilder(PLACES_BASE+DETAILS);
+		urlSB.append("key="+API_KEY);
+		urlSB.append("&placeid="+place.placeid);
+		
+		URL url;
+		
+		try {
+			url = new URL(urlSB.toString());
+			
+			readDetails(getJSON(url), place);
+			
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private StringBuilder getJSON(URL url)
 	{
 		HttpURLConnection conn = null;
@@ -72,13 +118,16 @@ public class PlacesAPI {
 		return json;
 	}
 	
-	private void readRestaurantList(StringBuilder jsonString)
+	private ArrayList<Place> readRestaurantList(StringBuilder jsonString)
 	{
 		String placeid, name, latitude, longitude, icon;
+		ArrayList<Place> places = new ArrayList<Place>();
 		
 		try {
 			JSONObject json = new JSONObject(jsonString.toString());
 			JSONArray results = json.getJSONArray("results");
+			
+			morePlacesToken = json.getString("next_page_token");
 			
 			for(int i = 0; i<results.length(); i++)
 			{
@@ -98,6 +147,13 @@ public class PlacesAPI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return places;
+	}
 	
+	private void readDetails(StringBuilder json, Place place) 
+	{
+		
+		
 	}
 }

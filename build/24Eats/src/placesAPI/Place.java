@@ -1,4 +1,4 @@
-package comp.main.twentyfoureats;
+package placesAPI;
 
 public class Place {
 	public String name;
@@ -6,6 +6,12 @@ public class Place {
 	public String lon;
 	public String placeid;
 	public String icon;
+	
+	public String address;
+	public String phone;
+	public String website;
+	public int rating;
+	public int price;
 	
 	public Place(String placeid, String name, String latitude, String longitude, String icon)
 	{
