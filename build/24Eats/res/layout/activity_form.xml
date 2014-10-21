@@ -32,4 +32,14 @@
         android:onClick="switchActivityWithIntent"
         android:text="Button" />
 
+    <ProgressBar
+        android:id="@+id/spinnerProgress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/UseButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:visibility="gone" />
+
 </RelativeLayout>

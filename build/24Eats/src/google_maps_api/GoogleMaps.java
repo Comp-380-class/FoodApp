@@ -3,8 +3,14 @@ package google_maps_api;
 
 
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+import android.app.Activity;
 import android.content.IntentSender;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -33,7 +39,7 @@ public class GoogleMaps implements
 	 */
 	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	private Location currentLoc;
-	private FragmentActivity parentActivity;
+	private Activity parentActivity;
 	private LocationClient locationClient;
 	private boolean locationUpdatesRequested = false;
 	private LocationRequest locationRequest;
@@ -55,10 +61,9 @@ public class GoogleMaps implements
 	 * @param activity
 	 *            FragmentActivity currently in use for the app
 	 */
-	public GoogleMaps(FragmentActivity activity) {
+	public GoogleMaps(Activity activity) {
 		parentActivity = activity;
 		locationClient = new LocationClient(activity, this, this);
-
 	}
 
 	// Define the callback method that receives location updates
@@ -68,6 +73,8 @@ public class GoogleMaps implements
 		this.currentLoc = location;
 	}
 
+	
+	
 	/**
 	 * Connect to location services
 	 */
@@ -197,7 +204,64 @@ public class GoogleMaps implements
 		return this.locationClient.isConnected();
 	}
 
+	/**
+	 * Get the current location of the user
+	 * @return The current location of the user
+	 */
+	public Location getCurrentLocation(){
+		Location temp;
+		if(!locationClient.isConnected()){
+		try {
+			temp = (new LocationAsync()).execute(locationClient).get(1000, TimeUnit.MILLISECONDS);
+			locationClient.disconnect();
+			return temp;
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		return null;
+		
+		
+		
+	}
 	
+	/**
+	 * 
+	 * @author David Greenberg
+	 * Private class for getting a user's location asynchronosly 
+	 */
+	private class LocationAsync extends AsyncTask<LocationClient, Integer, Location>{
+		
+		
+		@Override
+		protected Location doInBackground(LocationClient... params) {
+			// TODO Auto-generated method stub
+			params[0].connect();
+			if(params[0].isConnected()){
+				Log.d("test","test");
+				Location temp = params[0].getLastLocation();
+				Log.d("currentLocation: ", "" + temp.getLatitude());
+				return temp;
+			}
+			
+			return null;
+		}
+		
+		 protected void onProgressUpdate(Integer... progress) {
+	         //setProgressPercent(progress[0]);
+	     }
+		
+		 protected void onPostExecute(Location loc){
+			 
+		 }
+	}
 
 }
 
