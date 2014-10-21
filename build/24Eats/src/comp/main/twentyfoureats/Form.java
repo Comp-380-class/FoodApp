@@ -3,6 +3,7 @@ package comp.main.twentyfoureats;
 import google_maps_api.AddressCallback;
 import google_maps_api.MapsAPI.LocationCallback;
 import google_maps_api.MapsAPI.NoGPSException;
+import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ public class Form extends ActionBarActivity {
 	public final static String EXTRA_MESSAGE = "Form.message";
 	private Control mainControl;
 	private Button getDirections;
-
+	public final Activity current = this;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class Form extends ActionBarActivity {
 			public void onClick(final View v) {
 				Location loc;
 				// Check for google play services
-				if (!mainControl.checkForGooglePlayServices()) {
+				if (!Control.checkForGooglePlayServices(current)) {
 
 				} else {
 					try {
@@ -62,6 +63,7 @@ public class Form extends ActionBarActivity {
 
 							@Override
 							public void execute(String data) {
+								((TextView)current.findViewById(R.id.Location)).setText(data);
 								Toast.makeText(v.getContext(),
 										data,
 										Toast.LENGTH_LONG).show();

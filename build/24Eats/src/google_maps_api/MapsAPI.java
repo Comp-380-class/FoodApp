@@ -1,9 +1,6 @@
 package google_maps_api;
 
-import java.util.List;
-
 import android.app.Activity;
-import android.location.Address;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.view.View;
@@ -24,6 +21,10 @@ public class MapsAPI {
 	private GeoLoc gps;
 	private Activity parentActivity;
 
+	// *********************
+	// Constructors
+	// ********************
+
 	/**
 	 * Create a new instation of the MapsAPI object
 	 * 
@@ -32,7 +33,6 @@ public class MapsAPI {
 	 */
 	public MapsAPI(Activity activity) {
 		gps = new GeoLoc(activity);
-		// gps.connect();
 		getAddress = new LocationToAddress(activity);
 		parentActivity = activity;
 	}
@@ -46,9 +46,13 @@ public class MapsAPI {
 	 * @throws NoGPSException
 	 *             Can't get locations
 	 */
-	public void getCurrentGPSCoordinates(LocationCallback callback)
-			throws NoGPSException {
-		(new getNewLocation(callback)).execute(this.gps);
+	public Location getCurrentGPSCoordinates() throws NoGPSException {
+		Location temp = null;
+		gps.connect();
+		while (temp == null) {
+			temp = gps.getCurrentLoc();
+		}
+		return temp;
 	}
 
 	/**
@@ -59,9 +63,20 @@ public class MapsAPI {
 	 * @param modifer
 	 *            Callback function which occurs after the address has been
 	 *            found. It will be recieve a string.
+	 * @return The current location as an address
+	 * @throws NoGPSException Throws when no connection to GPS
 	 */
-	public void getCurrentAddress(final AddressCallback modifier) {
-		new getNewAddress(modifier).execute(this.gps);
+	public String getCurrentAddress() throws NoGPSException {
+		// Get the address and return
+		return getAddress.getLocation(getCurrentGPSCoordinates());
+
+	}
+
+	/*
+	 * Disconnect the current gps system
+	 */
+	public void disconnect() {
+		this.gps.disconnect();
 	}
 
 	// ********************************************
@@ -99,132 +114,6 @@ public class MapsAPI {
 	 */
 	public interface LocationCallback {
 		public void execute(Location loc);
-	}
-
-	// ********************************************
-	// Private Classes
-	// ********************************************
-
-	/**
-	 * 
-	 * @author David
-	 * 
-	 */
-	private class getNewLocation extends AsyncTask<GeoLoc, Location, Location> {
-		private Location temp = null; // Create location to use in return
-		private GeoLoc currentGeoLoc;
-		private LocationCallback[] callback;
-
-		public getNewLocation(LocationCallback... callback) {
-			this.callback = callback;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// super.onPreExecute();
-			// Get Progress bar
-			onStartAsync(parentActivity);
-			super.onPreExecute();
-		}
-
-		@Override
-		protected Location doInBackground(GeoLoc... params) {
-			currentGeoLoc = params[0];
-			currentGeoLoc.connect();
-			while (temp == null) {
-				temp = currentGeoLoc.getCurrentLoc();
-			}
-			return temp;
-		}
-
-		@Override
-		protected void onProgressUpdate(Location... result) {
-
-		}
-
-		@Override
-		protected void onPostExecute(Location result) {
-
-			onStopAsync(parentActivity);
-			// Execute all the callbacks
-			for (int i = 0; i < this.callback.length; i++) {
-				this.callback[i].execute(result);
-			}
-			// Disconnect from the gps
-			currentGeoLoc.disconnect();
-		}
-
-	}
-
-	
-
-	/**
-	 * 
-	 * @author David Get GPS Location from gps and return an address
-	 */
-	private class getNewAddress extends AsyncTask<GeoLoc, Location, String> {
-		private ProgressBar currentProgress;
-		private Location temp = null; // Create location to use in return
-		private GeoLoc currentGeoLoc;
-		private AddressCallback[] callback;
-
-		public getNewAddress(AddressCallback... callback) {
-			this.callback = callback;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// super.onPreExecute();
-			// Get Progress bar
-			onStartAsync(parentActivity);
-			super.onPreExecute();
-		}
-
-		@Override
-		protected String doInBackground(GeoLoc... params) {
-			currentGeoLoc = params[0];
-
-			// Connect to the device
-			currentGeoLoc.connect();
-
-			// Wait for update
-			while (temp == null) {
-				temp = currentGeoLoc.getCurrentLoc();
-			}
-			// Get the address and return
-			return getAddress.getLocation(temp);
-		}
-
-		@Override
-		protected void onProgressUpdate(Location... result) {
-
-		}
-
-		@Override
-		protected void onPostExecute(String result) {
-			onStopAsync(parentActivity);
-			// Execute all the callbacks
-			for (int i = 0; i < this.callback.length; i++) {
-				this.callback[i].execute(result);
-			}
-			// Disconnect from the gps
-			currentGeoLoc.disconnect();
-		}
-
-	}
-
-	/*
-	 * Start the spinner progress bar
-	 */
-	public static void onStartAsync(Activity parentActivity) {
-		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
-				.setVisibility(View.VISIBLE);
-	}
-
-	// End the spinner progress bar
-	public static void onStopAsync(Activity parentActivity) {
-		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
-				.setVisibility(View.GONE);
 	}
 
 }

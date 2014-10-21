@@ -20,6 +20,7 @@ import android.util.Log;
 public class LocationToAddress extends AsyncTask<Location, Void, String> {
 	private Context mContext;
 	private AddressCallback callback;
+
 	/**
 	 * Create the addresses object
 	 * 
@@ -30,7 +31,7 @@ public class LocationToAddress extends AsyncTask<Location, Void, String> {
 		super();
 		mContext = context;
 	}
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -115,8 +116,15 @@ public class LocationToAddress extends AsyncTask<Location, Void, String> {
 			return "No address found";
 		}
 	}
-	
-	public String getLocation(Location...params){
+
+	/**
+	 * Get the current address of the user from the current location of the user
+	 * 
+	 * @param params
+	 *            A list of location, only the first will be looked at
+	 * @return The current address of the user as a string
+	 */
+	public String getLocation(Location... params) {
 		Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
 		// Get the current location from the input parameter list
 		Location loc = params[0];
@@ -165,32 +173,35 @@ public class LocationToAddress extends AsyncTask<Location, Void, String> {
 			return "No address found";
 		}
 	}
-	
+
 	/**
 	 * Turn a String Address into a location object
-	 * @param address A list of possible gps locations
+	 * 
+	 * @param address
+	 *            A list of possible gps locations
 	 * @return The address as a pair of gps locations
+	 * @throws Exception 
 	 */
-	public List<Address> getGPSLocation(String address){
-		Geocoder geocoder = new Geocoder(mContext);  
+	public List<Address> getLocation(String address) throws Exception {
+		Geocoder geocoder = new Geocoder(mContext);
 		List<Address> addresses;
 		try {
 			addresses = geocoder.getFromLocationName(address, 1);
-			if(addresses.size() > 0) {
-			    return addresses;
+			if (addresses.size() > 0) {
+				return addresses;
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			return null; 
+			throw new Exception("No Connection to network");
 		}
-		
+
 		return null;
 	}
-	
-	//****************************
-	//Getters and Setters
-	//****************************
-	public void setCallback(AddressCallback callback){
+
+	// ****************************
+	// Getters and Setters
+	// ****************************
+	public void setCallback(AddressCallback callback) {
 		this.callback = callback;
 	}
 
