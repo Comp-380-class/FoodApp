@@ -6,6 +6,7 @@ import google_maps_api.MapsAPI;
 import google_maps_api.MapsAPI.LocationCallback;
 import google_maps_api.MapsAPI.NoGPSException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -19,6 +20,8 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import comp.main.twentyfoureats.Place;
+import comp.main.twentyfoureats.PlacesAPI;
 import comp.main.twentyfoureats.R;
 
 /**
@@ -30,7 +33,7 @@ public class Control {
 	private MapsAPI gMaps;
 	private LocationToAddress getAddress;
 	private Activity parentActivity;
-	
+	private PlacesAPI places;
 	/**
 	 * Primary constructor for the control object. Creates a new Control
 	 * containing information about the activity.
@@ -283,9 +286,13 @@ public class Control {
 	 * @author David
 	 * Async retrieve a list of resteraunts, return an intent 
 	 */
-	private class getList extends AsyncTask<RestListAct,Void,Intent>{
+	private class getList extends AsyncTask<String,Void,Place[]>{
 		
 		private RestListAct[] activityList;
+		
+		public getList(RestListAct...params){
+			activityList = params;
+		}
 		
 		@Override 
 		protected void onPreExecute(){
@@ -295,8 +302,14 @@ public class Control {
 		}
 
 		@Override
-		protected Intent doInBackground(RestListAct... params) {
-			activityList = params;
+		protected Place[] doInBackground(String... params) {
+				try {
+					
+					places.setUpPlaces(latitude, longitude);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			return null;
 		}
 		
@@ -323,11 +336,11 @@ public class Control {
 	/**
 	 * 
 	 * @author David
-	 *
+	 * Interface to get Resteraunt
 	 */
 	public interface RestListAct{
 		
-		//public void execute(ArrayList<Place>);
+		public void execute(ArrayList<Place> places);
 		
 	}
 	
