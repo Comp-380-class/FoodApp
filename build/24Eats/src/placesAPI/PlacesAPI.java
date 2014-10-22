@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 
 public class PlacesAPI{
-	private static final String API_KEY = "SOEMTJHGOSJG";
+	private static final String API_KEY = "AIzaSyBQoyR-YZVqVujbDaNKZvAK0v09UM4cCLs";
 	private static final String PLACES_BASE = "https://maps.googleapis.com/maps/api/place/";
 	private static final String NEARBY = "nearbysearch/json?";
 	private static final String DETAILS = "details/json?";
@@ -120,14 +120,18 @@ public class PlacesAPI{
 	
 	private ArrayList<Place> readRestaurantList(StringBuilder jsonString)
 	{
-		String placeid, name, latitude, longitude, icon;
-		ArrayList<Place> places = new ArrayList<Place>();
+		String placeid, name, icon;
+		Double latitude, longitude;
+		ArrayList<Place> placeList = new ArrayList<Place>();
 		
 		try {
 			JSONObject json = new JSONObject(jsonString.toString());
 			JSONArray results = json.getJSONArray("results");
 			
-			morePlacesToken = json.getString("next_page_token");
+			if(json.has("next_page_token"))
+			{
+				morePlacesToken = json.getString("next_page_token");
+			}
 			
 			for(int i = 0; i<results.length(); i++)
 			{
@@ -137,18 +141,18 @@ public class PlacesAPI{
 				
 				placeid = place.getString("place_id");
 				name = place.getString("name");
-				latitude = location.getString("lat");
-				longitude = location.getString("lon");
+				latitude = location.getDouble("lat");
+				longitude = location.getDouble("lng");
 				icon = place.getString("icon");
 				
-				places.add(new Place(placeid, name, latitude, longitude, icon));
+				placeList.add(new Place(placeid, name, latitude, longitude, icon));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return places;
+		return placeList;
 	}
 	
 	private void readDetails(StringBuilder json, Place place) 
