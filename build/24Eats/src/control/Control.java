@@ -9,19 +9,21 @@ import google_maps_api.MapsAPI.NoGPSException;
 import java.util.ArrayList;
 import java.util.List;
 
+import placesAPI.Place;
+import placesAPI.PlacesAPI;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import comp.main.twentyfoureats.Place;
-import comp.main.twentyfoureats.PlacesAPI;
 import comp.main.twentyfoureats.R;
 
 /**
@@ -86,20 +88,39 @@ public class Control {
 	 * @param currentLocation
 	 *            The current location of the user as a string
 	 */
-	public void getListOfResteraunts(Context context, String currentLocation,
+	public void getListOfResteraunts(Context context, String currentLocation, RestListAct callback,
 			String... options) {
 		// Add functions to get location based on given values
-		(new getLocationFromAddress(options, new AddressCallback() {
-
-			@Override
-			public void execute(String data) {
-				// TODO Auto-generated method stub
-
-			}
-
-		})).execute(options);
+		(new getList(callback)).execute(currentLocation);
 	}
 
+	
+	/**
+	 * Show the current known map at  the latitude and longitude given
+	 * @param latitude The latitude of the location
+	 * @param longitude The longitude of the location
+	 */
+	public static void showMap(String latitude, String longitude, Activity parent){
+		Uri current = Uri.parse("http://maps.google.com/maps?saddr="+latitude +"," + longitude+"&daddr=20.5666,45.345");
+		
+		showMap(current, parent);
+	}
+	
+	/**
+	 * Transfer the address to the database 
+	 * @param geoLocation The location as a uri
+	 */
+		private static void showMap(Uri geoLocation, Activity parentActivity) {
+		    Intent intent = new Intent(Intent.ACTION_VIEW);
+		    Log.d("test",geoLocation.toString());
+		    intent.setData(geoLocation);
+		    if (intent.resolveActivity(parentActivity.getPackageManager()) != null) {
+		        parentActivity.startActivity(intent);
+		    }
+		}
+	
+	
+	
 	/**
 	 * Perform when the application goes to suspend
 	 * 
@@ -286,7 +307,7 @@ public class Control {
 	 * @author David
 	 * Async retrieve a list of resteraunts, return an intent 
 	 */
-	private class getList extends AsyncTask<String,Void,Place[]>{
+	private class getList extends AsyncTask<String,Void,ArrayList<Place>>{
 		
 		private RestListAct[] activityList;
 		
@@ -298,20 +319,30 @@ public class Control {
 		protected void onPreExecute(){
 			onStartAsync(parentActivity);
 			super.onPreExecute();
-			
 		}
 
 		@Override
-		protected Place[] doInBackground(String... params) {
+		protected ArrayList<Place> doInBackground(String... params) {
 				try {
+					List<Address> value = getAddress.getLocation(params[0]);
+					return places.getPlaces(""+value.get(0).getLatitude(),""+value.get(0).getLongitude());
 					
-					places.setUpPlaces(latitude, longitude);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			return null;
 		}
+		
+		@Override 
+		protected void onPostExecute(ArrayList<Place> temp){
+			//Log.d("test",temp.get(0).toString());
+			for(int i=0;i<activityList.length;i++){
+				this.activityList[i].execute(temp);
+			}
+			onStopAsync(parentActivity);
+		}
+		
 		
 	}
 	

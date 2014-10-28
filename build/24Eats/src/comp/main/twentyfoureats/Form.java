@@ -1,14 +1,15 @@
 package comp.main.twentyfoureats;
 
 import google_maps_api.AddressCallback;
-import google_maps_api.MapsAPI.LocationCallback;
-import google_maps_api.MapsAPI.NoGPSException;
+
+import java.util.ArrayList;
+
+import placesAPI.Place;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import control.Control;
+import control.Control.RestListAct;
 
 /**
  * 
@@ -58,19 +60,31 @@ public class Form extends ActionBarActivity {
 							
 						});*/
 						
+						
+						
 						//Call to get the address
-						mainControl.getCurrentAddress(new AddressCallback(){
+						/*mainControl.getCurrentAddress(new AddressCallback(){
 
 							@Override
 							public void execute(String data) {
-								((TextView)current.findViewById(R.id.Location)).setText(data);
+								
 								Toast.makeText(v.getContext(),
 										data,
 										Toast.LENGTH_LONG).show();
 								
 							}
 							
-						});
+						});*/
+						Control.showMap("65.9667", "-18.5333", current);
+						mainControl.getListOfResteraunts(current, "5506 Wortser Ave, Sherman Oaks, CA 91401", new RestListAct() {
+
+							@Override
+							public void execute(ArrayList<Place> temp) {
+								//((TextView)current.findViewById(R.id.Location)).setText("" + temp.get(0));
+								
+							}
+
+						},(String[]) null);
 						
 					} catch (NullPointerException e) {
 						// TODO Auto-generated catch block
