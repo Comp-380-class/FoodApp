@@ -11,7 +11,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/**
+ * @author Candace Walden
+ * @version 0.0.2
+ * 
+ * Object connects to and requests information from Google Places API.
+ * Parses the information and stores in Place objects.
+ */
 public class PlacesAPI{
 	private static final String API_KEY = "AIzaSyBQoyR-YZVqVujbDaNKZvAK0v09UM4cCLs";
 	private static final String PLACES_BASE = "https://maps.googleapis.com/maps/api/place/";
@@ -20,12 +26,34 @@ public class PlacesAPI{
 	
 	private ArrayList<Place> places;
 	private String morePlacesToken;
+	private int preload = 3;
 	
 	public PlacesAPI()
 	{
 		this.places = new ArrayList<Place>(); 
 	}
 	
+	/** 
+	 * @param preload The number of places to preload.
+	 */
+	public PlacesAPI(int preload)
+	{
+		this.places = new ArrayList<Place>();
+		
+		//Can't preload more results than possible
+		if(preload < 20)
+			this.preload = preload;
+		else
+			this.preload = 20;
+	}
+	
+	/**
+	 * Get the first twenty places that match the search criteria.
+	 * 
+	 * @param latitude		The latitude of the location to search
+	 * @param longitude		The longitude of the location to search
+	 * @return				The first twenty Place objects matching the request
+	 */
 	public ArrayList<Place> getPlaces(String latitude, String longitude)
 	{
 
@@ -33,7 +61,7 @@ public class PlacesAPI{
 		urlSB.append("key="+API_KEY);
 		urlSB.append("&location="+latitude+","+longitude);
 		urlSB.append("&radius=16000");
-		urlSB.append("&types=bar|cafe|food|restaurant");
+		urlSB.append("&types=bar|cafe|restaurant");
 		urlSB.append("&opennow=true");
 
 		try {
@@ -42,13 +70,21 @@ public class PlacesAPI{
 			this.places = readRestaurantList(getJSON(url));
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		preloadPlaces();
 		
 		return this.places;
 	}
 	
+	/**
+	 * Get the next 20 places from the previous search. If the previous 
+	 *   search did not have more results to return, this will send back 
+	 *   an empty ArrayList.
+	 *   
+	 * @return Next twenty Places.
+	 */
 	public ArrayList<Place> getMorePlaces()
 	{
 		ArrayList<Place> updated = new ArrayList<Place>();
@@ -64,13 +100,17 @@ public class PlacesAPI{
 			this.places.addAll(updated);
 			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return updated;
 	}
 	
+	/**
+	 * Get the details for the particular place. They will be stored in
+	 *   the place object given.
+	 * @param place		The place object which needs details.
+	 */
 	public void getDetails(Place place)
 	{
 		StringBuilder urlSB = new StringBuilder(PLACES_BASE+DETAILS);
@@ -85,7 +125,6 @@ public class PlacesAPI{
 			readDetails(getJSON(url), place);
 			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -107,7 +146,6 @@ public class PlacesAPI{
 	        }
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 	        if (conn != null) {
@@ -132,6 +170,10 @@ public class PlacesAPI{
 			{
 				morePlacesToken = json.getString("next_page_token");
 			}
+			else
+			{
+				morePlacesToken = "";
+			}
 			
 			for(int i = 0; i<results.length(); i++)
 			{
@@ -148,7 +190,6 @@ public class PlacesAPI{
 				placeList.add(new Place(placeid, name, latitude, longitude, icon));
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -157,7 +198,47 @@ public class PlacesAPI{
 	
 	private void readDetails(StringBuilder json, Place place) 
 	{
+		String address, phone, website;
+		float rating;
+		int price;
 		
+		try {
+			JSONObject details = new JSONObject(json.toString());
+			details = details.getJSONObject("result");
+			
+			address = details.getString("formatted_address");
+			phone = details.getString("formatted_phone_number");
+			website = details.getString("website");
+			rating = (float) details.getDouble("rating");
+			price = details.getInt("price_level");
+			
+			place.addDetails(address, phone, website, rating, price);
+			
+			// TODO Parse hours
+			JSONObject open = details.getJSONObject("opening_hours");
+			JSONArray hours = open.getJSONArray("periods");
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void preloadPlaces()
+	{
+		int load;
 		
+		if(preload > places.size())
+		{
+			load = places.size();
+		}
+		else
+		{
+			load = preload;
+		}
+		
+		for(int i=0; i<load; i++)
+		{
+			getDetails(places.get(i));
+		}
 	}
 }
