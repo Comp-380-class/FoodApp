@@ -2,11 +2,6 @@ package google_maps_api;
 
 import android.app.Activity;
 import android.location.Location;
-import android.os.AsyncTask;
-import android.view.View;
-import android.widget.ProgressBar;
-
-import comp.main.twentyfoureats.R;
 
 /**
  * 
