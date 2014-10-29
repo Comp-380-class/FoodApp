@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,13 +76,32 @@ public class Form extends ActionBarActivity {
 							}
 							
 						});*/
-						Control.showMap("65.9667", "-18.5333", current);
-						mainControl.getListOfResteraunts(current, "5506 Wortser Ave, Sherman Oaks, CA 91401", new RestListAct() {
+						//Control.showMap("65.9667", "-18.5333", current);
+						mainControl.getListOfResteraunts(current, "Los Angeles", new RestListAct() {
 
 							@Override
 							public void execute(ArrayList<Place> temp) {
-								//((TextView)current.findViewById(R.id.Location)).setText("" + temp.get(0));
-								
+								((TextView)current.findViewById(R.id.Location)).setText("" + temp.get(0));
+								mainControl.getMoreResteraunts(current, new RestListAct(){
+
+									@Override
+									public void execute(Place places) {
+										// TODO Auto-generated method stub
+										
+									}
+
+									@Override
+									public void execute(ArrayList<Place> temp) {
+										
+										((TextView)current.findViewById(R.id.Location)).setText("" + temp.get(0));
+									}
+									
+								});
+							}
+
+							@Override
+							public void execute(Place places) {
+								// TODO Auto-generated method stub
 							}
 
 						},(String[]) null);

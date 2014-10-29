@@ -27,15 +27,20 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import comp.main.twentyfoureats.R;
 
 /**
+ * Primary Control object for the entire project. All underlying functions are
+ * called and implemented through here
  * 
- * @author David Greenberg Class for controlling all other underlying classes
+ * @author David Greenberg
  * 
+ * @version 0.0.3
  */
 public class Control {
 	private MapsAPI gMaps;
 	private LocationToAddress getAddress;
 	private Activity parentActivity;
 	private PlacesAPI places;
+	public final static boolean DEBUG = true;
+
 	/**
 	 * Primary constructor for the control object. Creates a new Control
 	 * containing information about the activity.
@@ -47,6 +52,7 @@ public class Control {
 		this.parentActivity = activity;
 		gMaps = new MapsAPI(activity);
 		getAddress = new LocationToAddress(activity);
+		places = new PlacesAPI();
 	}
 
 	/**
@@ -88,39 +94,48 @@ public class Control {
 	 * @param currentLocation
 	 *            The current location of the user as a string
 	 */
-	public void getListOfResteraunts(Context context, String currentLocation, RestListAct callback,
-			String... options) {
+	public void getListOfResteraunts(Context context, String currentLocation,
+			RestListAct callback, String... options) {
 		// Add functions to get location based on given values
 		(new getList(callback)).execute(currentLocation);
 	}
 
-	
-	/**
-	 * Show the current known map at  the latitude and longitude given
-	 * @param latitude The latitude of the location
-	 * @param longitude The longitude of the location
-	 */
-	public static void showMap(String latitude, String longitude, Activity parent){
-		Uri current = Uri.parse("http://maps.google.com/maps?saddr="+latitude +"," + longitude+"&daddr=20.5666,45.345");
-		
-		showMap(current, parent);
+	public void getMoreResteraunts(Context context,RestListAct callback){
+		(new getList(callback)).execute("/0");
 	}
 	
+	
 	/**
-	 * Transfer the address to the database 
-	 * @param geoLocation The location as a uri
+	 * Show the current known map at the latitude and longitude given
+	 * 
+	 * @param latitude
+	 *            The latitude of the location
+	 * @param longitude
+	 *            The longitude of the location
 	 */
-		private static void showMap(Uri geoLocation, Activity parentActivity) {
-		    Intent intent = new Intent(Intent.ACTION_VIEW);
-		    Log.d("test",geoLocation.toString());
-		    intent.setData(geoLocation);
-		    if (intent.resolveActivity(parentActivity.getPackageManager()) != null) {
-		        parentActivity.startActivity(intent);
-		    }
+	public static void showMap(String latitude, String longitude,
+			Activity parent) {
+		Uri current = Uri.parse("http://maps.google.com/maps?saddr=" + latitude
+				+ "," + longitude + "&daddr=20.5666,45.345");
+
+		showMap(current, parent);
+	}
+
+	/**
+	 * Transfer the address to the database
+	 * 
+	 * @param geoLocation
+	 *            The location as a uri
+	 */
+	private static void showMap(Uri geoLocation, Activity parentActivity) {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		Log.d("test", geoLocation.toString());
+		intent.setData(geoLocation);
+		if (intent.resolveActivity(parentActivity.getPackageManager()) != null) {
+			parentActivity.startActivity(intent);
 		}
-	
-	
-	
+	}
+
 	/**
 	 * Perform when the application goes to suspend
 	 * 
@@ -252,8 +267,7 @@ public class Control {
 
 	/**
 	 * 
-	 * @author David 
-	 * Get the user's current Location as a Location object
+	 * @author David Get the user's current Location as a Location object
 	 */
 	private class getNewLocation extends AsyncTask<MapsAPI, Location, Location> {
 		private Location temp = null; // Create location to use in return
@@ -304,48 +318,100 @@ public class Control {
 
 	/**
 	 * 
-	 * @author David
-	 * Async retrieve a list of resteraunts, return an intent 
+	 * @author David Async retrieve a list of resteraunts, return an intent
 	 */
-	private class getList extends AsyncTask<String,Void,ArrayList<Place>>{
-		
+	private class getList extends AsyncTask<String, Void, ArrayList<Place>> {
+
 		private RestListAct[] activityList;
-		
-		public getList(RestListAct...params){
+		private String[] opt;
+		public getList(RestListAct... params) {
 			activityList = params;
 		}
 		
-		@Override 
-		protected void onPreExecute(){
+		public getList(String[] options, RestListAct... params){
+			opt = options;
+			activityList = params;
+		}
+
+		@Override
+		protected void onPreExecute() {
 			onStartAsync(parentActivity);
 			super.onPreExecute();
 		}
 
 		@Override
 		protected ArrayList<Place> doInBackground(String... params) {
-				try {
+			try {
+				
+				ArrayList<Place> currentPlaces;
+				
+				//If nothing passed, then get address, else more places
+				if(params[0]!="/0"){
 					List<Address> value = getAddress.getLocation(params[0]);
-					return places.getPlaces(""+value.get(0).getLatitude(),""+value.get(0).getLongitude());
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				currentPlaces = places.getPlaces("" + value.get(0).getLatitude(), ""
+						+ value.get(0).getLongitude());
+				}else{
+					currentPlaces = places.getMorePlaces();
 				}
+				
+				
+				return currentPlaces;
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return null;
 		}
-		
-		@Override 
-		protected void onPostExecute(ArrayList<Place> temp){
-			//Log.d("test",temp.get(0).toString());
-			for(int i=0;i<activityList.length;i++){
+
+		@Override
+		protected void onPostExecute(ArrayList<Place> temp) {
+			// Log.d("test",temp.get(0).toString());
+			for (int i = 0; i < activityList.length; i++) {
 				this.activityList[i].execute(temp);
 			}
 			onStopAsync(parentActivity);
 		}
-		
-		
+
 	}
-	
+
+	/**
+	 * @author David Greenberg
+	 * @Description: Class for recieving more details for a particular restraunt
+	 */
+	private class getDetails extends AsyncTask<Place, Void, Place> {
+
+		private RestListAct[] activityList;
+
+		public getDetails(RestListAct... params) {
+			activityList = params;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			onStartAsync(parentActivity);
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Place doInBackground(Place... params) {
+			if (params.length != 0) {
+				places.getDetails(params[0]);
+			} 
+			return params[0];
+		}
+
+		@Override
+		protected void onPostExecute(Place temp) {
+			// Log.d("test",temp.get(0).toString());
+			for (int i = 0; i < activityList.length; i++) {
+				this.activityList[i].execute(temp);
+			}
+			onStopAsync(parentActivity);
+		}
+
+	}
+
 	// **************************
 	// Static Functions
 	// **************************
@@ -366,15 +432,15 @@ public class Control {
 
 	/**
 	 * 
-	 * @author David
-	 * Interface to get Resteraunt
+	 * @author David Interface to get List of Resteraunts
 	 */
-	public interface RestListAct{
-		
+	public interface RestListAct {
+		public void execute(Place places);
+
 		public void execute(ArrayList<Place> places);
-		
+
 	}
-	
+
 	/*
 	 * Check to see if the current device has google play services installed
 	 * 
