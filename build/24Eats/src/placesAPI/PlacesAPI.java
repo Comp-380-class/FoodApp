@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 /**
  * @author Candace Walden
- * @version 0.0.2
+ * @version 0.0.3
  * 
  * Object connects to and requests information from Google Places API.
  * Parses the information and stores in Place objects.
@@ -26,6 +26,7 @@ public class PlacesAPI{
 	
 	private ArrayList<Place> places;
 	private String morePlacesToken;
+	private String[] options;
 	private int preload = 3;
 	
 	public PlacesAPI()
@@ -60,7 +61,8 @@ public class PlacesAPI{
 		StringBuilder urlSB = new StringBuilder(PLACES_BASE+NEARBY);
 		urlSB.append("key="+API_KEY);
 		urlSB.append("&location="+latitude+","+longitude);
-		urlSB.append("&radius=16000");
+		urlSB.append("&rankby=distance");
+		//urlSB.append("&radius=16000");
 		urlSB.append("&types=bar|cafe|restaurant");
 		urlSB.append("&opennow=true");
 
@@ -115,7 +117,7 @@ public class PlacesAPI{
 	{
 		StringBuilder urlSB = new StringBuilder(PLACES_BASE+DETAILS);
 		urlSB.append("key="+API_KEY);
-		urlSB.append("&placeid="+place.placeid);
+		urlSB.append("&placeid="+place.getID());
 		
 		URL url;
 		
@@ -181,11 +183,17 @@ public class PlacesAPI{
 				JSONObject location = place.getJSONObject("geometry");
 				location = location.getJSONObject("location");
 				
+				//if any of these don't exist, we have a problem
 				placeid = place.getString("place_id");
 				name = place.getString("name");
 				latitude = location.getDouble("lat");
 				longitude = location.getDouble("lng");
-				icon = place.getString("icon");
+				
+				//allow icon to be blank
+				if(place.has("icon"))
+					icon = place.getString("icon");
+				else
+					icon = "";
 				
 				placeList.add(new Place(placeid, name, latitude, longitude, icon));
 			}
@@ -206,11 +214,35 @@ public class PlacesAPI{
 			JSONObject details = new JSONObject(json.toString());
 			details = details.getJSONObject("result");
 			
-			address = details.getString("formatted_address");
-			phone = details.getString("formatted_phone_number");
-			website = details.getString("website");
-			rating = (float) details.getDouble("rating");
-			price = details.getInt("price_level");
+			//get address
+			if(details.has("formatted_address")) 
+				address = details.getString("formatted_address");
+			else
+				address = "";
+			
+			//get phone number
+			if(details.has("formatted_phone_number")) 
+				phone = details.getString("formatted_phone_number");
+			else
+				phone = "";
+			
+			//get website
+			if(details.has("website")) 
+				website = details.getString("website");
+			else
+				website = "";
+			
+			//get rating
+			if(details.has("rating")) 
+				rating = (float) details.getDouble("rating");
+			else
+				rating = 0;
+			
+			//get price
+			if(details.has("price_level")) 
+				price = details.getInt("price_level");
+			else
+				price = 0;
 			
 			place.addDetails(address, phone, website, rating, price);
 			
