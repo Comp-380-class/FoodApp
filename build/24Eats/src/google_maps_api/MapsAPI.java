@@ -32,6 +32,10 @@ public class MapsAPI {
 		parentActivity = activity;
 	}
 
+	// *********************
+	// Functions
+	// ********************
+
 	/**
 	 * Find the current location of a user as longitude and latitude
 	 * 
@@ -50,6 +54,10 @@ public class MapsAPI {
 		return temp;
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
 	 * Find the current address of a user based on gps location
 	 * 
@@ -59,13 +67,18 @@ public class MapsAPI {
 	 *            Callback function which occurs after the address has been
 	 *            found. It will be recieve a string.
 	 * @return The current location as an address
-	 * @throws NoGPSException Throws when no connection to GPS
+	 * @throws NoGPSException
+	 *             Throws when no connection to GPS
 	 */
 	public String getCurrentAddress() throws NoGPSException {
 		// Get the address and return
 		return getAddress.getLocation(getCurrentGPSCoordinates());
 
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	/*
 	 * Disconnect the current gps system
@@ -101,6 +114,10 @@ public class MapsAPI {
 			super(message);
 		}
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	/**
 	 * 
