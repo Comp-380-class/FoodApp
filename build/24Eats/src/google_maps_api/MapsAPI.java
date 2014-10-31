@@ -128,4 +128,13 @@ public class MapsAPI {
 		public void execute(Location loc);
 	}
 
+	/**
+	 * Change the context
+	 * @param context The context to change to
+	 */
+	public void setContext(Activity context) {
+		this.parentActivity = context;
+		
+	}
+
 }

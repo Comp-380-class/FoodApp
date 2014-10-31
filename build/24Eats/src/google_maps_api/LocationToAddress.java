@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -125,5 +126,14 @@ public class LocationToAddress {
 			throw new Exception("No Connection to network");
 		}
 		return null;
+	}
+
+	/**
+	 * Change the context
+	 * @param context The context to change to
+	 */
+	public void setContext(Activity context) {
+		this.mContext = context;
+		
 	}
 }

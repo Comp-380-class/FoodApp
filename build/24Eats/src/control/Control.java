@@ -14,11 +14,11 @@ import placesAPI.PlacesAPI;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -40,7 +40,17 @@ public class Control {
 	private Activity parentActivity;
 	private PlacesAPI places;
 	public final static boolean DEBUG = true;
+	// ********************************
+	// Constructors
+	// ********************************
 
+	/**
+	 * Default Constructor
+	 */
+	public Control() {
+		places = new PlacesAPI();
+	}
+	
 	/**
 	 * Primary constructor for the control object. Creates a new Control
 	 * containing information about the activity.
@@ -55,14 +65,27 @@ public class Control {
 		places = new PlacesAPI();
 	}
 
+	// ********************************
+	// Functions
+	// ********************************
+
+	
+
 	/**
 	 * Get the user's address based on their gps coordinates
 	 * 
 	 * @return The user's current location as a string
 	 */
 	public void getCurrentAddress(AddressCallback... callback) {
-		(new getNewAddress(callback)).execute();
+		if (Control.checkForGooglePlayServices(parentActivity)
+				&& Control.checkForGPS(parentActivity)) {
+			(new getNewAddress(callback)).execute();
+		}
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	/*
 	 * Get a user's current location as a Location object.
@@ -71,19 +94,29 @@ public class Control {
 	 */
 	public void getCurrentLocation(LocationCallback... callback)
 			throws NoGPSException {
-		(new getNewLocation(callback)).execute();
+		if (Control.checkForGooglePlayServices(parentActivity)
+				&& Control.checkForGPS(parentActivity)) {
+			(new getNewLocation(callback)).execute();
+		}
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	/**
 	 * Get a location based on a provided address
 	 * 
 	 * @param Address
-	 *            The address to be anaylzed
-	 * @return The address as a Location object
+	 *            A list of possible Location addresses
 	 */
-	public Location getCurrentLocation(String address) {
-		return null;
+	public void getCurrentLocation(String address, AddressList... list) {
+		(new getAddressLocation(list)).execute(address);
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	/**
 	 * Get a list of Resteraunts in the area. When finished will transfer to the
@@ -100,13 +133,20 @@ public class Control {
 		(new getList(callback)).execute(currentLocation);
 	}
 
-	public void getMoreResteraunts(Context context,RestListAct callback){
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	public void getMoreResteraunts(Context context, RestListAct callback) {
 		(new getList(callback)).execute("/0");
 	}
-	
-	
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
-	 * Show the current known map at the latitude and longitude given
+	 * Transfer given latitude and longitude to google maps
 	 * 
 	 * @param latitude
 	 *            The latitude of the location
@@ -121,20 +161,27 @@ public class Control {
 		showMap(current, parent);
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
-	 * Transfer the address to the database
+	 * Transfer the address to the map function
 	 * 
 	 * @param geoLocation
 	 *            The location as a uri
 	 */
 	private static void showMap(Uri geoLocation, Activity parentActivity) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		Log.d("test", geoLocation.toString());
 		intent.setData(geoLocation);
 		if (intent.resolveActivity(parentActivity.getPackageManager()) != null) {
 			parentActivity.startActivity(intent);
 		}
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	/**
 	 * Perform when the application goes to suspend
@@ -162,6 +209,10 @@ public class Control {
 		private String[] options;
 		private int pathway; // Variable to decide path to travel down
 
+		// ***********************************
+		// Constructors
+		// ***********************************
+
 		/**
 		 * Get the current Location from an address and get the values
 		 * associated with it
@@ -178,6 +229,10 @@ public class Control {
 			this.options = options;
 		}
 
+		// ***********************************
+		// Functions
+		// ***********************************
+
 		@Override
 		protected void onPreExecute() {
 			// super.onPreExecute();
@@ -185,6 +240,10 @@ public class Control {
 			onStartAsync(parentActivity);
 			super.onPreExecute();
 		}
+
+		// **********************************************************************************************************
+		// ----------------------------------------------------------------------------------------------------------
+		// **********************************************************************************************************
 
 		@Override
 		protected List<Address> doInBackground(String... params) {
@@ -203,6 +262,10 @@ public class Control {
 
 		}
 
+		// **********************************************************************************************************
+		// ----------------------------------------------------------------------------------------------------------
+		// **********************************************************************************************************
+
 		@Override
 		protected void onPostExecute(List<Address> result) {
 			Control.onStopAsync(parentActivity);
@@ -213,6 +276,10 @@ public class Control {
 		}
 
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	/**
 	 * 
@@ -265,6 +332,10 @@ public class Control {
 
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
 	 * 
 	 * @author David Get the user's current Location as a Location object
@@ -316,6 +387,10 @@ public class Control {
 
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
 	 * 
 	 * @author David Async retrieve a list of resteraunts, return an intent
@@ -324,11 +399,12 @@ public class Control {
 
 		private RestListAct[] activityList;
 		private String[] opt;
+
 		public getList(RestListAct... params) {
 			activityList = params;
 		}
-		
-		public getList(String[] options, RestListAct... params){
+
+		public getList(String[] options, RestListAct... params) {
 			opt = options;
 			activityList = params;
 		}
@@ -342,15 +418,16 @@ public class Control {
 		@Override
 		protected ArrayList<Place> doInBackground(String... params) {
 			try {
-				
+
 				ArrayList<Place> currentPlaces;
-				
-				//If nothing passed, then get address, else more places
-				if(params[0]!="/0"){
+
+				// If nothing passed, then get address, else more places
+				if (params[0] != "/0") {
 					List<Address> value = getAddress.getLocation(params[0]);
-				currentPlaces = places.getPlaces("" + value.get(0).getLatitude(), ""
-						+ value.get(0).getLongitude());
-				}else{
+					currentPlaces = places.getPlaces(""
+							+ value.get(0).getLatitude(), ""
+							+ value.get(0).getLongitude());
+				} else {
 					currentPlaces = places.getMorePlaces();
 				}
 				
@@ -375,39 +452,43 @@ public class Control {
 
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	
 	/**
-	 * @author David Greenberg
-	 * @Description: Class for recieving more details for a particular restraunt
+	 * 
+	 * @author David Greenberg Class to Asyncronously get the a list of
+	 *         Locations from a string address
 	 */
-	private class getDetails extends AsyncTask<Place, Void, Place> {
+	private class getAddressLocation extends
+			AsyncTask<String, Void, List<Address>> {
 
-		private RestListAct[] activityList;
+		AddressList[] callbackList;
 
-		public getDetails(RestListAct... params) {
-			activityList = params;
+		public getAddressLocation(AddressList... list) {
+			callbackList = list;
 		}
 
 		@Override
-		protected void onPreExecute() {
-			onStartAsync(parentActivity);
-			super.onPreExecute();
-		}
-
-		@Override
-		protected Place doInBackground(Place... params) {
-			if (params.length != 0) {
-				places.getDetails(params[0]);
-			} 
-			return params[0];
-		}
-
-		@Override
-		protected void onPostExecute(Place temp) {
-			// Log.d("test",temp.get(0).toString());
-			for (int i = 0; i < activityList.length; i++) {
-				this.activityList[i].execute(temp);
+		protected List<Address> doInBackground(String... params) {
+			// Get Address from list
+			try {
+				return getAddress.getLocation(params[0]);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			onStopAsync(parentActivity);
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(List<Address> list) {
+			// Go through all and execute
+			for (int i = 0; i < callbackList.length; i++) {
+				callbackList[i].execute(list);
+			}
 		}
 
 	}
@@ -424,11 +505,19 @@ public class Control {
 				.setVisibility(View.VISIBLE);
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	// End the spinner progress bar
 	public static void onStopAsync(Activity parentActivity) {
 		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
 				.setVisibility(View.GONE);
 	}
+
+	// **************************
+	// Public Interfaces
+	// **************************
 
 	/**
 	 * 
@@ -440,6 +529,19 @@ public class Control {
 		public void execute(ArrayList<Place> places);
 
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	public interface AddressList {
+		public void execute(List<Address> list);
+
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	/*
 	 * Check to see if the current device has google play services installed
@@ -471,4 +573,46 @@ public class Control {
 		return false;
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	public static boolean checkForGPS(Context context) {
+		return context.getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_LOCATION_GPS);
+	}
+	
+	// **************************
+	// Getters And Setters
+	// **************************
+
+	/**
+	 * Get the current context
+	 * @return The current parent context
+	 */
+	public Activity getContext(){
+		return this.parentActivity;
+	}
+	
+	/**
+	 * Set the context to a new context
+	 * @param context The current Context
+	 */
+	public void setContext(Activity context){
+		this.parentActivity = context;
+		if(gMaps==null){
+			gMaps = new MapsAPI(context); 
+		}else{
+			gMaps.setContext(context);
+		}
+		
+		if(getAddress==null){
+			getAddress = new LocationToAddress(context); 
+		}else{
+			getAddress.setContext(context);
+		}
+		
+		
+	}
+	
 }
