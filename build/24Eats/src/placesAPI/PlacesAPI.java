@@ -51,18 +51,23 @@ public class PlacesAPI{
 	/**
 	 * Get the first twenty places that match the search criteria.
 	 * 
-	 * @param latitude		The latitude of the location to search
-	 * @param longitude		The longitude of the location to search
-	 * @return				The first twenty Place objects matching the request
+	 * @param options	[0] => latitude
+	 * 					[1] => longitude
+	 * 					[2] => radius or null for rank by distance 
+	 * @return			The first twenty Place objects matching the request or null if no places found
 	 */
-	public ArrayList<Place> getPlaces(String latitude, String longitude)
+	public ArrayList<Place> getPlaces(String[] options)
 	{
-
+		this.options = options;		//save options if we want to modify them
+		
+		//build request
 		StringBuilder urlSB = new StringBuilder(PLACES_BASE+NEARBY);
 		urlSB.append("key="+API_KEY);
-		urlSB.append("&location="+latitude+","+longitude);
-		urlSB.append("&rankby=distance");
-		//urlSB.append("&radius=16000");
+		urlSB.append("&location="+options[0]+","+options[1]);
+		if(options[2] == null)
+			urlSB.append("&rankby=distance");
+		else
+			urlSB.append("&radius="+options[2]);
 		urlSB.append("&types=bar|cafe|restaurant");
 		urlSB.append("&opennow=true");
 
@@ -77,18 +82,27 @@ public class PlacesAPI{
 		
 		preloadPlaces();
 		
-		return this.places;
+		if(this.places.isEmpty())
+			return null;
+		else
+			return this.places;
 	}
 	
 	/**
 	 * Get the next 20 places from the previous search. If the previous 
-	 *   search did not have more results to return, this will send back 
-	 *   an empty ArrayList.
+	 *   search did not have more results to return, this will return null.
 	 *   
-	 * @return Next twenty Places.
+	 * There must be a delay between this search and the last search request
+	 * 
+	 * Only up to 60 places may be returned via this method.
+	 *   
+	 * @return Next twenty Places or null if no places returned.
 	 */
 	public ArrayList<Place> getMorePlaces()
 	{
+		if(morePlacesToken == "")		//there is no more places
+			return null;
+		
 		ArrayList<Place> updated = new ArrayList<Place>();
 		StringBuilder urlSB = new StringBuilder(PLACES_BASE+NEARBY);
 		urlSB.append("key="+API_KEY);
@@ -105,7 +119,10 @@ public class PlacesAPI{
 			e.printStackTrace();
 		}
 		
-		return updated;
+		if(updated.isEmpty())
+			return null;
+		else
+			return updated;
 	}
 	
 	/**
