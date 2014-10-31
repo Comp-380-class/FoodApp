@@ -14,10 +14,8 @@ import com.google.android.gms.location.LocationServices;
 
 import constants.ConstantValues;
 
-public class GeoLoc
-		implements
-		OnConnectionFailedListener,
-		LocationListener, com.google.android.gms.location.LocationListener, ConnectionCallbacks {
+public class GeoLoc implements OnConnectionFailedListener, LocationListener,
+		com.google.android.gms.location.LocationListener, ConnectionCallbacks {
 
 	// *****************************
 	// * Private Variables
@@ -26,9 +24,9 @@ public class GeoLoc
 	private GoogleApiClient locClient;
 	private LocationRequest locReq;
 	private Location curLoc;
-	//********************************
+	// ********************************
 	// Final Variables
-	//********************************
+	// ********************************
 	private final long REQUEST_UPDATE_TIME = 5000;
 	private final float REQUEST_MIN_DISTANCE = 0;
 
@@ -44,9 +42,12 @@ public class GeoLoc
 	 */
 	public GeoLoc(Activity activity) {
 		this.parentActivity = activity;
-		//this.locClient = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-		locClient = new GoogleApiClient.Builder(activity).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
-		
+		// this.locClient = (LocationManager)
+		// activity.getSystemService(Context.LOCATION_SERVICE);
+		locClient = new GoogleApiClient.Builder(activity)
+				.addApi(LocationServices.API).addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this).build();
+
 	}
 
 	// *****************************
@@ -58,35 +59,66 @@ public class GeoLoc
 		curLoc = location;
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	@Override
 	public void onProviderEnabled(String provider) {
 		// TODO Auto-generated method stub
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	@Override
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
 	@Override
 	public void onConnectionFailed(ConnectionResult arg0) {
 		// TODO Auto-generated method stub
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	@Override
 	public void onConnected(Bundle arg0) {
 		// Create request for location
 		this.locReq = LocationRequest.create();
-		locReq.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(REQUEST_UPDATE_TIME).setFastestInterval(REQUEST_UPDATE_TIME);
-		LocationServices.FusedLocationApi.requestLocationUpdates(this.locClient, this.locReq, this);
+		locReq.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+				.setInterval(REQUEST_UPDATE_TIME)
+				.setFastestInterval(REQUEST_UPDATE_TIME);
+		LocationServices.FusedLocationApi.requestLocationUpdates(
+				this.locClient, this.locReq, this);
 	}
 
-	
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	@Override
+	public void onConnectionSuspended(int arg0) {
+		// TODO Auto-generated method stub
+
+	}
 
 	// *****************************
 	// * New Functions
@@ -95,35 +127,34 @@ public class GeoLoc
 	/**
 	 * Connect to the gps system
 	 */
-	public void connect(){
-		//Connect to the GPS services
+	public void connect() {
+		// Connect to the GPS services
 		this.locClient.blockingConnect();
 	}
-	
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
 	 * Get the currentLocation from the client
+	 * 
 	 * @return The current location, if it exists, null otherwise
 	 */
-	public Location getCurrentLoc(){
+	public Location getCurrentLoc() {
 		return this.curLoc;
 	}
-	
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
 	 * Disconnect from the gps system
 	 */
-	public void disconnect(){
+	public void disconnect() {
 		this.curLoc = null;
 		this.locClient.disconnect();
 	}
-
-	@Override
-	public void onConnectionSuspended(int arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
-	
 
 }
