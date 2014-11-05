@@ -1,5 +1,7 @@
 package placesAPI;
 
+import android.location.Location;
+
 /**
  * Holds basic and detailed information about a particular place, as well as 
  *   methods to obtain information like time until closing.
@@ -14,6 +16,7 @@ public class Place {
 	private Double lon;			//longitude of it's location
 	private String placeid;		//Google Places id
 	private String icon;		//url of icon image
+	private float dist;			//distance from given location
 	
 	private boolean detailed;	//has detailed information been added
 	
@@ -62,6 +65,20 @@ public class Place {
 		this.detailed = true;
 	}
 	
+	public void setDistance(String currLatitude, String currLongitude)
+	{
+		double currLat = Double.parseDouble(currLatitude);
+		double currLon = Double.parseDouble(currLongitude);
+		Location currLoc = new Location("");
+		Location loc = new Location("");
+		currLoc.setLatitude(currLat);
+		currLoc.setLongitude(currLon);
+		loc.setLatitude(lat);
+		loc.setLongitude(lon);
+		
+		dist = loc.distanceTo(currLoc);
+	}
+	
 	/**
 	 * Get the time until closing in a simple string format.
 	 * 	If more than hour, in half hour increments : 1.5h
@@ -96,6 +113,13 @@ public class Place {
 		return this.detailed;
 	}
 
+	/**
+	 * @return the distance from current searched location
+	 */
+	public float getDistance() {
+		return this.dist;
+	}
+	
 	/**
 	 * @return the URL of an icon image
 	 */

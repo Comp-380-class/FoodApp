@@ -64,10 +64,10 @@ public class PlacesAPI{
 		StringBuilder urlSB = new StringBuilder(PLACES_BASE+NEARBY);
 		urlSB.append("key="+API_KEY);
 		urlSB.append("&location="+options[0]+","+options[1]);
-		if(options[2] == null)
-			urlSB.append("&rankby=distance");
-		else
+		if(options.length >=2 && options[2] != null)
 			urlSB.append("&radius="+options[2]);
+		else
+			urlSB.append("&rankby=distance");
 		urlSB.append("&types=bar|cafe|restaurant");
 		urlSB.append("&opennow=true");
 
@@ -262,6 +262,8 @@ public class PlacesAPI{
 				price = 0;
 			
 			place.addDetails(address, phone, website, rating, price);
+			
+			place.setDistance(options[0],options[1]);
 			
 			// TODO Parse hours
 			JSONObject open = details.getJSONObject("opening_hours");
