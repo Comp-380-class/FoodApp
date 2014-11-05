@@ -14,16 +14,19 @@ import placesAPI.PlacesAPI;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import comp.main.twentyfoureats.ListView;
 import comp.main.twentyfoureats.R;
 
 /**
@@ -35,11 +38,38 @@ import comp.main.twentyfoureats.R;
  * @version 0.0.3
  */
 public class Control {
-	private MapsAPI gMaps;
-	private LocationToAddress getAddress;
-	private Activity parentActivity;
-	private PlacesAPI places;
+
+	// ********************************
+	// Final Variables
+	// ********************************
 	public final static boolean DEBUG = true;
+
+	public final static String GET_LIST_AT_STARTUP = "RunAtStartUp";
+	public static final String BLACK_LIST = "BlackList";
+	public static final String DEFAULT_DISTANCE = "DefaultDistance";
+	public static final String PRESET_CURRENT_LOC = "CurrentLoc";
+	public static final String REST_LIST = "REST_LIST";
+	
+	private static final String[] BOOLEAN_LIST_VALUES = { GET_LIST_AT_STARTUP,
+			PRESET_CURRENT_LOC };
+	private static final String BOOLEAN_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC";
+	private static final String[] STRING_LIST_VALUES = { DEFAULT_DISTANCE };
+	private static final String STRING_LIST = "DEFAULT_DISTANCE";
+
+	
+
+	// ********************************
+	// Private Variables
+	// ********************************
+	private MapsAPI gMaps; // Maps objects
+	private LocationToAddress getAddress; // Address translation object
+	private Activity parentActivity; // Reference to the currently displayed
+										// activity
+	private PlacesAPI places; // Places api
+
+	private SharedPreferences settings;
+	private SharedPreferences.Editor settingsEditor;
+
 	// ********************************
 	// Constructors
 	// ********************************
@@ -50,7 +80,7 @@ public class Control {
 	public Control() {
 		places = new PlacesAPI();
 	}
-	
+
 	/**
 	 * Primary constructor for the control object. Creates a new Control
 	 * containing information about the activity.
@@ -69,11 +99,11 @@ public class Control {
 	// Functions
 	// ********************************
 
-	
-
 	/**
 	 * Get the user's address based on their gps coordinates
 	 * 
+	 * @param callback
+	 *            Function to be called at completion
 	 * @return The user's current location as a string
 	 */
 	public void getCurrentAddress(AddressCallback... callback) {
@@ -89,6 +119,8 @@ public class Control {
 
 	/*
 	 * Get a user's current location as a Location object.
+	 * 
+	 * @param callback Function to be called at completion
 	 * 
 	 * @return The user's current location as a location object
 	 */
@@ -109,6 +141,9 @@ public class Control {
 	 * 
 	 * @param Address
 	 *            A list of possible Location addresses
+	 * @param list
+	 *            A list of functions which will be called once the data has
+	 *            been retrieved
 	 */
 	public void getCurrentLocation(String address, AddressList... list) {
 		(new getAddressLocation(list)).execute(address);
@@ -126,11 +161,15 @@ public class Control {
 	 *            The context in which the object is being accessed from
 	 * @param currentLocation
 	 *            The current location of the user as a string
+	 * @param callback
+	 *            Function which will be called at completion
+	 * @param options
+	 *            List of options which will be passed to the request
 	 */
 	public void getListOfResteraunts(Context context, String currentLocation,
 			RestListAct callback, String... options) {
 		// Add functions to get location based on given values
-		(new getList(callback)).execute(currentLocation);
+		(new getList(options, callback)).execute(currentLocation);
 	}
 
 	// **********************************************************************************************************
@@ -192,6 +231,67 @@ public class Control {
 	public void suspend(Activity acitivty) {
 		// Add a disconnect for the location provider
 
+	}
+
+	// ********************************
+	// Switch Activity Functions
+	// ********************************
+
+	/**
+	 * Switch from a current activity in the application to the settings
+	 * activity
+	 */
+	public void goToSettings() {
+		Intent switchToSettings = new Intent(this.parentActivity,
+				ListView.class);
+		this.parentActivity.startActivity(switchToSettings);
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+	
+	/**
+	 * Change the current view to the Restaurant view
+	 * @param currentList
+	 */
+	public void goToList(List<Place> currentList){
+		this.parentActivity.startActivity((new Intent(this.parentActivity,ListView.class)).putExtra(Control.REST_LIST,currentList.toArray()));		
+		
+	}
+	
+
+	// ********************************
+	// Settings Functions
+	// ********************************
+
+	/**
+	 * Write current settings to the system, given the list order
+	 * {@value #BOOLEAN_LIST} for the booleans and {@value #STRING_LIST} for the
+	 * strings.
+	 * 
+	 * @param booleanOptions
+	 * @param stringOptions
+	 */
+	public void writeSettings(Boolean[] booleanOptions, String[] stringOptions) {
+		// Number of boolean settings needs to be greater than a given
+		if (booleanOptions.length >= Control.BOOLEAN_LIST_VALUES.length - 1) {
+			for (int i = 0; i < Control.BOOLEAN_LIST_VALUES.length; i++) {
+				this.settingsEditor.putBoolean(Control.BOOLEAN_LIST_VALUES[i],
+						booleanOptions[i]);
+			}
+		}
+
+		// Number of settings need to be greater than or equal to the number
+		if (stringOptions.length >= Control.STRING_LIST_VALUES.length - 1) {
+			for (int i = 0; i < Control.STRING_LIST_VALUES.length; i++) {
+				this.settingsEditor.putString(Control.STRING_LIST_VALUES[i],
+						stringOptions[i]);
+			}
+		}
+
+		// Push the settings to the setting keep.
+		this.settingsEditor.commit();
 	}
 
 	// ********************************************
@@ -376,13 +476,14 @@ public class Control {
 		@Override
 		protected void onPostExecute(Location result) {
 
-			onStopAsync(parentActivity);
+			
 			// Execute all the callbacks
 			for (int i = 0; i < this.callback.length; i++) {
 				this.callback[i].execute(result);
 			}
 			// Disconnect from the gps
 			currentMapsAPI.disconnect();
+			onStopAsync(parentActivity);
 		}
 
 	}
@@ -423,15 +524,15 @@ public class Control {
 
 				// If nothing passed, then get address, else more places
 				if (params[0] != "/0") {
+
 					List<Address> value = getAddress.getLocation(params[0]);
-					currentPlaces = places.getPlaces(""
-							+ value.get(0).getLatitude(), ""
-							+ value.get(0).getLongitude());
+					opt[0] = "" + value.get(0).getLatitude();
+					opt[1] = "" + value.get(0).getLongitude();
+					currentPlaces = places.getPlaces(opt);
 				} else {
 					currentPlaces = places.getMorePlaces();
 				}
-				
-				
+
 				return currentPlaces;
 
 			} catch (Exception e) {
@@ -456,7 +557,6 @@ public class Control {
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
 
-	
 	/**
 	 * 
 	 * @author David Greenberg Class to Asyncronously get the a list of
@@ -494,34 +594,12 @@ public class Control {
 	}
 
 	// **************************
-	// Static Functions
-	// **************************
-
-	/*
-	 * Start the spinner progress bar
-	 */
-	public static void onStartAsync(Activity parentActivity) {
-		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
-				.setVisibility(View.VISIBLE);
-	}
-
-	// **********************************************************************************************************
-	// ----------------------------------------------------------------------------------------------------------
-	// **********************************************************************************************************
-
-	// End the spinner progress bar
-	public static void onStopAsync(Activity parentActivity) {
-		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
-				.setVisibility(View.GONE);
-	}
-
-	// **************************
 	// Public Interfaces
 	// **************************
 
 	/**
 	 * 
-	 * @author David Interface to get List of Resteraunts
+	 * @author David Interface to utilize a list of restaurants
 	 */
 	public interface RestListAct {
 		public void execute(Place places);
@@ -534,9 +612,52 @@ public class Control {
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
 
+	/**
+	 * 
+	 * @author David Greenberg version 1.0.0 Interface containing the execute
+	 *         function
+	 */
 	public interface AddressList {
 		public void execute(List<Address> list);
+	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	public static boolean checkForGPS(Context context) {
+		return context.getPackageManager().hasSystemFeature(
+				PackageManager.FEATURE_LOCATION_GPS);
+	}
+
+	// **************************
+	// Static Functions
+	// **************************
+
+	/**
+	 * Start the spinner spinning
+	 * 
+	 * @param parentActivity
+	 *            The activity on which the bar is to be displayed
+	 */
+	public static void onStartAsync(Activity parentActivity) {
+		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
+				.setVisibility(View.VISIBLE);
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	/**
+	 * Stop the spinner from spinning
+	 * 
+	 * @param parentActivity
+	 *            The activity on which the bar is displayed
+	 */
+	public static void onStopAsync(Activity parentActivity) {
+		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
+				.setVisibility(View.GONE);
 	}
 
 	// **********************************************************************************************************
@@ -573,46 +694,95 @@ public class Control {
 		return false;
 	}
 
-	// **********************************************************************************************************
-	// ----------------------------------------------------------------------------------------------------------
-	// **********************************************************************************************************
-
-	public static boolean checkForGPS(Context context) {
-		return context.getPackageManager().hasSystemFeature(
-				PackageManager.FEATURE_LOCATION_GPS);
-	}
-	
 	// **************************
 	// Getters And Setters
 	// **************************
 
 	/**
 	 * Get the current context
+	 * 
 	 * @return The current parent context
 	 */
-	public Activity getContext(){
+	public Activity getContext() {
 		return this.parentActivity;
 	}
-	
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
 	 * Set the context to a new context
-	 * @param context The current Context
+	 * 
+	 * @param context
+	 *            The current Context
 	 */
-	public void setContext(Activity context){
+	public Control setContext(Activity context) {
 		this.parentActivity = context;
-		if(gMaps==null){
-			gMaps = new MapsAPI(context); 
-		}else{
+		// Create the MapsAPI if needed
+		if (gMaps == null) {
+			gMaps = new MapsAPI(context);
+		} else {
 			gMaps.setContext(context);
 		}
-		
-		if(getAddress==null){
-			getAddress = new LocationToAddress(context); 
-		}else{
+
+		// Create the LocationToAddresss if needed
+		if (getAddress == null) {
+			getAddress = new LocationToAddress(context);
+		} else {
 			getAddress.setContext(context);
 		}
-		
-		
+
+		// Get the settings if not loaded
+		if (settings == null) {
+			settings = parentActivity.getPreferences(Activity.MODE_PRIVATE);
+			// Create the settings editor if it does not exist
+			if (this.settingsEditor == null) {
+				this.settingsEditor = settings.edit();
+			}
+		}
+		return this;
+
 	}
-	
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	/**
+	 * Get a boolean setting from the system
+	 * 
+	 * @param key
+	 *            The setting to recieve. Must be one of these from the list
+	 *            {@value #BOOLEAN_LIST}
+	 * @return The value of the setting if it exists, null otherwise
+	 */
+	public Boolean getBooleanSetting(String key) {
+		if (settings != null) {
+			return settings.getBoolean(key, (Boolean) null);
+		} else {
+			return null;
+		}
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	/**
+	 * Get a String
+	 * 
+	 * @param key
+	 *            The setting to recieve. Must be one of these from the list
+	 *            {@value #STRING_LIST}
+	 * @return The value of the setting if it exists, null otherwise
+	 */
+	public String getStringSetting(String key) {
+		if (settings != null) {
+			return settings.getString(key, null);
+		} else {
+			return null;
+		}
+	}
+
 }
