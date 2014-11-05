@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/root_layout" 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent" 
+	android:background="@drawable/backgradient"
+	android:textColor="#FF03007b"
+	android:orientation="vertical">
+	
+	<RelativeLayout android:id="@+id/btnPanel"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="45dp"
+		android:background="@drawable/gradient"
+		android:padding="10dp">
+		<TextView android:id="@+id/name" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/name"
+				android:paddingRight="10dp"
+				android:textColor="#FF03007b" 
+				android:textSize="17sp"/>
+		<TextView android:id="@+id/open" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_alignParentRight="true"
+				android:text="@string/open" />
+	</RelativeLayout>
+	
+	<RelativeLayout android:id="@+id/panel"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/details_gradient"
+		android:layout_below="@+id/btnPanel"
+		android:padding="10dp">
+		<TextView android:id="@+id/nameDrawer" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/name"
+				android:paddingRight="10dp"
+				android:textColor="#FF03007b"
+				android:textSize="17sp" />
+		<TextView android:id="@+id/hours" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_below="@+id/nameDrawer"
+				android:text="@string/hours" />
+		<TextView android:id="@+id/tilClose" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_toLeftOf="@+id/timeLeft"
+				android:layout_alignBaseline="@+id/timeLeft"
+				android:layout_marginRight="3dp"
+				android:textColor="#FF999999"
+				android:textSize="12sp"
+				android:text="@string/til_close" />
+		<TextView android:id="@+id/timeLeft" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_alignParentRight="true"
+				android:layout_below="@+id/nameDrawer"
+				android:textStyle="italic"
+				android:textColor="#FF1259b4"
+				android:text="@string/time_left" />
+		<TextView android:id="@+id/address" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_below="@+id/hours"
+				android:text="@string/address" />
+		<TextView android:id="@+id/phone" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_below="@+id/address"
+				android:text="@string/phone" />
+		<TextView android:id="@+id/rating" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_alignParentRight="true"
+				android:layout_below="@+id/timeLeft" 
+				android:text="@string/rating" />
+		<TextView android:id="@+id/price" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_below="@+id/rating"
+				android:layout_alignParentRight="true"
+				android:text="@string/price" />
+		<TextView android:id="@+id/website" android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColorLink="#FF1259b4"
+				android:textColor="#FF1259b4" 
+				android:layout_below="@+id/phone"
+				android:text="@string/website" />
+	</RelativeLayout>
+	
+
+</RelativeLayout>

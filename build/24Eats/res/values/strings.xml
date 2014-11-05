@@ -5,5 +5,23 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_list_view">ListView</string>
+    <string name="action_home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="name">1. The Nice Restaurant</string>
+    <string name="name2">2. The Next Restaurant</string>
+    <string name="name3">3. The Burger Restaurant</string>
+    <string name="open">open</string>
+    <string name="hours">9:30am - 9:30pm</string>
+    <string name="time_left">30m</string>
+    <string name="til_close">closes </string>
+    <string name="address">356 York Blvd, Los Angeles, 90042</string>
+    <string name="phone">323.467.9487</string>
+    <string name="rating">****</string>
+    <string name="price">$$</string>
+    <string name="website">www.restaurant.com</string>
+    <string name="description">Beautiful large royal purple flowers adorn 
+        attractive satiny green leaves that turn orange/red in cold weather. 
+        Grows to up to 18 feet, or prune annually to shorten.</string>
+    <string name="action_descript">banner</string>
 
 </resources>

@@ -40,10 +40,10 @@ public class Form extends ActionBarActivity {
     
     //Switch between current activity and new activity with a given value
     public void switchActivityWithIntent(View test){
-    	CharSequence valueToPass = ((TextView)findViewById(R.id.Location)).getText(); 
-    	Intent switchToListAct = new Intent(this,ListView.class);
-    	switchToListAct.setAction("FILL_LIST");
-    	switchToListAct.putExtra(EXTRA_MESSAGE, valueToPass);
+    	//CharSequence valueToPass = ((TextView)findViewById(R.id.Location)).getText(); 
+    	Intent switchToListAct = new Intent(this,ListItems.class);
+    	//switchToListAct.setAction("FILL_LIST");
+    	//switchToListAct.putExtra(EXTRA_MESSAGE, valueToPass);
     	startActivity(switchToListAct);
     }
 }

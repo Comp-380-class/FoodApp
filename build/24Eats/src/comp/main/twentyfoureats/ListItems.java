@@ -20,12 +20,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import java.util.ArrayList;
 //import android.widget.TextView;
 import java.util.List;
 
-public class ListView extends ListActivity {
+public class ListItems extends Activity {
 	//private ItemData datasource;
 	List<ListItem> data;
 	ListView listView;
@@ -33,7 +34,7 @@ public class ListView extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.list_view);
-
+		//listView=(ListView) findViewById(R.id.list);
 		data = new ArrayList<ListItem>();
 		//datasource =  new ItemData();
 		//List<ListItem> items = datasource.findAll("Restaurant",".5m");
@@ -44,6 +45,9 @@ public class ListView extends ListActivity {
 		item = ListItem.getNew("Restaurant3", ".8m");
 		data.add(item);
 		
+/*		ArrayAdapter<ListItem> adapter = new ArrayAdapter<ListItem>(this,
+	              android.R.layout.simple_list_item_1, data);
+		 listView.setAdapter(adapter);*/
 		//refresh();
 		/*item = data.get(1);
 		Log.i("List",item.getName());
@@ -190,6 +194,11 @@ public class ListView extends ListActivity {
 		ArrayAdapter<ListItem> adaptor = new ArrayAdapter<ListItem>(this,android.R.layout.simple_list_item_1,data);
 		setListAdapter(adaptor);		
 	}*/
+
+	private void setListAdapter(ArrayAdapter<ListItem> adapter) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
