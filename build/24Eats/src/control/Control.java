@@ -35,7 +35,7 @@ import comp.main.twentyfoureats.R;
  * 
  * @author David Greenberg
  * 
- * @version 0.0.3
+ * @version 0.0.4
  */
 public class Control {
 
@@ -49,14 +49,10 @@ public class Control {
 	public static final String DEFAULT_DISTANCE = "DefaultDistance";
 	public static final String PRESET_CURRENT_LOC = "CurrentLoc";
 	public static final String REST_LIST = "REST_LIST";
-	
-	private static final String[] BOOLEAN_LIST_VALUES = { GET_LIST_AT_STARTUP,
-			PRESET_CURRENT_LOC };
-	private static final String BOOLEAN_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC";
-	private static final String[] STRING_LIST_VALUES = { DEFAULT_DISTANCE };
-	private static final String STRING_LIST = "DEFAULT_DISTANCE";
-
-	
+	private static final String[] STRING_LIST_VALUES = { DEFAULT_DISTANCE,
+			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC };
+	@SuppressWarnings("unused")
+	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE";
 
 	// ********************************
 	// Private Variables
@@ -185,6 +181,64 @@ public class Control {
 	// **********************************************************************************************************
 
 	/**
+	 * Perform when the application goes to suspend
+	 * 
+	 * @param acitivty
+	 *            The activity which is currently displayed
+	 */
+	public void suspend(Activity acitivty) {
+		// Add a disconnect for the location provider
+
+	}
+
+	// ********************************
+	// Switch Activity Functions
+	// ********************************
+
+	/**
+	 * Switch from a current activity in the application to the settings
+	 * activity
+	 */
+	public void goToSettings() {
+		Intent switchToSettings = new Intent(this.parentActivity,
+				ListView.class);
+		this.parentActivity.startActivity(switchToSettings);
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	/**
+	 * Change the current view to the Restaurant view
+	 * 
+	 * @param currentList
+	 */
+	public void goToList(List<Place> currentList) {
+		this.parentActivity.startActivity((new Intent(this.parentActivity,
+				ListView.class)).putExtra(Control.REST_LIST,
+				currentList.toArray()));
+
+	}
+	
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+	/**
+	 * Call the user's primary browser, open on given url
+	 * @param url The url of the website the browser should open on
+	 */
+	public void openBrowser(String url){
+		Uri uri = Uri.parse(url);
+		 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		 this.parentActivity.startActivity(intent);
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	/**
 	 * Transfer given latitude and longitude to google maps
 	 * 
 	 * @param latitude
@@ -218,49 +272,6 @@ public class Control {
 		}
 	}
 
-	// **********************************************************************************************************
-	// ----------------------------------------------------------------------------------------------------------
-	// **********************************************************************************************************
-
-	/**
-	 * Perform when the application goes to suspend
-	 * 
-	 * @param acitivty
-	 *            The activity which is currently displayed
-	 */
-	public void suspend(Activity acitivty) {
-		// Add a disconnect for the location provider
-
-	}
-
-	// ********************************
-	// Switch Activity Functions
-	// ********************************
-
-	/**
-	 * Switch from a current activity in the application to the settings
-	 * activity
-	 */
-	public void goToSettings() {
-		Intent switchToSettings = new Intent(this.parentActivity,
-				ListView.class);
-		this.parentActivity.startActivity(switchToSettings);
-	}
-
-	// **********************************************************************************************************
-	// ----------------------------------------------------------------------------------------------------------
-	// **********************************************************************************************************
-	
-	/**
-	 * Change the current view to the Restaurant view
-	 * @param currentList
-	 */
-	public void goToList(List<Place> currentList){
-		this.parentActivity.startActivity((new Intent(this.parentActivity,ListView.class)).putExtra(Control.REST_LIST,currentList.toArray()));		
-		
-	}
-	
-
 	// ********************************
 	// Settings Functions
 	// ********************************
@@ -273,14 +284,7 @@ public class Control {
 	 * @param booleanOptions
 	 * @param stringOptions
 	 */
-	public void writeSettings(Boolean[] booleanOptions, String[] stringOptions) {
-		// Number of boolean settings needs to be greater than a given
-		if (booleanOptions.length >= Control.BOOLEAN_LIST_VALUES.length - 1) {
-			for (int i = 0; i < Control.BOOLEAN_LIST_VALUES.length; i++) {
-				this.settingsEditor.putBoolean(Control.BOOLEAN_LIST_VALUES[i],
-						booleanOptions[i]);
-			}
-		}
+	public void writeSettings(String[] stringOptions) {
 
 		// Number of settings need to be greater than or equal to the number
 		if (stringOptions.length >= Control.STRING_LIST_VALUES.length - 1) {
@@ -476,7 +480,6 @@ public class Control {
 		@Override
 		protected void onPostExecute(Location result) {
 
-			
 			// Execute all the callbacks
 			for (int i = 0; i < this.callback.length; i++) {
 				this.callback[i].execute(result);
@@ -759,7 +762,7 @@ public class Control {
 	 */
 	public Boolean getBooleanSetting(String key) {
 		if (settings != null) {
-			return settings.getBoolean(key, (Boolean) null);
+			return settings.getBoolean(key, false);
 		} else {
 			return null;
 		}

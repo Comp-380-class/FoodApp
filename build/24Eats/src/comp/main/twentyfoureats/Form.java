@@ -28,26 +28,31 @@ public class Form extends ActionBarActivity {
 	private Control mainControl;
 	private Button getDirections;
 	public final Activity current = this;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_form);
 
 		// Create the main control object
-		((GlobalApplication)getApplication()).mainControl.setContext(this);
-		this.mainControl = ((GlobalApplication)getApplication()).mainControl;
+		((GlobalApplication) getApplication()).mainControl.setContext(this);
+		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
 		// Create the getDirections button
 		this.getDirections = (Button) findViewById(R.id.UseButton);
+		Button Test = (Button) findViewById(R.id.TestButton);
 		// Set on click
 		this.getDirections.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(final View v) {
-				Location loc;
 				// Check for google play services
 				if (!Control.checkForGooglePlayServices(current)) {
-
+					Toast.makeText(mainControl.getContext(),
+							"" + mainControl.getStringSetting("work"),
+							Toast.LENGTH_LONG).show();
+					Boolean[] show = { true, true };
+					String[] dance = { "hello", "hola" , "fail" };
+					mainControl.writeSettings(dance);
 				} else {
 					try {
 						// Call to get the location
@@ -81,35 +86,33 @@ public class Form extends ActionBarActivity {
 						mainControl.getListOfResteraunts(current,
 								"Los Angeles", new RestListAct() {
 
-									@Override
 									public void execute(ArrayList<Place> temp) {
 										((TextView) current
 												.findViewById(R.id.Location))
 												.setText("" + temp.get(0));
-										mainControl.getMoreResteraunts(current,
-												new RestListAct() {
-
-													@Override
-													public void execute(
-															Place places) {
-														// TODO Auto-generated
-														// method stub
-
-													}
-
-													@Override
-													public void execute(
-															ArrayList<Place> temp) {
-
-														for (int i = 0; i < 1500000000; i++)
-															;
-														((TextView) current
-																.findViewById(R.id.Location)).setText(""
-																+ temp.get(0));
-
-													}
-
-												});
+										/*
+										 * mainControl.getMoreResteraunts(current
+										 * , new RestListAct() {
+										 * 
+										 * @Override public void execute( Place
+										 * places) { // TODO Auto-generated //
+										 * method stub
+										 * 
+										 * }
+										 * 
+										 * @Override public void execute(
+										 * ArrayList<Place> temp) {
+										 * 
+										 * for (int i = 0; i < 1500000000; i++)
+										 * ; ((TextView) current
+										 * .findViewById(R.
+										 * id.Location)).setText("" +
+										 * temp.get(0));
+										 * 
+										 * }
+										 * 
+										 * });
+										 */
 									}
 
 									@Override
@@ -117,7 +120,7 @@ public class Form extends ActionBarActivity {
 										// TODO Auto-generated method stub
 									}
 
-								}, (String[]) null);
+								}, null, null, null);
 
 					} catch (NullPointerException e) {
 						// TODO Auto-generated catch block
@@ -129,6 +132,18 @@ public class Form extends ActionBarActivity {
 				}
 			}
 
+		});
+		
+		Test.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Toast.makeText(mainControl.getContext(),
+						"" + mainControl.getStringSetting(Control.DEFAULT_DISTANCE),
+						Toast.LENGTH_LONG).show();
+			}
+			
 		});
 	}
 
@@ -150,7 +165,7 @@ public class Form extends ActionBarActivity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			return true;
+			mainControl.goToSettings();
 		}
 		return super.onOptionsItemSelected(item);
 	}

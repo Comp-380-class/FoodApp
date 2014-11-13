@@ -325,6 +325,7 @@ int drawable ic_plusone_tall_off_client 0x7f020073
 int drawable powered_by_google_dark 0x7f020074
 int drawable powered_by_google_light 0x7f020075
 int id Location 0x7f08004e
+int id TestButton 0x7f080051
 int id UseButton 0x7f08004f
 int id action_bar 0x7f08002e
 int id action_bar_activity_content 0x7f080027
@@ -337,7 +338,7 @@ int id action_context_bar 0x7f08002f
 int id action_menu_divider 0x7f080028
 int id action_menu_presenter 0x7f080029
 int id action_mode_close_button 0x7f080036
-int id action_settings 0x7f080052
+int id action_settings 0x7f080053
 int id activity_chooser_view_content 0x7f080037
 int id always 0x7f08001e
 int id beginning 0x7f080023
@@ -366,7 +367,7 @@ int id icon 0x7f08003c
 int id ifRoom 0x7f08001d
 int id image 0x7f080039
 int id listMode 0x7f080014
-int id list_button 0x7f080051
+int id list_button 0x7f080052
 int id list_item 0x7f08003b
 int id match_parent 0x7f08000c
 int id middle 0x7f080024
