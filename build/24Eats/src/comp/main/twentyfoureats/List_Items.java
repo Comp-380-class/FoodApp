@@ -13,7 +13,7 @@ import android.widget.ExpandableListView;
 import applic.GlobalApplication;
 import control.Control;
 
-public class ListItems extends ActionBarActivity {
+public class List_Items extends ActionBarActivity {
 	//MySimpleArrayAdapter adapter;
 	boolean visible;
 	//ArrayList<Place> list;

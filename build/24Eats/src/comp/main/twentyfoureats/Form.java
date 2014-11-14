@@ -28,7 +28,7 @@ public class Form extends ActionBarActivity {
 	private Control mainControl;
 	private Button getDirections;
 	public final Activity current = this;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,9 +87,7 @@ public class Form extends ActionBarActivity {
 								"Los Angeles", new RestListAct() {
 
 									public void execute(ArrayList<Place> temp) {
-										((TextView) current
-												.findViewById(R.id.Location))
-												.setText("" + temp.get(0));
+										((GlobalApplication) getApplication()).mainControl.goToList(temp);
 										/*
 										 * mainControl.getMoreResteraunts(current
 										 * , new RestListAct() {

@@ -12,6 +12,7 @@ import java.util.List;
 import placesAPI.Place;
 import placesAPI.PlacesAPI;
 import android.app.Activity;
+import android.app.LauncherActivity.ListItem;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,12 +21,13 @@ import android.location.Address;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import comp.main.twentyfoureats.ListItems;
 import comp.main.twentyfoureats.ListView;
 import comp.main.twentyfoureats.R;
 
@@ -53,7 +55,8 @@ public class Control {
 			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC };
 	@SuppressWarnings("unused")
 	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE";
-
+	private static final String PLACES_LIST = "PLACES_LIST";
+	private List<Place> Rest_Places;// Rest Places
 	// ********************************
 	// Private Variables
 	// ********************************
@@ -216,22 +219,24 @@ public class Control {
 	 */
 	public void goToList(List<Place> currentList) {
 		this.parentActivity.startActivity((new Intent(this.parentActivity,
-				ListView.class)).putExtra(Control.REST_LIST,
-				currentList.toArray()));
+				ListItems.class)));
+		this.Rest_Places = currentList;
 
 	}
-	
+
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
 	/**
 	 * Call the user's primary browser, open on given url
-	 * @param url The url of the website the browser should open on
+	 * 
+	 * @param url
+	 *            The url of the website the browser should open on
 	 */
-	public void openBrowser(String url){
+	public void openBrowser(String url) {
 		Uri uri = Uri.parse(url);
-		 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		 this.parentActivity.startActivity(intent);
+		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		this.parentActivity.startActivity(intent);
 	}
 
 	// **********************************************************************************************************
@@ -788,4 +793,12 @@ public class Control {
 		}
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	public List<Place> getRestList(){
+		return this.Rest_Places;
+		
+	}
 }

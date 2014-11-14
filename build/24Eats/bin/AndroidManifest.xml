@@ -48,6 +48,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="comp.main.twentyfoureats.Form" />
         </activity>
+        <activity
+            android:name=".ListItems"
+            android:label="@string/title_activity_list_view"
+            android:parentActivityName=".Form" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="comp.main.twentyfoureats.Form" />
+        </activity>
+        <activity
+            android:name=".List_Items"
+            android:label="@string/title_activity_list__items" >
+        </activity>
     </application>
 
 </manifest>
