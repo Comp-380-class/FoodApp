@@ -589,6 +589,7 @@ public class Control {
 			@Override
 			protected Void doInBackground(Place... params) {
 				places.getDetails(params[0]);
+				Control.onStopAsync(parentActivity);
 				return null;
 			}
 
