@@ -26,7 +26,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     activity = act;
     this.groups = groups;
     inflater = act.getLayoutInflater();
-    
+    this.mainControl = ((GlobalApplication) activity.getApplication()).mainControl;
   }
 
   @Override
@@ -43,9 +43,9 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, final int childPosition,
 		      boolean isLastChild, View convertView, ViewGroup parent) {
     final Place item = (Place) getGroup(groupPosition);
-    this.mainControl = ((GlobalApplication) activity.getApplication()).mainControl;
+    this.mainControl.getDetails(item);
     //Place detail = this.mainControl.getListOfResteraunts(context, currentLocation, callback, options)
-    item.addDetails("1412 Campus Rd, Los Angeles, CA 90042", "323-702-8975", "http://www.url.com", 4, 2);
+    //item.addDetails("1412 Campus Rd, Los Angeles, CA 90042", "323-702-8975", "http://www.url.com", 4, 2);
     TextView text = null;
     if (convertView == null) {
       convertView = inflater.inflate(R.layout.panel_view, null);
