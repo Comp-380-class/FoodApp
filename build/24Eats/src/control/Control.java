@@ -12,7 +12,6 @@ import java.util.List;
 import placesAPI.Place;
 import placesAPI.PlacesAPI;
 import android.app.Activity;
-import android.app.LauncherActivity.ListItem;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,7 +25,6 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-
 import comp.main.twentyfoureats.ListItems;
 import comp.main.twentyfoureats.ListView;
 import comp.main.twentyfoureats.R;
@@ -182,7 +180,10 @@ public class Control {
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
-	
+	/**
+	 * Get the details of the provided places object
+	 * @param places The place whose details are desired
+	 */
 	public void getDetails(Place places){
 		(new GetDetails()).execute(places);
 	}
@@ -223,7 +224,7 @@ public class Control {
 	/**
 	 * Change the current view to the Restaurant view
 	 * 
-	 * @param currentList
+	 * @param currentList The list of places which will be shown
 	 */
 	public void goToList(List<Place> currentList) {
 		this.parentActivity.startActivity((new Intent(this.parentActivity,
@@ -577,7 +578,7 @@ public class Control {
 		 * 
 		 * @author David Async retrieve new places, return nothing
 		 */
-		private class GetDetails extends AsyncTask<Place, Void, Void> {
+		private class GetDetails extends AsyncTask<Place, Void, Place> {
 
 
 			@Override
@@ -587,14 +588,13 @@ public class Control {
 			}
 
 			@Override
-			protected Void doInBackground(Place... params) {
+			protected Place doInBackground(Place... params) {
 				places.getDetails(params[0]);
 				return null;
 			}
 			
 			
-			protected void onPostExecute(Void vell) {
-
+			protected void onPostExecute(Place vell) {
 				Control.onStopAsync(parentActivity);
 			}
 		}

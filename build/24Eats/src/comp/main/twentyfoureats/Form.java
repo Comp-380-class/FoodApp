@@ -88,29 +88,6 @@ public class Form extends ActionBarActivity {
 
 									public void execute(ArrayList<Place> temp) {
 										((GlobalApplication) getApplication()).mainControl.goToList(temp);
-										/*
-										 * mainControl.getMoreResteraunts(current
-										 * , new RestListAct() {
-										 * 
-										 * @Override public void execute( Place
-										 * places) { // TODO Auto-generated //
-										 * method stub
-										 * 
-										 * }
-										 * 
-										 * @Override public void execute(
-										 * ArrayList<Place> temp) {
-										 * 
-										 * for (int i = 0; i < 1500000000; i++)
-										 * ; ((TextView) current
-										 * .findViewById(R.
-										 * id.Location)).setText("" +
-										 * temp.get(0));
-										 * 
-										 * }
-										 * 
-										 * });
-										 */
 									}
 
 									@Override

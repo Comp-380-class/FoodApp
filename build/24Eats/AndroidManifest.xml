@@ -60,6 +60,16 @@
             android:name=".List_Items"
             android:label="@string/title_activity_list__items" >
         </activity>
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+			android:theme="@android:style/Theme.Translucent"
+			android:parentActivityName=".Form" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="comp.main.twentyfoureats.Form" />
+        </activity>
+        
     </application>
 
 </manifest>
