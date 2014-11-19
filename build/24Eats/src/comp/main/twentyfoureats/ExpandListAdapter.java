@@ -8,17 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-
+import applic.GlobalApplication;
+import control.Control;
+/**
+ * 
+ * @author Mary Verplank - Formats each listing to be displayed 
+ * on a main ListView
+ */
 public class ExpandListAdapter extends BaseExpandableListAdapter {
 
   private final SparseArray<Place> groups;
   public LayoutInflater inflater;
   public Activity activity;
+  private Control mainControl;
 
   public ExpandListAdapter(Activity act, SparseArray<Place> groups) {
     activity = act;
     this.groups = groups;
     inflater = act.getLayoutInflater();
+    
   }
 
   @Override
@@ -35,13 +43,14 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, final int childPosition,
 		      boolean isLastChild, View convertView, ViewGroup parent) {
     final Place item = (Place) getGroup(groupPosition);
+    this.mainControl = ((GlobalApplication) activity.getApplication()).mainControl;
+    //Place detail = this.mainControl.getListOfResteraunts(context, currentLocation, callback, options)
     item.addDetails("1412 Campus Rd, Los Angeles, CA 90042", "323-702-8975", "http://www.url.com", 4, 2);
     TextView text = null;
     if (convertView == null) {
       convertView = inflater.inflate(R.layout.panel_view, null);
     }
-/*    text = (TextView) convertView.findViewById(R.id.nameDrawer);
-    text.setText(item.getName());*/
+
     text = (TextView) convertView.findViewById(R.id.hours);
     text.setText(item.timeUntilClose());
     text = (TextView) convertView.findViewById(R.id.tilClose);
@@ -98,7 +107,6 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     Place group = (Place) getGroup(groupPosition);
     TextView text = (TextView) convertView.findViewById(R.id.name);
     text.setText(group.getName());
-    //((TextView) convertView).setChecked(isExpanded);
     return convertView;
   }
 

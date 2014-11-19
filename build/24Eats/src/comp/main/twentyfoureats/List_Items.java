@@ -27,7 +27,7 @@ public class List_Items extends ActionBarActivity {
 		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
         
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-       
+        listView.setIndicatorBounds(10, 5);
         List<Place> temp = this.mainControl.getRestList();
         
         

@@ -6,31 +6,46 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/form_gradient"
     tools:context="comp.main.twentyfoureats.Form" >
-
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_centerInParent="true"
+    android:layout_marginTop="24dp"
+    android:id="@+id/LocationBar" >
     <EditText
         android:id="@+id/Location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="39dp"
-        android:ems="10" >
+        android:background="#33ffffff"
+        android:textColor ="#ffff2a00"
+        android:text="Input Address"
+        android:padding="8dp"
+        android:ems="12" >
 
         <requestFocus />
     </EditText>
+    
+    <Button
+        android:id="@+id/SearchButton"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:background="@drawable/icon_search"
+        android:layout_toRightOf="@+id/Location" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/UseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/Location"
-        android:layout_marginTop="74dp"
+        android:layout_width="175dp"
+        android:layout_height="159dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/LocationBar"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/current_location"
         android:onClick="switchActivityWithIntent"
-        android:text="Button" />
+         />
 
     
     <ProgressBar
@@ -47,10 +62,11 @@
         android:id="@+id/TestButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/Location"
+        android:layout_alignLeft="@+id/LocationBar"
         android:layout_below="@+id/UseButton"
         android:layout_marginLeft="58dp"
         android:layout_marginTop="61dp"
+        
         android:text="Button" />
 
 </RelativeLayout>
