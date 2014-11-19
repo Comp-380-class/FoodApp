@@ -582,18 +582,21 @@ public class Control {
 
 			@Override
 			protected void onPreExecute() {
-				onStartAsync(parentActivity);
+				Control.onStartAsync(parentActivity);
 				super.onPreExecute();
 			}
 
 			@Override
 			protected Void doInBackground(Place... params) {
 				places.getDetails(params[0]);
-				Control.onStopAsync(parentActivity);
 				return null;
 			}
+			
+			
+			protected void onPostExecute(Void vell) {
 
-
+				Control.onStopAsync(parentActivity);
+			}
 		}
 
 	
