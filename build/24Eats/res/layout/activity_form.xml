@@ -2,18 +2,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/form_gradient"
     tools:context="comp.main.twentyfoureats.Form" >
-<RelativeLayout
+
+
+    <Button
+        android:id="@+id/UseButton"
+        android:layout_width="175dp"
+        android:layout_height="159dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/current_location"
+        android:onClick="switchActivityWithIntent"
+         />
+    
+    <TextView 
+        android:id="@+id/or"
+        android:layout_width="24dp"
+    	android:layout_height="24dp"
+        android:text="or"
+        android:layout_below="@+id/UseButton"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:textColor ="#ff000099"
+        android:ems="24"
+        android:textStyle="bold"
+        />
+    
+    <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
     android:layout_centerInParent="true"
-    android:layout_marginTop="24dp"
+    android:layout_below="@+id/or"
+    android:layout_marginTop="16dp"
     android:id="@+id/LocationBar" >
     <EditText
         android:id="@+id/Location"
@@ -29,23 +51,52 @@
     </EditText>
     
     <Button
-        android:id="@+id/SearchButton"
+        android:id="@+id/TestButton"
         android:layout_width="45dp"
         android:layout_height="40dp"
         android:background="@drawable/icon_search"
         android:layout_toRightOf="@+id/Location" />
     </RelativeLayout>
-
-    <Button
-        android:id="@+id/UseButton"
-        android:layout_width="175dp"
-        android:layout_height="159dp"
-        android:layout_centerInParent="true"
+    
+    <TextView 
+        android:id="@+id/within"
+        android:layout_width="150dp"
+    	android:layout_height="wrap_content"
+        android:text="minutes to restaurant"
         android:layout_below="@+id/LocationBar"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/current_location"
-        android:onClick="switchActivityWithIntent"
-         />
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:textColor ="#ffff2a00"
+        android:ems="12"
+        />
+    
+    <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_below="@+id/within"
+    android:layout_marginTop="8dp"
+    android:id="@+id/distanceBar" >
+    <EditText
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#33ffffff"
+        android:textColor ="#ffff2a00"
+        android:text="5"
+        android:padding="8dp"
+        android:ems="12" >
+
+        <requestFocus />
+    </EditText>
+    
+    <Button
+        android:id="@+id/DistButton"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:background="@drawable/icon_search"
+        android:layout_toRightOf="@+id/distance" />
+    </RelativeLayout>
 
     
     <ProgressBar
@@ -53,20 +104,25 @@
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/UseButton"
+        android:layout_below="@+id/LocationBar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
         android:visibility="gone" />
 
-    <Button
-        android:id="@+id/TestButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/LocationBar"
-        android:layout_below="@+id/UseButton"
-        android:layout_marginLeft="58dp"
-        android:layout_marginTop="61dp"
-        
-        android:text="Button" />
-
+	<Button
+        android:id="@+id/OptionsButton"
+        android:layout_width="82dp"
+        android:layout_height="84dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/more_options"
+        android:layout_below="@+id/distanceBar" />
+	
+	<ImageView
+        android:id="@+id/banner"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/banner"
+         />
 </RelativeLayout>
