@@ -1,5 +1,7 @@
 package placesAPI;
 
+import java.util.Calendar;
+
 import android.location.Location;
 
 /**
@@ -26,6 +28,7 @@ public class Place {
 	private String website;		//restaurant website
 	private int rating;			//rating on a 10-point scale
 	private int price;			//price on a 5-point scale
+	private StoreHours[] hours;	//hours of the business
 	
 	/**
 	 * Create a place object with the basic information
@@ -87,7 +90,20 @@ public class Place {
 	 */
 	public String timeUntilClose()
 	{
+		int today=0; //TODO get today
+		int i;
+		int time;
+		int day;
 		
+		//get our current time and day
+		for(i=0; i<hours.length; i++)
+		{
+			if(hours[1].getOpenDay() == today)
+				break;
+		}
+		
+		time = hours[i].getCloseTime();
+		day = hours[i].getCloseDay();
 		return "15m";
 	}
 	
@@ -118,6 +134,14 @@ public class Place {
 	 */
 	public float getDistance() {
 		return this.dist;
+	}
+	
+	/**
+	 * @param the store hours
+	 */
+	public void setHours(StoreHours[] hours)
+	{
+		this.hours = hours;
 	}
 	
 	/**
@@ -182,6 +206,25 @@ public class Place {
 	 */
 	public String getWebsite(){
 		return this.website;
+	}
+	
+	/**
+	 * @return hours statement for the current day
+	 */
+	public String getHours(){
+		Calendar calendar = Calendar.getInstance(); 
+		int i;
+		int today = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+		
+		for(i=0; i < hours.length; i++)
+		{
+			if(hours[i].getOpenDay() == today)
+			{
+				break;		//found it!
+			}
+		}
+		
+		return hours[i].toString();
 	}
 
 }
