@@ -132,19 +132,21 @@ public class PlacesAPI{
 	 */
 	public void getDetails(Place place)
 	{
-		StringBuilder urlSB = new StringBuilder(PLACES_BASE+DETAILS);
-		urlSB.append("key="+API_KEY);
-		urlSB.append("&placeid="+place.getID());
-		
-		URL url;
-		
-		try {
-			url = new URL(urlSB.toString());
+		if(!place.isDetailed()){
+			StringBuilder urlSB = new StringBuilder(PLACES_BASE+DETAILS);
+			urlSB.append("key="+API_KEY);
+			urlSB.append("&placeid="+place.getID());
 			
-			readDetails(getJSON(url), place);
+			URL url;
 			
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			try {
+				url = new URL(urlSB.toString());
+				
+				readDetails(getJSON(url), place);
+				
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -223,9 +225,10 @@ public class PlacesAPI{
 	
 	private void readDetails(StringBuilder json, Place place) 
 	{
-		String address, phone, website;
+		String address, phone, website, openHours, closeHours;
 		float rating;
-		int price;
+		int price, openDay, closeDay;
+		StoreHours[] storeHours;
 		
 		try {
 			JSONObject details = new JSONObject(json.toString());
@@ -266,8 +269,25 @@ public class PlacesAPI{
 			place.setDistance(options[0],options[1]);
 			
 			// TODO Parse hours
-			JSONObject open = details.getJSONObject("opening_hours");
-			JSONArray hours = open.getJSONArray("periods");
+			JSONObject openHrs = details.getJSONObject("opening_hours");
+			JSONArray hours = openHrs.getJSONArray("periods");
+			
+			storeHours = new StoreHours[hours.length()];
+			for(int i=0; i<hours.length(); i++)
+			{
+				JSONObject hour = hours.getJSONObject(i);
+				JSONObject close = hour.getJSONObject("close");
+				JSONObject open = hour.getJSONObject("open");
+				
+				closeHours = close.getString("time");
+				closeDay = close.getInt("day");
+				openHours = open.getString("time");
+				openDay = open.getInt("day");
+				
+				storeHours[i] = new StoreHours(openDay, openHours, closeDay, closeHours);
+			}
+			
+			place.setHours(storeHours);
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
