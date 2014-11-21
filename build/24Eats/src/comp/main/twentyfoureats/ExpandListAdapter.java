@@ -42,19 +42,19 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
   @Override
 	public View getChildView(int groupPosition, final int childPosition,
 		      boolean isLastChild, View convertView, ViewGroup parent) {
-    final Place item = (Place) getGroup(groupPosition);
-    this.mainControl.getDetails(item);
+    
+	  Place item = (Place) getGroup(groupPosition);
     //Place detail = this.mainControl.getListOfResteraunts(context, currentLocation, callback, options)
     //item.addDetails("1412 Campus Rd, Los Angeles, CA 90042", "323-702-8975", "http://www.url.com", 4, 2);
-    TextView text = null;
+	 TextView text = null;
     if (convertView == null) {
       convertView = inflater.inflate(R.layout.panel_view, null);
     }
 
-    text = (TextView) convertView.findViewById(R.id.hours);
-    text.setText(item.timeUntilClose());
-    text = (TextView) convertView.findViewById(R.id.tilClose);
-    text.setText(item.timeUntilClose());
+    //text = (TextView) convertView.findViewById(R.id.hours);
+    //text.setText(item.getHours());
+    //text = (TextView) convertView.findViewById(R.id.tilClose);
+    //text.setText(item.timeUntilClose());
     text = (TextView) convertView.findViewById(R.id.address);
     text.setText(item.getAddress());
     text = (TextView) convertView.findViewById(R.id.phone);
@@ -65,6 +65,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     text.setText(item.getPrice()+"");
     text = (TextView) convertView.findViewById(R.id.website);
     text.setText(item.getWebsite());
+    convertView.invalidate();
     return convertView;
   }
 
@@ -89,7 +90,14 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
   }
 
   @Override
-  public void onGroupExpanded(int groupPosition) {
+  public void onGroupExpanded(int groupPosition) {   
+	  
+	  Place item = (Place) getGroup(groupPosition);
+    
+	if(!item.isDetailed()){
+    	this.mainControl.getDetails(item);
+    }
+    
     super.onGroupExpanded(groupPosition);
   }
 
