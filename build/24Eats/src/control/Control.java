@@ -52,8 +52,11 @@ public class Control {
 	private static final String[] STRING_LIST_VALUES = { DEFAULT_DISTANCE,
 			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC };
 	@SuppressWarnings("unused")
-	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE";
+	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD";
+	private static final String PRELOAD = "PRELOAD";
 	private static final String PLACES_LIST = "PLACES_LIST";
+	public static final String NO_ADDRESS = "NO_ADDRESS";
+	public static final String GET_MORE = "GET_MORE";
 	private List<Place> Rest_Places;// Rest Places
 	// ********************************
 	// Private Variables
@@ -75,7 +78,14 @@ public class Control {
 	 * Default Constructor
 	 */
 	public Control() {
-		places = new PlacesAPI();
+		String preload = this.getStringSetting(PRELOAD);
+		if (DEBUG) {
+			places = new PlacesAPI(0);
+		} else if (preload.compareTo("true")==0) {
+			places = new PlacesAPI(0);
+		} else {
+			places = new PlacesAPI();
+		}
 	}
 
 	/**
@@ -182,9 +192,11 @@ public class Control {
 	// **********************************************************************************************************
 	/**
 	 * Get the details of the provided places object
-	 * @param places The place whose details are desired
+	 * 
+	 * @param places
+	 *            The place whose details are desired
 	 */
-	public void getDetails(Place places){
+	public void getDetails(Place places) {
 		(new GetDetails()).execute(places);
 	}
 
@@ -224,7 +236,8 @@ public class Control {
 	/**
 	 * Change the current view to the Restaurant view
 	 * 
-	 * @param currentList The list of places which will be shown
+	 * @param currentList
+	 *            The list of places which will be shown
 	 */
 	public void goToList(List<Place> currentList) {
 		this.parentActivity.startActivity((new Intent(this.parentActivity,
@@ -298,7 +311,7 @@ public class Control {
 	 * @param booleanOptions
 	 * @param stringOptions
 	 */
-	public void writeSettings(String[] stringOptions) {
+	public void setSettings(String[] stringOptions) {
 
 		// Number of settings need to be greater than or equal to the number
 		if (stringOptions.length >= Control.STRING_LIST_VALUES.length - 1) {
@@ -310,6 +323,25 @@ public class Control {
 
 		// Push the settings to the setting keep.
 		this.settingsEditor.commit();
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+/**
+ * Set the settings to default
+ * @param override Override current setting to default
+ */
+	public void setSettingDefaults(boolean override) {
+		if (this.settings != null) {
+			if (override || this.getStringSetting(Control.GET_LIST_AT_STARTUP) != null) {
+				if(DEBUG){
+					this.setSettings(new String[]{"false","false","5","false"});
+				}else{
+					this.setSettings(new String[]{"false","false","5","true"});
+				}
+			}
+		}
 	}
 
 	// ********************************************
@@ -537,17 +569,27 @@ public class Control {
 		protected ArrayList<Place> doInBackground(String... params) {
 			try {
 
-				ArrayList<Place> currentPlaces;
+				ArrayList<Place> currentPlaces = null;
 
 				// If nothing passed, then get address, else more places
-				if (params[0] != "/0") {
-
+				if (params[0] == Control.GET_MORE) {
+					currentPlaces = places.getMorePlaces();
+				} else if (params[0] == Control.NO_ADDRESS) {
+					try {
+						Location current = gMaps.getCurrentGPSCoordinates();
+						opt[0] = String.valueOf(current.getLatitude());
+						opt[1] = String.valueOf(current.getLongitude());
+						currentPlaces = places.getPlaces(opt);
+					} catch (NoGPSException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
 					List<Address> value = getAddress.getLocation(params[0]);
 					opt[0] = "" + value.get(0).getLatitude();
 					opt[1] = "" + value.get(0).getLongitude();
 					currentPlaces = places.getPlaces(opt);
-				} else {
-					currentPlaces = places.getMorePlaces();
+
 				}
 
 				return currentPlaces;
@@ -571,35 +613,32 @@ public class Control {
 	}
 
 	// **********************************************************************************************************
-		// ----------------------------------------------------------------------------------------------------------
-		// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
-		/**
-		 * 
-		 * @author David Async retrieve new places, return nothing
-		 */
-		private class GetDetails extends AsyncTask<Place, Void, Place> {
+	/**
+	 * 
+	 * @author David Async retrieve new places, return nothing
+	 */
+	private class GetDetails extends AsyncTask<Place, Void, Place> {
 
-
-			@Override
-			protected void onPreExecute() {
-				Control.onStartAsync(parentActivity);
-				super.onPreExecute();
-			}
-
-			@Override
-			protected Place doInBackground(Place... params) {
-				places.getDetails(params[0]);
-				return null;
-			}
-			
-			
-			protected void onPostExecute(Place vell) {
-				Control.onStopAsync(parentActivity);
-			}
+		@Override
+		protected void onPreExecute() {
+			Control.onStartAsync(parentActivity);
+			super.onPreExecute();
 		}
 
-	
+		@Override
+		protected Place doInBackground(Place... params) {
+			places.getDetails(params[0]);
+			return null;
+		}
+
+		protected void onPostExecute(Place vell) {
+			Control.onStopAsync(parentActivity);
+		}
+	}
+
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************

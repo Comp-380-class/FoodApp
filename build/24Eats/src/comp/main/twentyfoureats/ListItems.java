@@ -10,6 +10,7 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 import applic.GlobalApplication;
 import control.Control;
 
@@ -30,11 +31,8 @@ public class ListItems extends ActionBarActivity {
        
         List<Place> temp = this.mainControl.getRestList();
         
+        if(temp!=null){
         
-        
-        double[] num = new double[] { 0.5, 0.6, 0.7,
-                1.0, 1.2, 2.2, 2.2,2.3, 2.5, 
-                2.6,2.7, 2.8, 2.9, 3.0 };
         
        final SparseArray<Place> list = new SparseArray<Place>();
        int i=0;
@@ -48,7 +46,9 @@ public class ListItems extends ActionBarActivity {
         ExpandListAdapter adapter = new ExpandListAdapter(this,list);
         listView.setAdapter(adapter);
         visible = false;
-
+        }else{
+        	Toast.makeText(this, "No Locations Nearby", Toast.LENGTH_LONG).show();
+        }
         
 
     }

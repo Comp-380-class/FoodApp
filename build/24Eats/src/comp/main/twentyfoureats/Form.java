@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import placesAPI.Place;
 import android.app.Activity;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -13,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import applic.GlobalApplication;
@@ -26,7 +26,9 @@ import control.Control.RestListAct;
 public class Form extends ActionBarActivity {
 	public final static String EXTRA_MESSAGE = "Form.message";
 	private Control mainControl;
-	private Button getDirections;
+	private Button useCurrentLoc;
+	private Button addressButton;
+	private EditText addressText;
 	public final Activity current = this;
 	
 	@Override
@@ -38,88 +40,26 @@ public class Form extends ActionBarActivity {
 		((GlobalApplication) getApplication()).mainControl.setContext(this);
 		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
 		// Create the getDirections button
-		this.getDirections = (Button) findViewById(R.id.UseButton);
-		Button Test = (Button) findViewById(R.id.TestButton);
+		this.useCurrentLoc = (Button) findViewById(R.id.UseButton);
+		this.addressButton = (Button) findViewById(R.id.DistButton);
+		this.addressText = (EditText) findViewById(R.id.Location);
 		// Set on click
-		this.getDirections.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				// Check for google play services
-				if (!Control.checkForGooglePlayServices(current)) {
-					Toast.makeText(mainControl.getContext(),
-							"" + mainControl.getStringSetting("work"),
-							Toast.LENGTH_LONG).show();
-					Boolean[] show = { true, true };
-					String[] dance = { "hello", "hola" , "fail" };
-					mainControl.writeSettings(dance);
-				} else {
-					try {
-						// Call to get the location
-						/*
-						 * mainControl.getCurrentLocation(new
-						 * LocationCallback(){
-						 * 
-						 * @Override public void execute(Location loc) {
-						 * Toast.makeText(v.getContext(), "" +
-						 * loc.getLongitude() + ", " + loc.getLatitude(),
-						 * Toast.LENGTH_LONG).show();
-						 * Log.d("success","success"); }
-						 * 
-						 * });
-						 */
-
-						// Call to get the address
-						/*
-						 * mainControl.getCurrentAddress(new AddressCallback(){
-						 * 
-						 * @Override public void execute(String data) {
-						 * 
-						 * Toast.makeText(v.getContext(), data,
-						 * Toast.LENGTH_LONG).show();
-						 * 
-						 * }
-						 * 
-						 * });
-						 */
-						// Control.showMap("65.9667", "-18.5333", current);
-						mainControl.getListOfResteraunts(current,
-								"Los Angeles", new RestListAct() {
-
-									public void execute(ArrayList<Place> temp) {
-										((GlobalApplication) getApplication()).mainControl.goToList(temp);
-									}
-
-									@Override
-									public void execute(Place places) {
-										// TODO Auto-generated method stub
-									}
-
-								}, null, null, null);
-
-					} catch (NullPointerException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						Toast.makeText(v.getContext(), "Failure to get GPS",
-								Toast.LENGTH_LONG).show();
-					}
-
-				}
-			}
-
-		});
-		
-		Test.setOnClickListener(new OnClickListener(){
-
+		this.addressButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(mainControl.getContext(),
-						"" + mainControl.getStringSetting(Control.DEFAULT_DISTANCE),
-						Toast.LENGTH_LONG).show();
+				restrauntWithLoc(v);
 			}
-			
 		});
+		
+		this.useCurrentLoc.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				restrauntWithoutLoc(v);
+			}
+		});
+		
 	}
 
 	// **********************************************************************************************************
@@ -146,12 +86,60 @@ public class Form extends ActionBarActivity {
 	}
 
 	// Switch between current activity and new activity with a given value
-	public void switchActivityWithIntent(View test) {
+	/*public void switchActivityWithIntent(View test) {
 		CharSequence valueToPass = ((TextView) findViewById(R.id.Location))
 				.getText();
 		Intent switchToListAct = new Intent(this, ListView.class);
 		switchToListAct.setAction("FILL_LIST");
 		switchToListAct.putExtra(EXTRA_MESSAGE, valueToPass);
 		startActivity(switchToListAct);
+	}*/
+	
+	/**
+	 * Run with a location
+	 * @param loc
+	 */
+	public void restrauntWithLoc(View loc){
+		this.restrauntView(addressText.getText().toString());
 	}
+	/**
+	 * Run the list without a location
+	 * @param loc
+	 */
+	public void restrauntWithoutLoc(View loc){
+		this.restrauntView(Control.NO_ADDRESS);
+	}
+	/*
+	 * Change to the restraunt view with loc
+	 */
+	private void restrauntView(String Loc){
+		// Check for google play services
+		if (!Control.checkForGooglePlayServices(current)) {
+			Toast.makeText(this, "You do not have Google Play, please install before use", Toast.LENGTH_LONG).show();
+		} else {
+			try {
+				mainControl.getListOfResteraunts(current,
+						Loc, new RestListAct() {
+
+							public void execute(ArrayList<Place> temp) {
+								((GlobalApplication) getApplication()).mainControl.goToList(temp);
+							}
+
+							@Override
+							public void execute(Place places) {
+								// TODO Auto-generated method stub
+							}
+
+						}, null, null, null);
+
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				Toast.makeText(this, "Failure to get GPS",
+						Toast.LENGTH_LONG).show();
+			}
+
+		}
+	}
+	
 }
