@@ -65,7 +65,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     text.setText(item.getPrice()+"");
     text = (TextView) convertView.findViewById(R.id.website);
     text.setText(item.getWebsite());
-    convertView.invalidate();
+    this.notifyDataSetChanged();
     return convertView;
   }
 
