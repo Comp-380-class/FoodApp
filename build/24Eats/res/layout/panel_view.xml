@@ -40,7 +40,7 @@
 		<TextView android:id="@+id/rating" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" 
 				android:layout_alignParentRight="true"
-				android:layout_below="@+id/timeLeft" 
+				android:layout_below="@+id/address" 
 				/>
 		<TextView android:id="@+id/price" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" 
