@@ -12,12 +12,16 @@ import java.util.List;
 import placesAPI.Place;
 import placesAPI.PlacesAPI;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.View;
@@ -43,7 +47,8 @@ public class Control {
 	// Final Variables
 	// ********************************
 	public final static boolean DEBUG = true;
-
+	public static final String NO_ADDRESS = "NO_ADDRESS";
+	public static final String GET_MORE = "GET_MORE";
 	public final static String GET_LIST_AT_STARTUP = "RunAtStartUp";
 	public static final String BLACK_LIST = "BlackList";
 	public static final String DEFAULT_DISTANCE = "DefaultDistance";
@@ -55,8 +60,9 @@ public class Control {
 	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD";
 	private static final String PRELOAD = "PRELOAD";
 	private static final String PLACES_LIST = "PLACES_LIST";
-	public static final String NO_ADDRESS = "NO_ADDRESS";
-	public static final String GET_MORE = "GET_MORE";
+	private String[] defaults = new String[] { "false", "false", "5",
+	"false" }; // RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
+	
 	private List<Place> Rest_Places;// Rest Places
 	// ********************************
 	// Private Variables
@@ -70,6 +76,8 @@ public class Control {
 	private SharedPreferences settings;
 	private SharedPreferences.Editor settingsEditor;
 
+	
+
 	// ********************************
 	// Constructors
 	// ********************************
@@ -81,7 +89,7 @@ public class Control {
 		String preload = this.getStringSetting(PRELOAD);
 		if (DEBUG) {
 			places = new PlacesAPI(0);
-		} else if (preload.compareTo("true")==0) {
+		} else if (preload.compareTo("true") == 0) {
 			places = new PlacesAPI(0);
 		} else {
 			places = new PlacesAPI();
@@ -175,8 +183,61 @@ public class Control {
 	 */
 	public void getListOfResteraunts(Context context, String currentLocation,
 			RestListAct callback, String... options) {
-		// Add functions to get location based on given values
-		(new getList(options, callback)).execute(currentLocation);
+
+		if (currentLocation == Control.NO_ADDRESS && !this.gMaps.gpsOn()) {
+			buildAlertMessageNoGps("Your GPS seems to be disabled, do you want to enable it?",android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		} else if(!isConnectingToInternet()){
+			buildAlertMessageNoGps("Your Internet seems to be off, would you like to check it?",android.provider.Settings.ACTION_WIFI_SETTINGS);
+		}else{
+			// Add functions to get location based on given values
+			(new getList(options, callback)).execute(currentLocation);
+		}
+	}
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+	private boolean isConnectingToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager) this.parentActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+          if (connectivity != null)
+          {
+              NetworkInfo[] info = connectivity.getAllNetworkInfo();
+              if (info != null)
+                  for (int i = 0; i < info.length; i++)
+                      if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                      {
+                          return true;
+                      }
+
+          }
+          return false;
+    }
+	
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	private void buildAlertMessageNoGps(String message, final String intent) {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(
+				this.parentActivity);
+		builder.setMessage(message)
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(
+									@SuppressWarnings("unused") final DialogInterface dialog,
+									@SuppressWarnings("unused") final int id) {
+								parentActivity
+										.startActivity(new Intent(intent));
+							}
+						})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(final DialogInterface dialog,
+							@SuppressWarnings("unused") final int id) {
+						dialog.cancel();
+					}
+				});
+		final AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	// **********************************************************************************************************
@@ -184,7 +245,7 @@ public class Control {
 	// **********************************************************************************************************
 
 	public void getMoreResteraunts(Context context, RestListAct callback) {
-		(new getList(callback)).execute("/0");
+		(new getList(callback)).execute(Control.GET_MORE);
 	}
 
 	// **********************************************************************************************************
@@ -328,17 +389,21 @@ public class Control {
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
-/**
- * Set the settings to default
- * @param override Override current setting to default
- */
+	/**
+	 * Set the settings to default
+	 * 
+	 * @param override
+	 *            Override current setting to default
+	 */
 	public void setSettingDefaults(boolean override) {
 		if (this.settings != null) {
-			if (override || this.getStringSetting(Control.GET_LIST_AT_STARTUP) != null) {
-				if(DEBUG){
-					this.setSettings(new String[]{"false","false","5","false"});
-				}else{
-					this.setSettings(new String[]{"false","false","5","true"});
+			if (override
+					|| this.getStringSetting(Control.GET_LIST_AT_STARTUP) != null) {
+				if (DEBUG) {
+					this.setSettings(new String[] { "false", "false", "5",
+							"false" });
+				} else {
+					this.setSettings(this.defaults);
 				}
 			}
 		}
