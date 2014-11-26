@@ -2,6 +2,7 @@ package google_maps_api;
 
 import android.app.Activity;
 import android.location.Location;
+import android.location.LocationManager;
 
 /**
  * 
@@ -15,6 +16,7 @@ public class MapsAPI {
 	private LocationToAddress getAddress;
 	private GeoLoc gps;
 	private Activity parentActivity;
+	private final LocationManager manager;
 
 	// *********************
 	// Constructors
@@ -30,6 +32,7 @@ public class MapsAPI {
 		gps = new GeoLoc(activity);
 		getAddress = new LocationToAddress(activity);
 		parentActivity = activity;
+		this.manager = (LocationManager) activity.getSystemService( activity.LOCATION_SERVICE );
 	}
 
 	// *********************
@@ -46,6 +49,7 @@ public class MapsAPI {
 	 *             Can't get locations
 	 */
 	public Location getCurrentGPSCoordinates() throws NoGPSException {
+		
 		Location temp = null;
 		gps.connect();
 		while (temp == null) {
@@ -136,5 +140,14 @@ public class MapsAPI {
 		this.parentActivity = context;
 		
 	}
+	
+	public boolean gpsOn(){
+		if (this.manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+	       return true;
+	    }
+		return false;
+	}
+	
+	
 
 }

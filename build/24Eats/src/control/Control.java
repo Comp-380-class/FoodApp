@@ -12,12 +12,16 @@ import java.util.List;
 import placesAPI.Place;
 import placesAPI.PlacesAPI;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.view.View;
@@ -43,7 +47,8 @@ public class Control {
 	// Final Variables
 	// ********************************
 	public final static boolean DEBUG = true;
-
+	public static final String NO_ADDRESS = "NO_ADDRESS";
+	public static final String GET_MORE = "GET_MORE";
 	public final static String GET_LIST_AT_STARTUP = "RunAtStartUp";
 	public static final String BLACK_LIST = "BlackList";
 	public static final String DEFAULT_DISTANCE = "DefaultDistance";
@@ -52,8 +57,12 @@ public class Control {
 	private static final String[] STRING_LIST_VALUES = { DEFAULT_DISTANCE,
 			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC };
 	@SuppressWarnings("unused")
-	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE";
+	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD";
+	private static final String PRELOAD = "PRELOAD";
 	private static final String PLACES_LIST = "PLACES_LIST";
+	private String[] defaults = new String[] { "false", "false", "5",
+	"false" }; // RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
+	
 	private List<Place> Rest_Places;// Rest Places
 	// ********************************
 	// Private Variables
@@ -67,6 +76,8 @@ public class Control {
 	private SharedPreferences settings;
 	private SharedPreferences.Editor settingsEditor;
 
+	
+
 	// ********************************
 	// Constructors
 	// ********************************
@@ -75,7 +86,14 @@ public class Control {
 	 * Default Constructor
 	 */
 	public Control() {
-		places = new PlacesAPI();
+		String preload = this.getStringSetting(PRELOAD);
+		if (DEBUG) {
+			places = new PlacesAPI(0);
+		} else if (preload.compareTo("true") == 0) {
+			places = new PlacesAPI(0);
+		} else {
+			places = new PlacesAPI();
+		}
 	}
 
 	/**
@@ -165,8 +183,61 @@ public class Control {
 	 */
 	public void getListOfResteraunts(Context context, String currentLocation,
 			RestListAct callback, String... options) {
-		// Add functions to get location based on given values
-		(new getList(options, callback)).execute(currentLocation);
+
+		if (currentLocation == Control.NO_ADDRESS && !this.gMaps.gpsOn()) {
+			buildAlertMessageNoGps("Your GPS seems to be disabled, do you want to enable it?",android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		} else if(!isConnectingToInternet()){
+			buildAlertMessageNoGps("Your Internet seems to be off, would you like to check it?",android.provider.Settings.ACTION_WIFI_SETTINGS);
+		}else{
+			// Add functions to get location based on given values
+			(new getList(options, callback)).execute(currentLocation);
+		}
+	}
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+	private boolean isConnectingToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager) this.parentActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+          if (connectivity != null)
+          {
+              NetworkInfo[] info = connectivity.getAllNetworkInfo();
+              if (info != null)
+                  for (int i = 0; i < info.length; i++)
+                      if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                      {
+                          return true;
+                      }
+
+          }
+          return false;
+    }
+	
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	private void buildAlertMessageNoGps(String message, final String intent) {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(
+				this.parentActivity);
+		builder.setMessage(message)
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(
+									@SuppressWarnings("unused") final DialogInterface dialog,
+									@SuppressWarnings("unused") final int id) {
+								parentActivity
+										.startActivity(new Intent(intent));
+							}
+						})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() {
+					public void onClick(final DialogInterface dialog,
+							@SuppressWarnings("unused") final int id) {
+						dialog.cancel();
+					}
+				});
+		final AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	// **********************************************************************************************************
@@ -174,7 +245,7 @@ public class Control {
 	// **********************************************************************************************************
 
 	public void getMoreResteraunts(Context context, RestListAct callback) {
-		(new getList(callback)).execute("/0");
+		(new getList(callback)).execute(Control.GET_MORE);
 	}
 
 	// **********************************************************************************************************
@@ -182,9 +253,11 @@ public class Control {
 	// **********************************************************************************************************
 	/**
 	 * Get the details of the provided places object
-	 * @param places The place whose details are desired
+	 * 
+	 * @param places
+	 *            The place whose details are desired
 	 */
-	public void getDetails(Place places){
+	public void getDetails(Place places) {
 		(new GetDetails()).execute(places);
 	}
 
@@ -224,7 +297,8 @@ public class Control {
 	/**
 	 * Change the current view to the Restaurant view
 	 * 
-	 * @param currentList The list of places which will be shown
+	 * @param currentList
+	 *            The list of places which will be shown
 	 */
 	public void goToList(List<Place> currentList) {
 		this.parentActivity.startActivity((new Intent(this.parentActivity,
@@ -298,7 +372,7 @@ public class Control {
 	 * @param booleanOptions
 	 * @param stringOptions
 	 */
-	public void writeSettings(String[] stringOptions) {
+	public void setSettings(String[] stringOptions) {
 
 		// Number of settings need to be greater than or equal to the number
 		if (stringOptions.length >= Control.STRING_LIST_VALUES.length - 1) {
@@ -310,6 +384,29 @@ public class Control {
 
 		// Push the settings to the setting keep.
 		this.settingsEditor.commit();
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+	/**
+	 * Set the settings to default
+	 * 
+	 * @param override
+	 *            Override current setting to default
+	 */
+	public void setSettingDefaults(boolean override) {
+		if (this.settings != null) {
+			if (override
+					|| this.getStringSetting(Control.GET_LIST_AT_STARTUP) != null) {
+				if (DEBUG) {
+					this.setSettings(new String[] { "false", "false", "5",
+							"false" });
+				} else {
+					this.setSettings(this.defaults);
+				}
+			}
+		}
 	}
 
 	// ********************************************
@@ -537,17 +634,27 @@ public class Control {
 		protected ArrayList<Place> doInBackground(String... params) {
 			try {
 
-				ArrayList<Place> currentPlaces;
+				ArrayList<Place> currentPlaces = null;
 
 				// If nothing passed, then get address, else more places
-				if (params[0] != "/0") {
-
+				if (params[0] == Control.GET_MORE) {
+					currentPlaces = places.getMorePlaces();
+				} else if (params[0] == Control.NO_ADDRESS) {
+					try {
+						Location current = gMaps.getCurrentGPSCoordinates();
+						opt[0] = String.valueOf(current.getLatitude());
+						opt[1] = String.valueOf(current.getLongitude());
+						currentPlaces = places.getPlaces(opt);
+					} catch (NoGPSException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
 					List<Address> value = getAddress.getLocation(params[0]);
 					opt[0] = "" + value.get(0).getLatitude();
 					opt[1] = "" + value.get(0).getLongitude();
 					currentPlaces = places.getPlaces(opt);
-				} else {
-					currentPlaces = places.getMorePlaces();
+
 				}
 
 				return currentPlaces;
@@ -571,35 +678,32 @@ public class Control {
 	}
 
 	// **********************************************************************************************************
-		// ----------------------------------------------------------------------------------------------------------
-		// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 
-		/**
-		 * 
-		 * @author David Async retrieve new places, return nothing
-		 */
-		private class GetDetails extends AsyncTask<Place, Void, Place> {
+	/**
+	 * 
+	 * @author David Async retrieve new places, return nothing
+	 */
+	private class GetDetails extends AsyncTask<Place, Void, Place> {
 
-
-			@Override
-			protected void onPreExecute() {
-				Control.onStartAsync(parentActivity);
-				super.onPreExecute();
-			}
-
-			@Override
-			protected Place doInBackground(Place... params) {
-				places.getDetails(params[0]);
-				return null;
-			}
-			
-			
-			protected void onPostExecute(Place vell) {
-				Control.onStopAsync(parentActivity);
-			}
+		@Override
+		protected void onPreExecute() {
+			Control.onStartAsync(parentActivity);
+			super.onPreExecute();
 		}
 
-	
+		@Override
+		protected Place doInBackground(Place... params) {
+			places.getDetails(params[0]);
+			return null;
+		}
+
+		protected void onPostExecute(Place vell) {
+			Control.onStopAsync(parentActivity);
+		}
+	}
+
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************

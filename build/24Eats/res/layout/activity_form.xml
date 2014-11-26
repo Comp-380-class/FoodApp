@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:background="#33ffffff"
         android:textColor ="#ffff2a00"
-        android:text="Input Address"
+        android:hint="Input Address"
         android:padding="8dp"
         android:ems="12" >
 
@@ -51,7 +51,7 @@
     </EditText>
     
     <Button
-        android:id="@+id/TestButton"
+        android:id="@+id/DistButton"
         android:layout_width="45dp"
         android:layout_height="40dp"
         android:background="@drawable/icon_search"
@@ -91,7 +91,7 @@
     </EditText>
     
     <Button
-        android:id="@+id/DistButton"
+        android:id="@+id/milesButton"
         android:layout_width="45dp"
         android:layout_height="40dp"
         android:background="@drawable/icon_search"
@@ -109,14 +109,14 @@
         android:layout_marginTop="32dp"
         android:visibility="gone" />
 
-	<Button
+<!-- 	<Button
         android:id="@+id/OptionsButton"
         android:layout_width="82dp"
         android:layout_height="84dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/more_options"
-        android:layout_below="@+id/distanceBar" />
+        android:layout_below="@+id/distanceBar" /> -->
 	
 	<ImageView
         android:id="@+id/banner"
