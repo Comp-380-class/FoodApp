@@ -28,7 +28,8 @@ public class Form extends ActionBarActivity {
 	private Control mainControl;
 	private Button useCurrentLoc;
 	private Button addressButton;
-	private EditText addressText;
+	private EditText addressText, distance;
+	
 	public final Activity current = this;
 	
 	@Override
@@ -41,8 +42,9 @@ public class Form extends ActionBarActivity {
 		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
 		// Create the getDirections button
 		this.useCurrentLoc = (Button) findViewById(R.id.UseButton);
-		this.addressButton = (Button) findViewById(R.id.DistButton);
+		this.addressButton = (Button) findViewById(R.id.LocButton);
 		this.addressText = (EditText) findViewById(R.id.Location);
+		this.distance = (EditText) findViewById(R.id.distance);
 		// Set on click
 		this.addressButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -130,7 +132,7 @@ public class Form extends ActionBarActivity {
 								// TODO Auto-generated method stub
 							}
 
-						}, null, null, null);
+						}, null, null, null); //this.distance.getText().toString());
 
 			} catch (NullPointerException e) {
 				// TODO Auto-generated catch block

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import applic.GlobalApplication;
 import control.Control;
@@ -40,8 +41,8 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	    public TextView time;
 	    public TextView phone;
 	    public TextView address;
-	    public TextView rating;
-	    public TextView price;
+	    public ImageView rating;
+	   public ImageView price;
 	    public TextView web;
 }
   
@@ -70,25 +71,25 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	      rowView = inflater.inflate(R.layout.panel_view, null);
 	      // configure view holder
 	      ViewHolderChild viewHolder = new ViewHolderChild();
-	      //viewHolder.time = (TextView) rowView.findViewById(R.id.tilClose);
-	      //viewHolder.hours = (TextView) rowView.findViewById(R.id.hours);
+	      viewHolder.time = (TextView) rowView.findViewById(R.id.tilClose);
+	      viewHolder.hours = (TextView) rowView.findViewById(R.id.hours);
 	      viewHolder.address = (TextView) rowView.findViewById(R.id.address);
 	      viewHolder.phone = (TextView) rowView.findViewById(R.id.phone);
-	      viewHolder.rating = (TextView) rowView.findViewById(R.id.rating);
-	      viewHolder.price = (TextView) rowView.findViewById(R.id.price);
+	      viewHolder.rating = (ImageView) rowView.findViewById(R.id.rating);
+	      viewHolder.price = (ImageView) rowView.findViewById(R.id.price);
 	      viewHolder.web = (TextView) rowView.findViewById(R.id.website);
 	      rowView.setTag(viewHolder);
 	    }
 
 	    // fill data
 	    ViewHolderChild holder = (ViewHolderChild) rowView.getTag();
-	  //holder.text.setText(item.getHours());
-	  //holder.text.setText(item.timeUntilClose());
+	    //holder.text.setText(item.getHours());
+	  	//holder.text.setText(item.timeUntilClose());
 	    //holder.text.setText(item.getName());
 	    holder.address.setText(item.getAddress());
 	    holder.phone.setText(item.getPhone());
-	    holder.rating.setText(item.getRating()+"");
-	    holder.price.setText(item.getPrice()+"");
+	    //holder.rating.setText(item.getRating()+"");
+	    //holder.price.setText(item.getPrice()+"");
 	    holder.web.setText(item.getWebsite());
 	    this.notifyDataSetChanged();
 /*
