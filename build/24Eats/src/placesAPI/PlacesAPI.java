@@ -68,11 +68,11 @@ public class PlacesAPI{
 		StringBuilder urlSB = new StringBuilder(PLACES_BASE+NEARBY);
 		urlSB.append("key="+API_KEY);
 		urlSB.append("&location="+options[0]+","+options[1]);
-		if(options.length >=2 && options[2] != null)
+		if(options.length >=3 && options[2] != null)
 		{		
 			urlSB.append("&radius="+(Double.parseDouble(options[2])*MILE_TO_METER));
 		}
-		else if(options.length >=3 && options[3] != null)
+		else if(options.length >=4 && options[3] != null)
 		{
 			urlSB.append("&radius="+(Integer.parseInt(options[3])*MIN_TO_METER));
 		}
