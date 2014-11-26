@@ -32,20 +32,20 @@ public class StoreHours {
 		
 		if(hours == 0)
 		{
-			timeString=12+":"+minutes+" AM";
+			timeString=12+":"+String.format("%02d", minutes)+" AM";
 		}
 		else if(hours < 12)
 		{
-			timeString=hours+":"+minutes+" AM";
+			timeString=hours+":"+String.format("%02d", minutes)+" AM";
 		}
 		else if(hours == 12)
 		{
-			timeString=hours+":"+minutes+" PM";
+			timeString=hours+":"+String.format("%02d", minutes)+" PM";
 		}
 		else
 		{
 			hours -= 12;
-			timeString=hours+":"+minutes+" PM";
+			timeString=hours+":"+String.format("%02d", minutes)+" PM";
 		}
 		
 		return timeString;
