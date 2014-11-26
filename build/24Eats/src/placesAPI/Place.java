@@ -29,6 +29,7 @@ public class Place {
 	private int rating;			//rating on a 10-point scale
 	private int price;			//price on a 5-point scale
 	private StoreHours[] hours;	//hours of the business
+	private boolean open24 = false;		//if this place is open 24 hours a day
 	
 	/**
 	 * Create a place object with the basic information
@@ -47,6 +48,23 @@ public class Place {
 		this.icon = icon;
 		
 		this.detailed = false;
+	}
+	
+	/**
+	 * Junk place for error messages
+	 */
+	public Place()
+	{
+		this.name = "No Locations Available";
+		this.lat = 0.0;
+		this.lon = 0.0;
+		this.icon = "http://example.com/example.png";
+		this.detailed = true;
+		this.address = "N/A";
+		this.phone = "N/A";
+		this.website = "N/A";
+		this.rating = 0;
+		this.price = 0;
 	}
 	
 	/**
@@ -82,6 +100,7 @@ public class Place {
 		dist = loc.distanceTo(currLoc);
 	}
 	
+	
 	/**
 	 * Get the time until closing in a simple string format.
 	 * 	If more than hour, in half hour increments : 1.5h
@@ -90,7 +109,13 @@ public class Place {
 	 */
 	public String timeUntilClose()
 	{
-		int today=0; //TODO get today
+		if(!detailed)
+		{
+			return "No details available.";
+		}
+		
+		int today= Calendar.DAY_OF_WEEK - 1;
+		int currTime = Calendar.HOUR_OF_DAY * 100 + Calendar.MINUTE;
 		int i;
 		int time;
 		int day;
@@ -104,6 +129,20 @@ public class Place {
 		
 		time = hours[i].getCloseTime();
 		day = hours[i].getCloseDay();
+		
+		if(time<currTime && day == today)
+		{
+			if(i == 0)		//if first one go to last
+			{
+				i=hours.length;
+			}
+			else			//otherwise go one back
+			{
+				i--;
+			}
+		}
+		
+		
 		return "15m";
 	}
 	
@@ -145,6 +184,14 @@ public class Place {
 	}
 	
 	/**
+	 * Set the hours to open 24 hours a day
+	 */
+	public void setAlwaysOpen()
+	{
+		this.open24 = true;
+	}
+	
+	/**
 	 * @return the URL of an icon image
 	 */
 	public String getIcon() {
@@ -176,6 +223,9 @@ public class Place {
 	 * @return nicely formatted local phone number
 	 */
 	public String getPhone() {
+		if(!detailed)
+			return "N/A";
+		
 		return this.phone;
 	}
 	
@@ -191,6 +241,9 @@ public class Place {
 	 * @return the price range on a 5-point scale
 	 */
 	public int getPrice() {
+		if(!detailed)
+			return 0;
+		
 		return this.price;
 	}
 	
@@ -198,6 +251,9 @@ public class Place {
 	 * @return the rating on a 10-point scale
 	 */
 	public int getRating(){
+		if(!detailed)
+			return 0;
+		
 		return this.rating;
 	}
 	
@@ -205,6 +261,9 @@ public class Place {
 	 * @return the website URL
 	 */
 	public String getWebsite(){
+		if(!detailed)
+			return "N/A";
+		
 		return this.website;
 	}
 	
@@ -212,6 +271,12 @@ public class Place {
 	 * @return hours statement for the current day
 	 */
 	public String getHours(){
+		if(!detailed)
+			return "N/A";
+		
+		if(open24)
+			return "24Hours";
+		
 		Calendar calendar = Calendar.getInstance(); 
 		int i;
 		int today = calendar.get(Calendar.DAY_OF_WEEK) - 1;

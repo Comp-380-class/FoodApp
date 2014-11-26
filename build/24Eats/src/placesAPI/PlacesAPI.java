@@ -83,9 +83,11 @@ public class PlacesAPI{
 		preloadPlaces();
 		
 		if(this.places.isEmpty())
-			return null;
-		else
-			return this.places;
+		{
+			places.add(new Place());
+		}
+			
+		return this.places;
 	}
 	
 	/**
@@ -120,9 +122,11 @@ public class PlacesAPI{
 		}
 		
 		if(updated.isEmpty())
-			return null;
-		else
-			return updated;
+		{
+			updated.add(new Place());
+		}
+			
+		return updated;
 	}
 	
 	/**
@@ -149,6 +153,15 @@ public class PlacesAPI{
 			}
 		}
 	}
+	
+	public void setPreload(int number)
+	{
+		//Can't preload more results than possible
+		if(number < 20)
+			this.preload = number;
+		else
+			this.preload = 20;
+	}
 
 	private StringBuilder getJSON(URL url)
 	{
@@ -157,6 +170,8 @@ public class PlacesAPI{
 
 		try {
 			conn = (HttpURLConnection) url.openConnection();
+			conn.setConnectTimeout(1000);
+			conn.setReadTimeout(1000);
 			
 			InputStreamReader in = new InputStreamReader(conn.getInputStream());
 			
@@ -268,7 +283,6 @@ public class PlacesAPI{
 			
 			place.setDistance(options[0],options[1]);
 			
-			// TODO Parse hours
 			JSONObject openHrs = details.getJSONObject("opening_hours");
 			JSONArray hours = openHrs.getJSONArray("periods");
 			
@@ -276,15 +290,23 @@ public class PlacesAPI{
 			for(int i=0; i<hours.length(); i++)
 			{
 				JSONObject hour = hours.getJSONObject(i);
-				JSONObject close = hour.getJSONObject("close");
 				JSONObject open = hour.getJSONObject("open");
-				
-				closeHours = close.getString("time");
-				closeDay = close.getInt("day");
-				openHours = open.getString("time");
-				openDay = open.getInt("day");
-				
-				storeHours[i] = new StoreHours(openDay, openHours, closeDay, closeHours);
+				if(hour.has("close"))
+				{
+					JSONObject close = hour.getJSONObject("close");
+					
+					closeHours = close.getString("time");
+					closeDay = close.getInt("day");
+					openHours = open.getString("time");
+					openDay = open.getInt("day");
+					
+					storeHours[i] = new StoreHours(openDay, openHours, closeDay, closeHours);
+				}
+				else
+				{
+					place.setAlwaysOpen();
+					break;
+				}
 			}
 			
 			place.setHours(storeHours);
