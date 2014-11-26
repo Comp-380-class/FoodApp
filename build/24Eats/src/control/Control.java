@@ -24,6 +24,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -46,7 +47,7 @@ public class Control {
 	// ********************************
 	// Final Variables
 	// ********************************
-	public final static boolean DEBUG = true;
+	public final static boolean DEBUG = false;
 	public static final String NO_ADDRESS = "NO_ADDRESS";
 	public static final String GET_MORE = "GET_MORE";
 	public final static String GET_LIST_AT_STARTUP = "RunAtStartUp";
@@ -86,14 +87,7 @@ public class Control {
 	 * Default Constructor
 	 */
 	public Control() {
-		String preload = this.getStringSetting(PRELOAD);
-		if (DEBUG) {
-			places = new PlacesAPI(0);
-		} else if (preload.compareTo("true") == 0) {
-			places = new PlacesAPI(0);
-		} else {
-			places = new PlacesAPI();
-		}
+		
 	}
 
 	/**
@@ -892,6 +886,17 @@ public class Control {
 				this.settingsEditor = settings.edit();
 			}
 		}
+		this.setSettingDefaults(false);
+		//Create the placesAPI
+		String preload = this.getStringSetting(PRELOAD);
+		if (DEBUG) {
+			places = new PlacesAPI(0);
+		} else if (preload!= null && this.places==null && preload.compareTo("false") == 0) {
+			places = new PlacesAPI(0);
+		} else if(this.places==null) {
+			places = new PlacesAPI();
+		}
+		
 		return this;
 
 	}
@@ -930,7 +935,7 @@ public class Control {
 	 */
 	public String getStringSetting(String key) {
 		if (settings != null) {
-			return settings.getString(key, null);
+			return settings.getString(key, "false");
 		} else {
 			return null;
 		}
