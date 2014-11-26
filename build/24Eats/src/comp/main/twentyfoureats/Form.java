@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import placesAPI.Place;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import applic.GlobalApplication;
 import control.Control;
@@ -132,7 +130,7 @@ public class Form extends ActionBarActivity {
 								// TODO Auto-generated method stub
 							}
 
-						}, null, null, null); //this.distance.getText().toString());
+						}, null, null, null, null); //this.distance.getText().toString());
 
 			} catch (NullPointerException e) {
 				// TODO Auto-generated catch block
