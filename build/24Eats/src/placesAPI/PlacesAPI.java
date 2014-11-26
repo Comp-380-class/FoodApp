@@ -23,6 +23,8 @@ public class PlacesAPI{
 	private static final String PLACES_BASE = "https://maps.googleapis.com/maps/api/place/";
 	private static final String NEARBY = "nearbysearch/json?";
 	private static final String DETAILS = "details/json?";
+	private static final int MIN_TO_METER = 320;
+	private static final int MILE_TO_METER = 1609;
 	
 	private ArrayList<Place> places;
 	private String morePlacesToken;
@@ -53,7 +55,9 @@ public class PlacesAPI{
 	 * 
 	 * @param options	[0] => latitude
 	 * 					[1] => longitude
-	 * 					[2] => radius or null for rank by distance 
+	 * 					[2] => distance
+	 * 					[3] => minutes
+	 * 	If both are set, distance is used, if neither is set, rank by distance is used
 	 * @return			The first twenty Place objects matching the request or null if no places found
 	 */
 	public ArrayList<Place> getPlaces(String[] options)
@@ -65,9 +69,17 @@ public class PlacesAPI{
 		urlSB.append("key="+API_KEY);
 		urlSB.append("&location="+options[0]+","+options[1]);
 		if(options.length >=2 && options[2] != null)
-			urlSB.append("&radius="+options[2]);
+		{		
+			urlSB.append("&radius="+(Double.parseDouble(options[2])*MILE_TO_METER));
+		}
+		else if(options.length >=3 && options[3] != null)
+		{
+			urlSB.append("&radius="+(Integer.parseInt(options[3])*MIN_TO_METER));
+		}
 		else
+		{
 			urlSB.append("&rankby=distance");
+		}
 		urlSB.append("&types=bar|cafe|restaurant");
 		urlSB.append("&opennow=true");
 
