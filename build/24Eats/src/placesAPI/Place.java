@@ -114,23 +114,28 @@ public class Place {
 			return "No details available.";
 		}
 		
-		int today= Calendar.DAY_OF_WEEK - 1;
-		int currTime = Calendar.HOUR_OF_DAY * 100 + Calendar.MINUTE;
-		int i;
-		int time;
-		int day;
+		if(open24)		//never gonna close
+		{
+			return "";
+		}
+		
+		Calendar calendar = Calendar.getInstance(); 
+		int today = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+		int currTime = calendar.get(Calendar.HOUR_OF_DAY) * 100 + calendar.get(Calendar.MINUTE);
+		int i, time, minutes, day, timeDif;
+		String timeString;
 		
 		//get our current time and day
 		for(i=0; i<hours.length; i++)
 		{
-			if(hours[1].getOpenDay() == today)
+			if(hours[i].getOpenDay() == today)
 				break;
 		}
 		
-		time = hours[i].getCloseTime();
-		day = hours[i].getCloseDay();
+		time = hours[i].getOpenTime();
 		
-		if(time<currTime && day == today)
+		//if this one opens before the current time, we need the day before
+		if(time > currTime)		
 		{
 			if(i == 0)		//if first one go to last
 			{
@@ -142,8 +147,54 @@ public class Place {
 			}
 		}
 		
+		time = hours[i].getCloseTime();
+		day = hours[i].getCloseDay();
 		
-		return "15m";
+		if(day - today < 0)
+		{
+			time = (day - today + 7)*2400+time;
+		}
+		else 
+		{
+			time = (today - day)*2400+time;
+		}
+		
+		//fix for subtracting military time
+		if((currTime%100) < (time%100))
+		{
+			timeDif = time - currTime;
+		}
+		else
+		{
+			timeDif = time - currTime - 40;
+		}
+		
+		if(timeDif < 100)	//less than an hour
+		{
+			time = (timeDif/5)*5;
+			timeString = time+"m";
+		}
+		else	//hour range
+		{
+			time = timeDif/100;
+			minutes = timeDif%100;
+			
+			if(minutes<15)
+			{
+				timeString = time+"h";
+			}
+			else if(minutes < 45)
+			{
+				timeString = time+".5h";
+			}
+			else
+			{
+				time += 1;
+				timeString = time+"h";
+			}
+		}
+		
+		return timeString;
 	}
 	
 	/**
@@ -278,14 +329,30 @@ public class Place {
 			return "24Hours";
 		
 		Calendar calendar = Calendar.getInstance(); 
-		int i;
+		int i, time;
 		int today = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+		int currTime = calendar.get(Calendar.HOUR_OF_DAY) * 100 + calendar.get(Calendar.MINUTE);
 		
 		for(i=0; i < hours.length; i++)
 		{
 			if(hours[i].getOpenDay() == today)
 			{
 				break;		//found it!
+			}
+		}
+		
+		time = hours[i].getOpenTime();
+		
+		//if this one opens before the current time, we need the day before
+		if(time > currTime)		
+		{
+			if(i == 0)		//if first one go to last
+			{
+				i=hours.length;
+			}
+			else			//otherwise go one back
+			{
+				i--;
 			}
 		}
 		
