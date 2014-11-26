@@ -6,6 +6,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
@@ -91,6 +92,15 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	    //holder.rating.setText(item.getRating()+"");
 	    //holder.price.setText(item.getPrice()+"");
 	    holder.web.setText(item.getWebsite());
+	    holder.web.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				Control.goToUrl(v);
+				
+			}
+	    	
+	    });
 	    this.notifyDataSetChanged();
 /*
 	    

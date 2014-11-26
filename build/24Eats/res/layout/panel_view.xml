@@ -66,7 +66,8 @@
 				android:textColorLink="#FF1259b4"
 				android:textColor="#FF1259b4" 
 				android:layout_below="@+id/phone"
-				android:clickable="true"
-				android:onClick="goToUrl"
+
 				 />
+<!-- 						android:clickable="true"
+				android:onClick="control.Control.goToUrl" -->
 	</RelativeLayout>
