@@ -51,7 +51,7 @@
     </EditText>
     
     <Button
-        android:id="@+id/DistButton"
+        android:id="@+id/LocButton"
         android:layout_width="45dp"
         android:layout_height="40dp"
         android:background="@drawable/icon_search"
@@ -91,7 +91,7 @@
     </EditText>
     
     <Button
-        android:id="@+id/milesButton"
+        android:id="@+id/DistButton"
         android:layout_width="45dp"
         android:layout_height="40dp"
         android:background="@drawable/icon_search"
