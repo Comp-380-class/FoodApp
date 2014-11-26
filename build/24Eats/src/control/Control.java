@@ -362,10 +362,14 @@ public class Control {
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
 
-	private void goToUrl(View v){
+	/**
+	 * Go to the url given by the view
+	 * @param v
+	 */
+	public static void goToUrl(View v){
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(((TextView) v).getText().toString()));
-		this.parentActivity.startActivity(intent);
+		v.getContext().startActivity(intent);
 	}
 	
 	// ********************************
