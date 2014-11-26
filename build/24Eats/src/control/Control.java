@@ -27,6 +27,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -55,15 +56,16 @@ public class Control {
 	public static final String DEFAULT_DISTANCE = "DefaultDistance";
 	public static final String PRESET_CURRENT_LOC = "CurrentLoc";
 	public static final String REST_LIST = "REST_LIST";
+	private static final String PRELOAD = "PRELOAD";
 	private static final String[] STRING_LIST_VALUES = { DEFAULT_DISTANCE,
-			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC };
+			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC, PRELOAD };
 	@SuppressWarnings("unused")
 	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD";
-	private static final String PRELOAD = "PRELOAD";
-	private static final String PLACES_LIST = "PLACES_LIST";
-	private String[] defaults = new String[] { "false", "false", "5",
-	"false" }; // RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
 	
+	private static final String PLACES_LIST = "PLACES_LIST";
+	private String[] defaults = new String[] { "false", "false", "5", "false" }; // RUN_AT_STARTUP,
+																					// PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
+
 	private List<Place> Rest_Places;// Rest Places
 	// ********************************
 	// Private Variables
@@ -77,8 +79,6 @@ public class Control {
 	private SharedPreferences settings;
 	private SharedPreferences.Editor settingsEditor;
 
-	
-
 	// ********************************
 	// Constructors
 	// ********************************
@@ -87,7 +87,7 @@ public class Control {
 	 * Default Constructor
 	 */
 	public Control() {
-		
+
 	}
 
 	/**
@@ -179,33 +179,37 @@ public class Control {
 			RestListAct callback, String... options) {
 
 		if (currentLocation == Control.NO_ADDRESS && !this.gMaps.gpsOn()) {
-			buildAlertMessageNoGps("Your GPS seems to be disabled, do you want to enable it?",android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-		} else if(!isConnectingToInternet()){
-			buildAlertMessageNoGps("Your Internet seems to be off, would you like to check it?",android.provider.Settings.ACTION_WIFI_SETTINGS);
-		}else{
+			buildAlertMessageNoGps(
+					"Your GPS seems to be disabled, do you want to enable it?",
+					android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+		} else if (!isConnectingToInternet()) {
+			buildAlertMessageNoGps(
+					"Your Internet seems to be off, would you like to check it?",
+					android.provider.Settings.ACTION_WIFI_SETTINGS);
+		} else {
 			// Add functions to get location based on given values
 			(new getList(options, callback)).execute(currentLocation);
 		}
 	}
+
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
-	private boolean isConnectingToInternet(){
-        ConnectivityManager connectivity = (ConnectivityManager) this.parentActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
-          if (connectivity != null)
-          {
-              NetworkInfo[] info = connectivity.getAllNetworkInfo();
-              if (info != null)
-                  for (int i = 0; i < info.length; i++)
-                      if (info[i].getState() == NetworkInfo.State.CONNECTED)
-                      {
-                          return true;
-                      }
+	private boolean isConnectingToInternet() {
+		ConnectivityManager connectivity = (ConnectivityManager) this.parentActivity
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivity != null) {
+			NetworkInfo[] info = connectivity.getAllNetworkInfo();
+			if (info != null)
+				for (int i = 0; i < info.length; i++)
+					if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+						return true;
+					}
 
-          }
-          return false;
-    }
-	
+		}
+		return false;
+	}
+
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
@@ -354,6 +358,16 @@ public class Control {
 		}
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	private void goToUrl(View v){
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(((TextView) v).getText().toString()));
+		this.parentActivity.startActivity(intent);
+	}
+	
 	// ********************************
 	// Settings Functions
 	// ********************************
@@ -377,7 +391,11 @@ public class Control {
 		}
 
 		// Push the settings to the setting keep.
-		this.settingsEditor.commit();
+		if(this.settingsEditor.commit()){
+			Log.d("Truth Wins",this.settings.contains(Control.GET_LIST_AT_STARTUP) ? "true" : "false");
+		}else{
+			Log.d("Liar Wins",this.settings.contains(Control.GET_LIST_AT_STARTUP) ? "true" : "false");
+		}
 	}
 
 	// **********************************************************************************************************
@@ -392,7 +410,7 @@ public class Control {
 	public void setSettingDefaults(boolean override) {
 		if (this.settings != null) {
 			if (override
-					|| this.getStringSetting(Control.GET_LIST_AT_STARTUP) != null) {
+					|| !this.settings.contains(Control.GET_LIST_AT_STARTUP)) {
 				if (DEBUG) {
 					this.setSettings(new String[] { "false", "false", "5",
 							"false" });
@@ -887,16 +905,24 @@ public class Control {
 			}
 		}
 		this.setSettingDefaults(false);
-		//Create the placesAPI
+		// Create the placesAPI
 		String preload = this.getStringSetting(PRELOAD);
 		if (DEBUG) {
 			places = new PlacesAPI(0);
-		} else if (preload!= null && this.places==null && preload.compareTo("false") == 0) {
-			places = new PlacesAPI(0);
-		} else if(this.places==null) {
-			places = new PlacesAPI();
+		} else if (preload != null && preload.compareTo("false") == 0) {
+			if (this.places == null) {
+				places = new PlacesAPI(0);
+			} else {
+				places.setPreload(0);
+			}
+		} else {
+			if (this.places == null) {
+				places = new PlacesAPI();
+			} else {
+				places.setPreload(3);
+			}
 		}
-		
+
 		return this;
 
 	}
@@ -935,7 +961,7 @@ public class Control {
 	 */
 	public String getStringSetting(String key) {
 		if (settings != null) {
-			return settings.getString(key, "false");
+			return settings.getString(key, null);
 		} else {
 			return null;
 		}
