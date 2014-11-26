@@ -41,7 +41,7 @@ public class Form extends ActionBarActivity {
 		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
 		// Create the getDirections button
 		this.useCurrentLoc = (Button) findViewById(R.id.UseButton);
-		this.addressButton = (Button) findViewById(R.id.DistButton);
+		this.addressButton = (Button) findViewById(R.id.LocButton);
 		this.addressText = (EditText) findViewById(R.id.Location);
 		// Set on click
 		this.addressButton.setOnClickListener(new OnClickListener() {
