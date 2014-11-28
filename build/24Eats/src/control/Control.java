@@ -61,7 +61,7 @@ public class Control {
 			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC, PRELOAD };
 	@SuppressWarnings("unused")
 	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD";
-	
+
 	private static final String PLACES_LIST = "PLACES_LIST";
 	private String[] defaults = new String[] { "false", "false", "5", "false" }; // RUN_AT_STARTUP,
 																					// PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
@@ -75,7 +75,6 @@ public class Control {
 	private Activity parentActivity; // Reference to the currently displayed
 										// activity
 	private PlacesAPI places; // Places api
-
 	private SharedPreferences settings;
 	private SharedPreferences.Editor settingsEditor;
 
@@ -364,14 +363,15 @@ public class Control {
 
 	/**
 	 * Go to the url given by the view
+	 * 
 	 * @param v
 	 */
-	public static void goToUrl(View v){
+	public static void goToUrl(View v) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(((TextView) v).getText().toString()));
 		v.getContext().startActivity(intent);
 	}
-	
+
 	// ********************************
 	// Settings Functions
 	// ********************************
@@ -395,10 +395,12 @@ public class Control {
 		}
 
 		// Push the settings to the setting keep.
-		if(this.settingsEditor.commit()){
-			Log.d("Truth Wins",this.settings.contains(Control.GET_LIST_AT_STARTUP) ? "true" : "false");
-		}else{
-			Log.d("Liar Wins",this.settings.contains(Control.GET_LIST_AT_STARTUP) ? "true" : "false");
+		if (this.settingsEditor.commit()) {
+			Log.d("Truth Wins", this.settings
+					.contains(Control.GET_LIST_AT_STARTUP) ? "true" : "false");
+		} else {
+			Log.d("Liar Wins", this.settings
+					.contains(Control.GET_LIST_AT_STARTUP) ? "true" : "false");
 		}
 	}
 
