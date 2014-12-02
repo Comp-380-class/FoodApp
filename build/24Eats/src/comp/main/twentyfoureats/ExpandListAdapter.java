@@ -85,7 +85,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	    // fill data
 	    ViewHolderChild holder = (ViewHolderChild) rowView.getTag();
 	    holder.hours.setText(item.getHours());//item.getHours());
-	  	//holder.text.setText(item.timeUntilClose());
+	  	holder.time.setText(item.timeUntilClose());
 	    //holder.text.setText(item.getName());
 	    holder.address.setText(item.getAddress());
 	    holder.phone.setText(item.getPhone());
