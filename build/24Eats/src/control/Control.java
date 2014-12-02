@@ -63,7 +63,7 @@ public class Control {
 	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD";
 
 	private static final String PLACES_LIST = "PLACES_LIST";
-	private String[] defaults = new String[] { "false", "false", "5", "false" }; // RUN_AT_STARTUP,
+	private String[] defaults = new String[] { "false", "false", "5", "true" }; // RUN_AT_STARTUP,
 																					// PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
 
 	private List<Place> Rest_Places;// Rest Places
