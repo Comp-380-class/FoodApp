@@ -63,8 +63,8 @@ public class Control {
 	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD";
 
 	private static final String PLACES_LIST = "PLACES_LIST";
-	private String[] defaults = new String[] { "false", "false", "5", "true" }; // RUN_AT_STARTUP,
-																					// PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
+	private String[] defaults = new String[] { "5", "false", "false", "true" }; // RUN_AT_STARTUP,
+																				// PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
 
 	private List<Place> Rest_Places;// Rest Places
 	// ********************************
@@ -307,6 +307,18 @@ public class Control {
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
+	
+	public void makePhoneCall(String number){
+		 String uri = "tel:" + number.trim() ;
+		 Intent intent = new Intent(Intent.ACTION_DIAL);
+		 intent.setData(Uri.parse(uri));
+		 this.parentActivity.startActivity(intent);
+	}
+	
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
 	/**
 	 * Call the user's primary browser, open on given url
 	 * 
@@ -414,15 +426,15 @@ public class Control {
 	 *            Override current setting to default
 	 */
 	public void setSettingDefaults(boolean override) {
+		if (Control.DEBUG) {
+			override = true;
+		}
 		if (this.settings != null) {
 			if (override
 					|| !this.settings.contains(Control.GET_LIST_AT_STARTUP)) {
-				if (DEBUG) {
-					this.setSettings(new String[] { "false", "false", "5",
-							"false" });
-				} else {
-					this.setSettings(this.defaults);
-				}
+
+				this.setSettings(this.defaults);
+
 			}
 		}
 	}
