@@ -1,7 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/backgradient" 
+    android:padding="16dp">
     
+	<TextView
+        android:id="@+id/run_right_away"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:textColor="#FFFFFFFF"
+        android:text="Run Right Away" />
+
+    <ToggleButton
+        android:id="@+id/toggleRun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textColor="#FFFFFFFF"
+        android:clickable="true"
+		android:onClick="control.Control.RUN_AT_STARTUP" />
+    
+     <TextView
+        android:id="@+id/preload_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:textColor="#FFFFFFFF"
+        android:layout_below="@+id/toggleRun"
+        android:text="Use Current Location" />
+
+    <ToggleButton
+        android:id="@+id/togglePreload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toggleRun"
+        android:layout_alignParentRight="true"
+        android:textColor="#FFFFFFFF"
+        android:clickable="true"
+		android:onClick="control.Control.PRELOAD" />
+    
+    <TextView
+        android:id="@+id/use_current"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:textColor="#FFFFFFFF"
+        android:layout_below="@+id/togglePreload"
+        android:text="Use Current Location" />
+
+    <ToggleButton
+        android:id="@+id/toggleCurrent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/togglePreload"
+        android:layout_alignParentRight="true"
+        android:textColor="#FFFFFFFF"
+        android:clickable="true"
+		android:onClick="control.Control.PRESET_CURRENT_LOC"
+         />
+    
+
+    
+    <TextView
+        android:id="@+id/set_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:textColor="#FFFFFFFF"
+        android:layout_below="@+id/toggleCurrent"
+        android:text="Set the Distance" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+		android:layout_below="@+id/toggleCurrent"
+        android:layout_alignParentRight="true"
+        android:ems="8"
+        android:hint="5"
+        android:padding="5dp"
+        android:background="#2a4498"
+        android:textColor="#FFFFFFFF"
+        android:inputType="number" >
+
+        <requestFocus/>
+    </EditText>
 
 </RelativeLayout>
