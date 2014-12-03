@@ -156,7 +156,7 @@ public class Place {
 		}
 		else 
 		{
-			time = (today - day)*2400+time;
+			time = (day - today)*2400+time;
 		}
 		
 		//fix for subtracting military time
