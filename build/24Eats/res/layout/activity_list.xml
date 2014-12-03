@@ -2,10 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ff000000"
     tools:context="com.example.checklist.MainActivity" >
 
 
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="450dp" >
     <ExpandableListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -13,6 +16,22 @@
         android:layout_centerVertical="true"
 		android:groupIndicator="@null">
     </ExpandableListView>
+    </RelativeLayout>
+    
+    <fragment
+
+        android:id="@+id/fragment1"
+
+        android:name="newAdsAPI.AdFragment"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignParentBottom="true" 
+
+        android:layout_alignParentLeft="true" />
     
     <ProgressBar
         android:id="@+id/spinnerProgress"
