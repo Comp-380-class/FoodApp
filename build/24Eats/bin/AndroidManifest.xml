@@ -60,11 +60,6 @@
             android:name=".List_Items"
             android:label="@string/title_activity_list__items" >
         </activity>
-        
-        <activity
-            android:name=".Settings"
-            android:label="@string/title_activity_settings" >
-        </activity>
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
