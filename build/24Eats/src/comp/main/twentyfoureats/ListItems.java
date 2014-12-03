@@ -34,18 +34,18 @@ public class ListItems extends ActionBarActivity {
         if(temp!=null){
         
         
-       final SparseArray<Place> list = new SparseArray<Place>();
-       int i=0;
-       for(Place item : temp){
-    	   
-          list.append(i,item);
-          i++;
-        }
+	       final SparseArray<Place> list = new SparseArray<Place>();
+	       int i=0;
+	       for(Place item : temp){
+	    	   
+	          list.append(i,item);
+	          i++;
+	        }
         
 
-        ExpandListAdapter adapter = new ExpandListAdapter(this,list);
-        listView.setAdapter(adapter);
-        visible = false;
+	        ExpandListAdapter adapter = new ExpandListAdapter(this,list);
+	        listView.setAdapter(adapter);
+	        visible = false;
         }else{
         	Toast.makeText(this, "No Locations Nearby", Toast.LENGTH_LONG).show();
         }

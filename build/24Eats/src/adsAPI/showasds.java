@@ -1,6 +1,12 @@
 package adsAPI;
 
-import com.google.android.gms.ads.*;
+import android.os.Bundle;
+import android.widget.LinearLayout;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import comp.main.twentyfoureats.R;
 //need to find correct way to import AdsAPI
 
 public class showasds {

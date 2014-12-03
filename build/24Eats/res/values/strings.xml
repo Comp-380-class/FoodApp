@@ -6,5 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_list_view">ListView</string>
     <string name="title_activity_list__items">List_Items</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>
