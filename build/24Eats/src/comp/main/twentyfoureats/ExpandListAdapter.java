@@ -102,31 +102,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	    	
 	    });
 	    this.notifyDataSetChanged();
-/*
-	    
-    //item.addDetails("1412 Campus Rd, Los Angeles, CA 90042", "323-702-8975", "http://www.url.com", 4, 2);
-	 TextView text = null;
-    if (convertView == null) {
-      convertView = inflater.inflate(R.layout.panel_view, null);
-    }
 
-
-    //text = (TextView) convertView.findViewById(R.id.hours);
-    //text.setText(item.getHours());
-    //text = (TextView) convertView.findViewById(R.id.tilClose);
-    //text.setText(item.timeUntilClose());
-    text = (TextView) convertView.findViewById(R.id.address);
-    text.setText(item.getAddress());
-    text = (TextView) convertView.findViewById(R.id.phone);
-    text.setText(item.getPhone());
-    text = (TextView) convertView.findViewById(R.id.rating);
-    text.setText(item.getRating()+"");
-    text = (TextView) convertView.findViewById(R.id.price);
-    text.setText(item.getPrice()+"");
-    text = (TextView) convertView.findViewById(R.id.website);
-    text.setText(item.getWebsite());
-    this.notifyDataSetChanged();
-    return convertView;*/
 	    return rowView;
   }
 

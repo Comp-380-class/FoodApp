@@ -42,13 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/address" />
-    <!--
-             <TextView android:id="@+id/rating" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" 
-				android:layout_alignParentRight="true"
-				android:layout_below="@+id/address" 
-				/>
-    -->
+
 
     <ImageView
         android:id="@+id/rating"
@@ -57,13 +51,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/address" />
 
-    <!--
-             <TextView android:id="@+id/price" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" 
-				android:layout_below="@+id/rating"
-				android:layout_alignParentRight="true"
-				 />
-    -->
+
 
     <ImageView
         android:id="@+id/price"

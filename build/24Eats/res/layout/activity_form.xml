@@ -5,7 +5,6 @@
     android:background="@drawable/form_gradient"
     tools:context="comp.main.twentyfoureats.Form" >
 
-
     <Button
         android:id="@+id/UseButton"
         android:layout_width="175dp"
@@ -14,91 +13,89 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="24dp"
         android:background="@drawable/current_location"
-        android:onClick="switchActivityWithIntent"
-         />
-    
-    <TextView 
+        android:onClick="switchActivityWithIntent" />
+
+    <TextView
         android:id="@+id/or"
         android:layout_width="24dp"
-    	android:layout_height="24dp"
-        android:text="or"
+        android:layout_height="24dp"
         android:layout_below="@+id/UseButton"
-        android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:textColor ="#ff000099"
+        android:layout_marginTop="16dp"
         android:ems="24"
-        android:textStyle="bold"
-        />
-    
+        android:text="or"
+        android:textColor="#ff000099"
+        android:textStyle="bold" />
+
     <RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:layout_below="@+id/or"
-    android:layout_marginTop="16dp"
-    android:id="@+id/LocationBar" >
-    <EditText
-        android:id="@+id/Location"
+        android:id="@+id/LocationBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#33ffffff"
-        android:textColor ="#ffff2a00"
-        android:hint="Input Address"
-        android:padding="8dp"
-        android:ems="12" >
+        android:layout_below="@+id/or"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="16dp" >
 
-        <requestFocus />
-    </EditText>
-    
-    <Button
-        android:id="@+id/LocButton"
-        android:layout_width="45dp"
-        android:layout_height="40dp"
-        android:background="@drawable/icon_search"
-        android:layout_toRightOf="@+id/Location" />
+        <EditText
+            android:id="@+id/Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#33ffffff"
+            android:ems="12"
+            android:hint="Input Address"
+            android:padding="8dp"
+            android:textColor="#ffff2a00" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/LocButton"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@+id/Location"
+            android:background="@drawable/icon_search" />
     </RelativeLayout>
-    
-    <TextView 
+
+    <TextView
         android:id="@+id/within"
         android:layout_width="150dp"
-    	android:layout_height="wrap_content"
-        android:text="minutes to restaurant"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/LocationBar"
-        android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:textColor ="#ffff2a00"
+        android:layout_marginTop="16dp"
         android:ems="12"
-        />
-    
+        android:text="minutes to restaurant"
+        android:textColor="#ffff2a00" />
+
     <RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:layout_below="@+id/within"
-    android:layout_marginTop="8dp"
-    android:id="@+id/distanceBar" >
-    <EditText
-        android:id="@+id/distance"
+        android:id="@+id/distanceBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#33ffffff"
-        android:textColor ="#ffff2a00"
-        android:text="5"
-        android:padding="8dp"
-        android:ems="12" >
+        android:layout_below="@+id/within"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="8dp" >
 
-        <requestFocus />
-    </EditText>
-    
-    <Button
-        android:id="@+id/DistButton"
-        android:layout_width="45dp"
-        android:layout_height="40dp"
-        android:background="@drawable/icon_search"
-        android:layout_toRightOf="@+id/distance" />
+        <EditText
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#33ffffff"
+            android:ems="12"
+            android:padding="8dp"
+            android:text="5"
+            android:textColor="#ffff2a00" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/DistButton"
+            android:layout_width="45dp"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@+id/distance"
+            android:background="@drawable/icon_search" />
     </RelativeLayout>
 
-    
     <ProgressBar
         android:id="@+id/spinnerProgress"
         style="?android:attr/progressBarStyleLarge"
@@ -109,26 +106,23 @@
         android:layout_marginTop="32dp"
         android:visibility="gone" />
 
-<!-- 	<Button
+    <!--
+     	<Button
         android:id="@+id/OptionsButton"
         android:layout_width="82dp"
         android:layout_height="84dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/more_options"
-        android:layout_below="@+id/distanceBar" /> -->
-	
-	<fragment
+        android:layout_below="@+id/distanceBar" />
+    -->
 
+    <fragment
         android:id="@+id/fragment1"
-
         android:name="newAdsAPI.AdFragment"
-
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
-
         android:layout_alignParentBottom="true"
-
         android:layout_alignParentLeft="true" />
+
 </RelativeLayout>
