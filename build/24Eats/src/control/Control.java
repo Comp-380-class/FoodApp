@@ -60,8 +60,9 @@ public class Control {
 	private static final String[] STRING_LIST_VALUES = { DEFAULT_DISTANCE,
 			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC, PRELOAD };
 	@SuppressWarnings("unused")
-	private static final String STRING_LIST = "RUN_AT_STARTUP, PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD";
+	private static final String STRING_LIST = "DEFAULT_DISTANCE, RUN_AT_STARTUP, PRESET_CURRENT_LOC, PRELOAD";
 
+	@SuppressWarnings("unused")
 	private static final String PLACES_LIST = "PLACES_LIST";
 	private String[] defaults = new String[] { "5", "false", "false", "true" }; // RUN_AT_STARTUP,
 																				// PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
@@ -221,15 +222,15 @@ public class Control {
 				.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
 							public void onClick(
-									@SuppressWarnings("unused") final DialogInterface dialog,
-									@SuppressWarnings("unused") final int id) {
+									final DialogInterface dialog,
+									final int id) {
 								parentActivity
 										.startActivity(new Intent(intent));
 							}
 						})
 				.setNegativeButton("No", new DialogInterface.OnClickListener() {
 					public void onClick(final DialogInterface dialog,
-							@SuppressWarnings("unused") final int id) {
+							final int id) {
 						dialog.cancel();
 					}
 				});
@@ -283,7 +284,7 @@ public class Control {
 	 */
 	public void goToSettings() {
 		Intent switchToSettings = new Intent(this.parentActivity,
-				ListView.class);
+				settings.class);
 		this.parentActivity.startActivity(switchToSettings);
 	}
 
@@ -307,14 +308,13 @@ public class Control {
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
 	// **********************************************************************************************************
-	
-	public void makePhoneCall(String number){
-		 String uri = "tel:" + number.trim() ;
-		 Intent intent = new Intent(Intent.ACTION_DIAL);
-		 intent.setData(Uri.parse(uri));
-		 this.parentActivity.startActivity(intent);
+
+	public void makePhoneCall(String number) {
+		String uri = "tel:" + number.trim();
+		Intent intent = new Intent(Intent.ACTION_DIAL);
+		intent.setData(Uri.parse(uri));
+		this.parentActivity.startActivity(intent);
 	}
-	
 
 	// **********************************************************************************************************
 	// ----------------------------------------------------------------------------------------------------------
@@ -393,8 +393,7 @@ public class Control {
 	 * {@value #BOOLEAN_LIST} for the booleans and {@value #STRING_LIST} for the
 	 * strings.
 	 * 
-	 * @param booleanOptions
-	 * @param stringOptions
+	 * @param stringOptions options to update
 	 */
 	public void setSettings(String[] stringOptions) {
 
@@ -447,12 +446,13 @@ public class Control {
 	 * 
 	 * @author David Get a Location object from a class
 	 */
+	@SuppressWarnings("unused")
 	private class getLocationFromAddress extends
 			AsyncTask<String, Void, List<Address>> {
 
 		private AddressCallback[] callback;
 		private String[] options;
-		private int pathway; // Variable to decide path to travel down
+		//private int pathway; // Variable to decide path to travel down
 
 		// ***********************************
 		// Constructors
@@ -531,8 +531,8 @@ public class Control {
 	 * @author David Get GPS Location from gps and return an address
 	 */
 	private class getNewAddress extends AsyncTask<Void, Location, String> {
-		private ProgressBar currentProgress;
-		private Location temp = null; // Create location to use in return
+		
+		@SuppressWarnings("unused")
 		private MapsAPI currentMapsAPI;
 		private AddressCallback[] callback;
 
@@ -586,6 +586,7 @@ public class Control {
 	 * @author David Get the user's current Location as a Location object
 	 */
 	private class getNewLocation extends AsyncTask<MapsAPI, Location, Location> {
+		@SuppressWarnings("unused")
 		private Location temp = null; // Create location to use in return
 		private MapsAPI currentMapsAPI;
 		private LocationCallback[] callback;
