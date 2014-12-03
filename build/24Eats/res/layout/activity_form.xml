@@ -118,11 +118,17 @@
         android:background="@drawable/more_options"
         android:layout_below="@+id/distanceBar" /> -->
 	
-	<ImageView
-        android:id="@+id/banner"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
+	<fragment
+
+        android:id="@+id/fragment1"
+
+        android:name="newAdsAPI.AdFragment"
+
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+
         android:layout_alignParentBottom="true"
-        android:src="@drawable/banner"
-         />
+
+        android:layout_alignParentLeft="true" />
 </RelativeLayout>
