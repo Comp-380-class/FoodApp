@@ -142,7 +142,7 @@ public class MapsAPI {
 	}
 	
 	public boolean gpsOn(){
-		if (this.manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+		if (this.manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) || this.manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 	       return true;
 	    }
 		return false;

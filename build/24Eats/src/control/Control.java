@@ -34,6 +34,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import comp.main.twentyfoureats.ListItems;
 import comp.main.twentyfoureats.ListView;
 import comp.main.twentyfoureats.R;
+import comp.main.twentyfoureats.Settings;
 
 /**
  * Primary Control object for the entire project. All underlying functions are
@@ -284,7 +285,7 @@ public class Control {
 	 */
 	public void goToSettings() {
 		Intent switchToSettings = new Intent(this.parentActivity,
-				settings.class);
+				Settings.class);
 		this.parentActivity.startActivity(switchToSettings);
 	}
 

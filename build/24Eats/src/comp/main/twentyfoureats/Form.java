@@ -25,11 +25,10 @@ public class Form extends ActionBarActivity {
 	public final static String EXTRA_MESSAGE = "Form.message";
 	private Control mainControl;
 	private Button useCurrentLoc;
-	private Button addressButton;
+	private Button addressButton, distButton;
 	private EditText addressText, distance;
-	
 	public final Activity current = this;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,6 +42,24 @@ public class Form extends ActionBarActivity {
 		this.addressButton = (Button) findViewById(R.id.LocButton);
 		this.addressText = (EditText) findViewById(R.id.Location);
 		this.distance = (EditText) findViewById(R.id.distance);
+		this.distButton = (Button) findViewById(R.id.DistButton);
+
+		// Get and set the preset time
+		String timeTo = this.mainControl
+				.getStringSetting(Control.DEFAULT_DISTANCE);
+		if (timeTo != null) {
+			this.distance.setText(timeTo);
+		}
+
+		if (timeTo != null
+				&& this.mainControl.getStringSetting(
+						Control.GET_LIST_AT_STARTUP).compareTo("true") == 0) {
+			this.restrauntView(Control.NO_ADDRESS, timeTo);
+		} else if (this.mainControl.getStringSetting(
+				Control.GET_LIST_AT_STARTUP).compareTo("true") == 0) {
+			this.restrauntView(Control.NO_ADDRESS, "10");
+		}
+
 		// Set on click
 		this.addressButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -51,7 +68,7 @@ public class Form extends ActionBarActivity {
 				restrauntWithLoc(v);
 			}
 		});
-		
+
 		this.useCurrentLoc.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -59,7 +76,32 @@ public class Form extends ActionBarActivity {
 				restrauntWithoutLoc(v);
 			}
 		});
-		
+
+		this.distButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				resetrauntWithDist(v);
+			}
+		});
+
+	}
+
+	@Override
+	protected void onResume() {
+		// this.mainControl.resumeAd();
+		super.onResume();
+	}
+
+	@Override
+	protected void onDestroy() {
+		// this.mainControl.destroyAd();
+		super.onDestroy();
+	}
+
+	@Override
+	protected void onPause() {
+		// this.mainControl.pauseAd();
+		super.onPause();
 	}
 
 	// **********************************************************************************************************
@@ -73,6 +115,10 @@ public class Form extends ActionBarActivity {
 		return true;
 	}
 
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -85,44 +131,78 @@ public class Form extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	// Switch between current activity and new activity with a given value
-	/*public void switchActivityWithIntent(View test) {
-		CharSequence valueToPass = ((TextView) findViewById(R.id.Location))
-				.getText();
-		Intent switchToListAct = new Intent(this, ListView.class);
-		switchToListAct.setAction("FILL_LIST");
-		switchToListAct.putExtra(EXTRA_MESSAGE, valueToPass);
-		startActivity(switchToListAct);
-	}*/
-	
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
 	 * Run with a location
+	 * 
 	 * @param loc
 	 */
-	public void restrauntWithLoc(View loc){
-		this.restrauntView(addressText.getText().toString());
+	public void restrauntWithLoc(View loc) {
+		this.restrauntView(addressText.getText().toString(), null);
 	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
 	/**
 	 * Run the list without a location
+	 * 
 	 * @param loc
 	 */
-	public void restrauntWithoutLoc(View loc){
-		this.restrauntView(Control.NO_ADDRESS);
+	public void restrauntWithoutLoc(View loc) {
+		this.restrauntView(Control.NO_ADDRESS, null);
 	}
-	/*
-	 * Change to the restraunt view with loc
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	/**
+	 * Run with a distance value
+	 * 
+	 * @param loc
 	 */
-	private void restrauntView(String Loc){
+	public void resetrauntWithDist(View loc) {
+		String location = addressText.getText().toString(); // Get location if
+															// it exists
+		if (location.compareTo("") == 0) {
+			location = Control.NO_ADDRESS; // If location doesn't exist, use
+											// current location
+		}
+		this.restrauntView(location, this.distance.getText().toString());
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	/**
+	 * Change to the resteraunt view
+	 * 
+	 * @param Loc
+	 *            The location if it exists
+	 * @param distance
+	 *            The distance to the place if it is used
+	 */
+	private void restrauntView(String Loc, String distance) {
+
 		// Check for google play services
 		if (!Control.checkForGooglePlayServices(current)) {
-			Toast.makeText(this, "You do not have Google Play, please install before use", Toast.LENGTH_LONG).show();
+			Toast.makeText(this,
+					"You do not have Google Play, please install before use",
+					Toast.LENGTH_LONG).show();
 		} else {
 			try {
-				mainControl.getListOfResteraunts(current,
-						Loc, new RestListAct() {
+				mainControl.getListOfResteraunts(current, Loc,
+						new RestListAct() {
 
 							public void execute(ArrayList<Place> temp) {
-								((GlobalApplication) getApplication()).mainControl.goToList(temp);
+								((GlobalApplication) getApplication()).mainControl
+										.goToList(temp);
 							}
 
 							@Override
@@ -130,16 +210,16 @@ public class Form extends ActionBarActivity {
 								// TODO Auto-generated method stub
 							}
 
-						}, null, null, null, null); //this.distance.getText().toString());
+						}, null, null, null, distance);
 
 			} catch (NullPointerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				Toast.makeText(this, "Failure to get GPS",
-						Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Failure to get GPS", Toast.LENGTH_LONG)
+						.show();
 			}
 
 		}
 	}
-	
+
 }
