@@ -194,7 +194,7 @@ public class Place {
 			}
 		}
 		
-		return timeString;
+		return timeString+" 'til close";
 	}
 	
 	/**
