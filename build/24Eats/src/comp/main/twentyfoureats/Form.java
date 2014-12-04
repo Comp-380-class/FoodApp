@@ -88,7 +88,7 @@ public class Form extends ActionBarActivity {
 					@Override
 					public boolean onEditorAction(TextView v, int actionId,
 							KeyEvent event) {
-						restrauntWithLoc(v);
+						addressButton.performClick();
 						return false;
 					}
 
@@ -101,7 +101,7 @@ public class Form extends ActionBarActivity {
 					public boolean onEditorAction(TextView v, int actionId,
 							KeyEvent event) {
 
-						restrauntWithDist(v);
+						distButton.performClick();
 						
 						return false;
 					}
