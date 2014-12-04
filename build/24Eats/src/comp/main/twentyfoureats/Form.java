@@ -6,12 +6,15 @@ import placesAPI.Place;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import applic.GlobalApplication;
 import control.Control;
@@ -44,12 +47,7 @@ public class Form extends ActionBarActivity {
 		this.distance = (EditText) findViewById(R.id.distance);
 		this.distButton = (Button) findViewById(R.id.DistButton);
 
-		// Get and set the preset time
-		String timeTo = this.mainControl
-				.getStringSetting(Control.DEFAULT_DISTANCE);
-		if (timeTo != null) {
-			this.distance.setText(timeTo);
-		}
+		String timeTo = this.setDefaultValues();
 
 		if (timeTo != null
 				&& this.mainControl.getStringSetting(
@@ -80,9 +78,35 @@ public class Form extends ActionBarActivity {
 		this.distButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				resetrauntWithDist(v);
+				restrauntWithDist(v);
 			}
 		});
+
+		this.addressText
+				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+						restrauntWithLoc(v);
+						return false;
+					}
+
+				});
+
+		this.distance
+				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+					@Override
+					public boolean onEditorAction(TextView v, int actionId,
+							KeyEvent event) {
+
+						restrauntWithDist(v);
+						
+						return false;
+					}
+
+				});
 
 	}
 
@@ -90,6 +114,7 @@ public class Form extends ActionBarActivity {
 	protected void onResume() {
 		// this.mainControl.resumeAd();
 		super.onResume();
+		this.setDefaultValues();
 	}
 
 	@Override
@@ -102,6 +127,20 @@ public class Form extends ActionBarActivity {
 	protected void onPause() {
 		// this.mainControl.pauseAd();
 		super.onPause();
+	}
+
+	// **********************************************************************************************************
+	// ----------------------------------------------------------------------------------------------------------
+	// **********************************************************************************************************
+
+	private String setDefaultValues() {
+		// Get and set the preset time
+		String timeTo = this.mainControl
+				.getStringSetting(Control.DEFAULT_DISTANCE);
+		if (timeTo != null) {
+			this.distance.setText(timeTo);
+		}
+		return timeTo;
 	}
 
 	// **********************************************************************************************************
@@ -166,14 +205,17 @@ public class Form extends ActionBarActivity {
 	 * 
 	 * @param loc
 	 */
-	public void resetrauntWithDist(View loc) {
-		String location = addressText.getText().toString(); // Get location if
-															// it exists
+	public void restrauntWithDist(View loc) {
+		String location = addressText.getText().toString()
+				.replaceAll("\\s+", ""); // Get location if
+		// it exists
+
 		if (location.compareTo("") == 0) {
 			location = Control.NO_ADDRESS; // If location doesn't exist, use
 											// current location
 		}
-		this.restrauntView(location, this.distance.getText().toString());
+		this.restrauntView(location, this.distance.getText().toString()
+				.replaceAll("\\s+", ""));
 	}
 
 	// **********************************************************************************************************
@@ -189,7 +231,10 @@ public class Form extends ActionBarActivity {
 	 *            The distance to the place if it is used
 	 */
 	private void restrauntView(String Loc, String distance) {
-
+		//Hide the keyboard
+		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+		
 		// Check for google play services
 		if (!Control.checkForGooglePlayServices(current)) {
 			Toast.makeText(this,

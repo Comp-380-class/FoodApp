@@ -57,7 +57,7 @@ public class Control {
 	public static final String DEFAULT_DISTANCE = "DefaultDistance";
 	public static final String PRESET_CURRENT_LOC = "CurrentLoc";
 	public static final String REST_LIST = "REST_LIST";
-	private static final String PRELOAD = "PRELOAD";
+	public static final String PRELOAD = "PRELOAD";
 	private static final String[] STRING_LIST_VALUES = { DEFAULT_DISTANCE,
 			GET_LIST_AT_STARTUP, PRESET_CURRENT_LOC, PRELOAD };
 	@SuppressWarnings("unused")

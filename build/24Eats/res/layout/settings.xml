@@ -20,8 +20,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:textColor="#FFFFFFFF"
-        android:clickable="true"
-		android:onClick="control.Control.RUN_AT_STARTUP" />
+        android:clickable="true"/>
     
      <TextView
         android:id="@+id/preload_results"
@@ -39,8 +38,7 @@
         android:layout_below="@+id/toggleRun"
         android:layout_alignParentRight="true"
         android:textColor="#FFFFFFFF"
-        android:clickable="true"
-		android:onClick="control.Control.PRELOAD" />
+        android:clickable="true" />
     
     <TextView
         android:id="@+id/use_current"
@@ -59,7 +57,6 @@
         android:layout_alignParentRight="true"
         android:textColor="#FFFFFFFF"
         android:clickable="true"
-		android:onClick="control.Control.PRESET_CURRENT_LOC"
          />
     
 
