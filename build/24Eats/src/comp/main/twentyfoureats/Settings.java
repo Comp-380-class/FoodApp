@@ -44,7 +44,7 @@ public class Settings extends ActionBarActivity {
 		// Get all the toggles
 		toggleValues = new ToggleButton[3];
 		toggleValues[0] = (ToggleButton) this.findViewById(R.id.toggleRun);
-		toggleValues[1] = (ToggleButton) this.findViewById(R.id.toggleCurrent);
+		toggleValues[1] = null;
 		toggleValues[2] = (ToggleButton) this.findViewById(R.id.togglePreload);
 		// Get all the TextViews
 		textSettings = new EditText[1];
@@ -126,7 +126,10 @@ public class Settings extends ActionBarActivity {
 	}
 
 	private String isChecked(ToggleButton toggle) {
-
+		if(toggle != null){
 		return (toggle.isChecked() ? "true" : "false");
+		}else{
+			return "false";
+		}
 	}
 }
