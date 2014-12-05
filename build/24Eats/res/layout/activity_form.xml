@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:background="#33ffffff"
             android:ems="12"
+            android:singleLine="true"
             android:hint="Input Address"
             android:padding="8dp"
             android:textColor="#ffff2a00" >
@@ -82,7 +83,9 @@
             android:background="#33ffffff"
             android:ems="12"
             android:padding="8dp"
-            android:text="5"
+            android:hint="5"
+            android:singleLine="true"
+            android:inputType="number"
             android:textColor="#ffff2a00" >
 
             <requestFocus />
