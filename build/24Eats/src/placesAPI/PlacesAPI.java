@@ -19,7 +19,7 @@ import org.json.JSONObject;
  * Parses the information and stores in Place objects.
  */
 public class PlacesAPI{
-	private static final String API_KEY = "AIzaSyBQoyR-YZVqVujbDaNKZvAK0v09UM4cCLs";
+	private static final String API_KEY = "AIzaSyDRM8F5hylbTKXYh3UKyBw--hlzvezktE4";
 	private static final String PLACES_BASE = "https://maps.googleapis.com/maps/api/place/";
 	private static final String NEARBY = "nearbysearch/json?";
 	private static final String DETAILS = "details/json?";
