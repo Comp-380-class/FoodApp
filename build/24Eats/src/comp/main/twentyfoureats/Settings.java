@@ -22,9 +22,10 @@ public class Settings extends ActionBarActivity {
 	private Control mainControl;
 	private ToggleButton[] toggleValues;
 	private EditText[] textSettings;
-	private static final String[] BOOLEAN_LIST_VALUES = new String[]{
-		Control.GET_LIST_AT_STARTUP, Control.PRESET_CURRENT_LOC, Control.PRELOAD }; 
-	private static final String[] STRING_LIST_VALUES = new String[]{Control.DEFAULT_DISTANCE};
+	private static final String[] BOOLEAN_LIST_VALUES = new String[] {
+			Control.GET_LIST_AT_STARTUP, Control.PRESET_CURRENT_LOC,
+			Control.PRELOAD };
+	private static final String[] STRING_LIST_VALUES = new String[] { Control.DEFAULT_DISTANCE };
 	private OnClickListener settingsListener = new OnClickListener() {
 
 		@Override
@@ -52,44 +53,48 @@ public class Settings extends ActionBarActivity {
 
 		String value;
 		for (int i = 0; i < this.toggleValues.length; i++) {
-			//Set the settings
-			value = this.mainControl.getStringSetting(Settings.BOOLEAN_LIST_VALUES[i]);
-			if(value!=null){
-				if(value.compareTo("true")==0){
+			// Set the settings
+			value = this.mainControl
+					.getStringSetting(Settings.BOOLEAN_LIST_VALUES[i]);
+			if (value != null && this.toggleValues[i] != null) {
+				if (value.compareTo("true") == 0) {
 					this.toggleValues[i].setChecked(true);
-				}else{
+				} else {
 					this.toggleValues[i].setChecked(false);
 				}
 
 			}
-			//Add the listener
-			this.toggleValues[i].setOnClickListener(this.settingsListener);
+
+			if (toggleValues[i] != null) {
+				// Add the listener
+				this.toggleValues[i].setOnClickListener(this.settingsListener);
+			}
 		}
 
 		for (int i = 0; i < this.textSettings.length; i++) {
-			
-			value = this.mainControl.getStringSetting(Settings.STRING_LIST_VALUES[i]);
-			
-			if(value!=null){
+
+			value = this.mainControl
+					.getStringSetting(Settings.STRING_LIST_VALUES[i]);
+
+			if (value != null && this.textSettings[i] != null) {
 				this.textSettings[i].setText(value);
 			}
-			
-			this.textSettings[i].setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-				@Override
-				public boolean onEditorAction(TextView v, int actionId,
-						KeyEvent event) {
-					changeSettings();
-					return false;
-				}
-				
-			});
-			
+			this.textSettings[i]
+					.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+						@Override
+						public boolean onEditorAction(TextView v, int actionId,
+								KeyEvent event) {
+							changeSettings();
+							return false;
+						}
+
+					});
+
 			this.textSettings[i]
 					.setOnFocusChangeListener(new OnFocusChangeListener() {
-						
-						
-						
+
 						@Override
 						public void onFocusChange(View v, boolean hasFocus) {
 							if (!hasFocus) {
@@ -114,11 +119,13 @@ public class Settings extends ActionBarActivity {
 				+ textSettings.length];
 
 		for (int textValues = 0; textValues < textSettings.length; textValues++) {
-			settings[textValues] = textSettings[textValues].getText()
-					.toString();
+			if (this.textSettings[textValues] != null) {
+				settings[textValues] = textSettings[textValues].getText()
+						.toString();
+			}
 		}
 
-		for (int i = textSettings.length,j=0; i < toggleValues.length; i++,j++) {
+		for (int i = textSettings.length, j = 0; i < toggleValues.length; i++, j++) {
 			settings[i] = isChecked(toggleValues[j]);
 		}
 
@@ -126,9 +133,9 @@ public class Settings extends ActionBarActivity {
 	}
 
 	private String isChecked(ToggleButton toggle) {
-		if(toggle != null){
-		return (toggle.isChecked() ? "true" : "false");
-		}else{
+		if (toggle != null) {
+			return (toggle.isChecked() ? "true" : "false");
+		} else {
 			return "false";
 		}
 	}
