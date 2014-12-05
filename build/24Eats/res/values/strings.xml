@@ -7,5 +7,10 @@
     <string name="title_activity_list_view">ListView</string>
     <string name="title_activity_list__items">List_Items</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="details_hint">5</string>
+    <string name="settings_set_time">Set Default Time To Restaurants</string>
+    <string name="settings_preload">Preload Top 3 Restaurants</string>
+    <string name="settings_launch">Find Restaurants when Launched</string>
+    <string name="or">or</string>
 
 </resources>

@@ -21,3 +21,8 @@ build/.metadata/*
 android-support-v7-appcompat/
 google-play-services_lib/
 build/24Eats/bin/24Eats.apk
+build/24Eats/bin/24Eats.apk
+build/24Eats/bin/R.txt
+build/24Eats/bin/resources.ap_
+build/24Eats/gen/android/support/v7/appcompat/R.java
+build/24Eats/gen/com/google/android/gms/R.java

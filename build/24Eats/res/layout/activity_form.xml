@@ -23,6 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:ems="24"
+        android:hint="@string/or"
         android:text="or"
         android:textColor="#ff000099"
         android:textStyle="bold" />
@@ -57,6 +58,18 @@
             android:background="@drawable/icon_search" />
     </RelativeLayout>
 
+    
+    <ProgressBar
+        android:id="@+id/spinnerProgress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity = "center_vertical|center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="32dp"
+        android:visibility="gone" />
+    
     <TextView
         android:id="@+id/within"
         android:layout_width="150dp"
@@ -82,10 +95,10 @@
             android:layout_height="wrap_content"
             android:background="#33ffffff"
             android:ems="12"
-            android:padding="8dp"
-            android:hint="5"
-            android:singleLine="true"
+            android:hint="@string/details_hint"
             android:inputType="number"
+            android:padding="8dp"
+            android:singleLine="true"
             android:textColor="#ffff2a00" >
 
             <requestFocus />
@@ -99,15 +112,6 @@
             android:background="@drawable/icon_search" />
     </RelativeLayout>
 
-    <ProgressBar
-        android:id="@+id/spinnerProgress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LocationBar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:visibility="gone" />
 
     <!--
      	<Button

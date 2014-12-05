@@ -6,12 +6,12 @@
     android:padding="16dp">
     
 	<TextView
-        android:id="@+id/run_right_away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:textColor="#FFFFFFFF"
-        android:text="Run Right Away" />
+	    android:id="@+id/run_right_away"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="14dp"
+	    android:text="@string/settings_launch"
+	    android:textColor="#FFFFFFFF" />
 
     <ToggleButton
         android:id="@+id/toggleRun"
@@ -23,13 +23,13 @@
         android:clickable="true"/>
     
      <TextView
-        android:id="@+id/preload_results"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:textColor="#FFFFFFFF"
-        android:layout_below="@+id/toggleRun"
-        android:text="Preload Results" />
+         android:id="@+id/preload_results"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/toggleRun"
+         android:layout_marginTop="14dp"
+         android:text="@string/settings_preload"
+         android:textColor="#FFFFFFFF" />
 
     <ToggleButton
         android:id="@+id/togglePreload"
@@ -40,31 +40,28 @@
         android:textColor="#FFFFFFFF"
         android:clickable="true" />
     
-
-    
-
-    
     <TextView
         android:id="@+id/set_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/togglePreload"
         android:layout_marginTop="14dp"
-        android:textColor="#FFFFFFFF"
-        android:layout_below="@+id/toggleCurrent"
-        android:text="Set the Distance" />
+        android:hint="@string/details_hint"
+        android:text="@string/settings_set_time"
+        android:textColor="#FFFFFFFF" />
 
     <EditText
         android:id="@+id/editText1"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-		android:layout_below="@+id/toggleCurrent"
         android:layout_alignParentRight="true"
-        android:ems="8"
-        android:hint="5"
-        android:padding="5dp"
+        android:layout_below="@+id/togglePreload"
         android:background="#2a4498"
-        android:textColor="#FFFFFFFF"
-        android:inputType="number" >
+        android:ems="8"
+        android:hint="@string/details_hint"
+        android:inputType="number"
+        android:padding="5dp"
+        android:textColor="#FFFFFFFF" >
 
         <requestFocus/>
     </EditText>

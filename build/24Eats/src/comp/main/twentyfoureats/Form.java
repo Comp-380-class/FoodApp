@@ -114,6 +114,7 @@ public class Form extends ActionBarActivity {
 	protected void onResume() {
 		// this.mainControl.resumeAd();
 		super.onResume();
+		this.mainControl.setContext(current);
 		this.setDefaultValues();
 	}
 
