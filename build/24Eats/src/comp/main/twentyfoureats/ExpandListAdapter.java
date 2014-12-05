@@ -110,6 +110,54 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	    		break;
 	    }
 	    
+	    int ratingPull = item.getRating();
+	    int stars = 0;
+	    switch(ratingPull){
+	    	case 0:
+	    		stars = R.drawable.zero;
+	    		break;
+	    		
+	    	case 1:
+	    		stars = R.drawable.one;
+	    		break;
+	    		
+	    	case 2:
+	    		stars = R.drawable.two;
+	    		break;
+	    		
+	    	case 3:
+	    		stars = R.drawable.three;
+	    		break;
+	    		
+	    	case 4:
+	    		stars = R.drawable.four;
+	    		break;
+	    		
+	    	case 5:
+	    		stars = R.drawable.five;
+	    		break;
+	    		
+	    	case 6:
+	    		stars = R.drawable.six;
+	    		break;
+	    		
+	    	case 7:
+	    		stars = R.drawable.seven;
+	    		break;
+	    		
+	    	case 8:
+	    		stars = R.drawable.eight;
+	    		break;
+	    		
+	    	case 9:
+	    		stars = R.drawable.nine;
+	    		break;
+	    		
+	    	case 10:
+	    		stars = R.drawable.ten;
+	    		break;
+	    }
+	    
 
 	    // fill data
 	    ViewHolderChild holder = (ViewHolderChild) rowView.getTag();
@@ -118,6 +166,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	    //holder.text.setText(item.getName());
 	    holder.address.setText(item.getAddress());
 	    holder.phone.setText(item.getPhone());
+	    holder.rating.setBackgroundResource(stars);
 	    //holder.rating.setText(item.getRating()+"");
 	    holder.price.setText(dollars);
 	    holder.web.setText(item.getWebsite());
