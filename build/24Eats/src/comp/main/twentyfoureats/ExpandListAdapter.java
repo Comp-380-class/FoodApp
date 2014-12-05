@@ -43,7 +43,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	    public TextView phone;
 	    public TextView address;
 	    public ImageView rating;
-	   public ImageView price;
+	   public TextView price;
 	    public TextView web;
 }
   
@@ -77,10 +77,39 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	      viewHolder.address = (TextView) rowView.findViewById(R.id.address);
 	      viewHolder.phone = (TextView) rowView.findViewById(R.id.phone);
 	      viewHolder.rating = (ImageView) rowView.findViewById(R.id.rating);
-	      viewHolder.price = (ImageView) rowView.findViewById(R.id.price);
+	      viewHolder.price = (TextView) rowView.findViewById(R.id.price);
 	      viewHolder.web = (TextView) rowView.findViewById(R.id.website);
 	      rowView.setTag(viewHolder);
 	    }
+	    
+	    int pricePull = item.getPrice();
+	    String dollars = "";
+	    switch(pricePull){
+	    	case 0:
+	    		dollars = "NA";
+	    		break;
+	    		
+	    	case 1:
+	    		dollars = "$";
+	    		break;
+	    		
+	    	case 2:
+	    		dollars = "$$";
+	    		break;
+	    		
+	    	case 3:
+	    		dollars = "$$$";
+	    		break;
+	    		
+	    	case 4:
+	    		dollars = "$$$$";
+	    		break;
+	    		
+	    	case 5:
+	    		dollars = "$$$$";
+	    		break;
+	    }
+	    
 
 	    // fill data
 	    ViewHolderChild holder = (ViewHolderChild) rowView.getTag();
@@ -90,7 +119,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	    holder.address.setText(item.getAddress());
 	    holder.phone.setText(item.getPhone());
 	    //holder.rating.setText(item.getRating()+"");
-	    //holder.price.setText(item.getPrice()+"");
+	    holder.price.setText(dollars);
 	    holder.web.setText(item.getWebsite());
 	    holder.web.setOnClickListener(new OnClickListener(){
 
