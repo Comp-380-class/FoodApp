@@ -43,7 +43,8 @@
         android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
         android:layout_below="@+id/address" 
-        android:background="@drawable/map"/>
+        android:background="@drawable/map"
+        android:clickable="true"/>
 
     <TextView
         android:id="@+id/phone"
