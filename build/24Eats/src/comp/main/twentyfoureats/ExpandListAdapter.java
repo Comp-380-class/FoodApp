@@ -62,7 +62,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 		      boolean isLastChild, View convertView, ViewGroup parent) {
     
 	  Place item = (Place) getGroup(groupPosition);
-	  
+	  final Double latitude = item.getLat(), longitude = item.getLong(); //Coordinates for map button
 	  
 	  View rowView = convertView;
 	    // reuse views
@@ -79,6 +79,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	      viewHolder.rating = (ImageView) rowView.findViewById(R.id.rating);
 	      viewHolder.price = (TextView) rowView.findViewById(R.id.price);
 	      viewHolder.web = (TextView) rowView.findViewById(R.id.website);
+	      
 	      rowView.setTag(viewHolder);
 	    }
 	    
@@ -179,6 +180,15 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 			}
 	    	
 	    });
+	    ((ImageView) rowView.findViewById(R.id.map_icon)).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Control.showMap(String.valueOf(latitude),String.valueOf(longitude), v.getContext());
+			}
+	    	
+	    });
 	    this.notifyDataSetChanged();
 
 	    return rowView;
@@ -262,4 +272,8 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
   public boolean isChildSelectable(int groupPosition, int childPosition) {
     return false;
   }
+  
+  
+  
+  
 } 

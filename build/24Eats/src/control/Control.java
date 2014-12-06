@@ -345,11 +345,11 @@ public class Control {
 	 *            The longitude of the location
 	 */
 	public static void showMap(String latitude, String longitude,
-			Activity parent) {
-		Uri current = Uri.parse("http://maps.google.com/maps?saddr=" + latitude
-				+ "," + longitude + "&daddr=20.5666,45.345");
+			Context context) {
+		Uri current = Uri.parse("http://maps.google.com/maps?f=d" + "&daddr=" + latitude
+				+ "," + longitude);
 
-		showMap(current, parent);
+		showMap(current, context);
 	}
 
 	// **********************************************************************************************************
@@ -362,11 +362,11 @@ public class Control {
 	 * @param geoLocation
 	 *            The location as a uri
 	 */
-	private static void showMap(Uri geoLocation, Activity parentActivity) {
+	private static void showMap(Uri geoLocation, Context context) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(geoLocation);
-		if (intent.resolveActivity(parentActivity.getPackageManager()) != null) {
-			parentActivity.startActivity(intent);
+		if (intent.resolveActivity(context.getPackageManager()) != null) {
+			context.startActivity(intent);
 		}
 	}
 
