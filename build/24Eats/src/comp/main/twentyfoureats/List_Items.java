@@ -26,10 +26,10 @@ public class List_Items extends ActionBarActivity {
         ((GlobalApplication) getApplication()).mainControl.setContext(this);
 		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
         
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
+		OverScrolledListView listView = (OverScrolledListView) findViewById(R.id.listView);
+		
         listView.setIndicatorBounds(10, 5);
         List<Place> temp = this.mainControl.getRestList();
-        
         
         
         double[] num = new double[] { 0.5, 0.6, 0.7,

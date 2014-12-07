@@ -27,8 +27,8 @@ public class ListItems extends ActionBarActivity {
         ((GlobalApplication) getApplication()).mainControl.setContext(this);
 		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
         
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-       
+		OverScrolledListView listView = (OverScrolledListView) findViewById(R.id.listView);
+        
         List<Place> temp = this.mainControl.getRestList();
         
         if(temp!=null){
@@ -45,6 +45,7 @@ public class ListItems extends ActionBarActivity {
 
 	        ExpandListAdapter adapter = new ExpandListAdapter(this,list);
 	        listView.setAdapter(adapter);
+	        listView.setControl(this.mainControl,adapter);
 	        visible = false;
         }else{
         	Toast.makeText(this, "No Locations Nearby", Toast.LENGTH_LONG).show();
