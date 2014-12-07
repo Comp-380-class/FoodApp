@@ -29,7 +29,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	public Activity activity;
 	private Control mainControl;
 	private int length;
-
+	private int lastOpen = -1;
 	public ExpandListAdapter(Activity act, SparseArray<Place> groups) {
 		activity = act;
 		this.length = groups.size();
@@ -279,7 +279,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	}
 
 	public void addChildren(ArrayList<Place> children) {
-		if (children != null) {
+		if (children != null && children.get(0).getName().compareTo(this.groups.get(this.length-1).getName())!=0) {
 			for (int i = this.length; i < children.size() + this.length; i++) {
 				this.groups.put(i, children.get(i-this.length));
 			}
@@ -287,6 +287,14 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 			this.notifyDataSetChanged();
 			this.notifyDataSetInvalidated();
 		}
+	}
+	
+	public void setLastOpen(int item){
+		this.lastOpen = item;
+	}
+	
+	public int getLastOpen(){
+		return this.lastOpen;
 	}
 
 }

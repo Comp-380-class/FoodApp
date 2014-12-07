@@ -57,6 +57,14 @@ public class ListItems extends ActionBarActivity {
 				public boolean onGroupClick(ExpandableListView parent, View v,
 						int groupPosition, long id) {
 					Place item = (Place) adapter.getGroup(groupPosition);
+					if(adapter.getLastOpen()!=-1){
+						parent.collapseGroup(adapter.getLastOpen());
+						adapter.setLastOpen(groupPosition);
+					}else if(adapter.getLastOpen()==groupPosition){
+						adapter.setLastOpen(-1);
+					}else{
+						adapter.setLastOpen(groupPosition);
+					}
 					final ExpandableListView parent2 = parent;
 					final int groupNum = groupPosition;
 					if (!item.isDetailed()) {
@@ -65,7 +73,6 @@ public class ListItems extends ActionBarActivity {
 							@Override
 							public void execute(Place places) {
 								parent2.expandGroup(groupNum);
-								
 							}
 
 							@Override

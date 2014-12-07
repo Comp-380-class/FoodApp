@@ -671,6 +671,7 @@ public class Control {
 				// If nothing passed, then get address, else more places
 				if (params[0] == Control.GET_MORE) {
 					currentPlaces = places.getMorePlaces();
+					return currentPlaces;
 				} else if (params[0] == Control.NO_ADDRESS) {
 					try {
 						Location current = gMaps.getCurrentGPSCoordinates();
@@ -686,7 +687,7 @@ public class Control {
 					opt[0] = "" + value.get(0).getLatitude();
 					opt[1] = "" + value.get(0).getLongitude();
 					currentPlaces = places.getPlaces(opt);
-
+					
 				}
 
 				return currentPlaces;

@@ -20,8 +20,10 @@ public class OverScrolledListView extends ExpandableListView {
 	@SuppressLint("NewApi")
 	public OverScrolledListView(Context context) {
 		super(context);
-		this.setOverscrollFooter(context.getResources().getDrawable(R.drawable.backgradient));
-		this.setOverscrollHeader(context.getResources().getDrawable(R.drawable.backgradient));
+		this.setOverscrollFooter(context.getResources().getDrawable(
+				R.drawable.backgradient));
+		this.setOverscrollHeader(context.getResources().getDrawable(
+				R.drawable.backgradient));
 	}
 
 	public OverScrolledListView(Context context, AttributeSet attrs) {
@@ -35,26 +37,27 @@ public class OverScrolledListView extends ExpandableListView {
 		// TODO Auto-generated constructor stub
 	}
 
-	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX,
 			boolean clampedY) {
-		this.mainControl.getMoreResteraunts(null, new RestListAct() {
+		if (clampedY) {
+			this.mainControl.getMoreResteraunts(null, new RestListAct() {
 
-			@Override
-			public void execute(Place places) {
-				// TODO Auto-generated method stub
+				@Override
+				public void execute(Place places) {
+					// TODO Auto-generated method stub
 
-			}
+				}
 
-			@Override
-			public void execute(ArrayList<Place> places) {
-				// TODO Auto-generated method stub
-				view.addChildren(places);
-			}
+				@Override
+				public void execute(ArrayList<Place> places) {
+					// TODO Auto-generated method stub
+					view.addChildren(places);
+				}
 
-		});
+			});
+		}
 
 		super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
 	}
