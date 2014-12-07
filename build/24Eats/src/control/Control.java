@@ -256,8 +256,8 @@ public class Control {
 	 * @param places
 	 *            The place whose details are desired
 	 */
-	public void getDetails(Place places) {
-		(new GetDetails()).execute(places);
+	public void getDetails(Place places, RestListAct callback) {
+		(new GetDetails(callback)).execute(places);
 	}
 
 	// **********************************************************************************************************
@@ -642,7 +642,7 @@ public class Control {
 	 * 
 	 * @author David Async retrieve a list of resteraunts, return an intent
 	 */
-	private class getList extends AsyncTask<String, Void, ArrayList<Place>> {
+	private class getList extends AsyncTask<String, String, ArrayList<Place>> {
 
 		private RestListAct[] activityList;
 		private String[] opt;
@@ -697,6 +697,8 @@ public class Control {
 			}
 			return null;
 		}
+		
+		
 
 		@Override
 		protected void onPostExecute(ArrayList<Place> temp) {
@@ -719,6 +721,12 @@ public class Control {
 	 */
 	private class GetDetails extends AsyncTask<Place, Void, Place> {
 
+		private RestListAct callback;
+		
+		public GetDetails(RestListAct callback){
+			this.callback = callback;
+		}
+		
 		@Override
 		protected void onPreExecute() {
 			Control.onStartAsync(parentActivity);
@@ -730,8 +738,10 @@ public class Control {
 			places.getDetails(params[0]);
 			return null;
 		}
+		
 
 		protected void onPostExecute(Place vell) {
+			this.callback.execute(vell);
 			Control.onStopAsync(parentActivity);
 		}
 	}

@@ -40,11 +40,6 @@ public class OverScrolledListView extends ExpandableListView {
 	@Override
 	protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX,
 			boolean clampedY) {
-		Toast.makeText(
-				this.getContext(),
-				"scrollX:" + scrollX + " scrollY:" + scrollY + " clampedX:"
-						+ clampedX + " clampedY:" + clampedX, Toast.LENGTH_LONG)
-				.show();
 		this.mainControl.getMoreResteraunts(null, new RestListAct() {
 
 			@Override

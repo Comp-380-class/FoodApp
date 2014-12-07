@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import applic.GlobalApplication;
@@ -205,7 +206,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return groupPosition;
+		return 1;
 	}
 
 	@Override
@@ -225,11 +226,10 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public void onGroupExpanded(int groupPosition) {
-
 		Place item = (Place) getGroup(groupPosition);
 
 		if (!item.isDetailed()) {
-			this.mainControl.getDetails(item);
+			//this.mainControl.getDetails(item);
 		}
 
 		super.onGroupExpanded(groupPosition);
@@ -254,12 +254,10 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 			viewHolder.text = (TextView) rowView.findViewById(R.id.name);
 			rowView.setTag(viewHolder);
 		}
-
 		// fill data
 		ViewHolder holder = (ViewHolder) rowView.getTag();
 		// String s = names[position];
 		holder.text.setText(group.getName());
-
 		/*
 		 * if (convertView == null) { convertView =
 		 * inflater.inflate(R.layout.button_only_view, null); } Place group =
