@@ -67,7 +67,7 @@ public class Control {
 	private static final String PLACES_LIST = "PLACES_LIST";
 	private String[] defaults = new String[] { "5", "false", "false", "true" }; // RUN_AT_STARTUP,
 																				// PRESET_CURRENT_LOC,DEFAULT_DISTANCE,PRELOAD
-
+	private static boolean asyncRunning = false;
 	private List<Place> Rest_Places;// Rest Places
 	// ********************************
 	// Private Variables
@@ -117,9 +117,11 @@ public class Control {
 	 * @return The user's current location as a string
 	 */
 	public void getCurrentAddress(AddressCallback... callback) {
-		if (Control.checkForGooglePlayServices(parentActivity)
-				&& Control.checkForGPS(parentActivity)) {
-			(new getNewAddress(callback)).execute();
+		if (!asyncRunning) {
+			if (Control.checkForGooglePlayServices(parentActivity)
+					&& Control.checkForGPS(parentActivity)) {
+				(new getNewAddress(callback)).execute();
+			}
 		}
 	}
 
@@ -137,7 +139,7 @@ public class Control {
 	public void getCurrentLocation(LocationCallback... callback)
 			throws NoGPSException {
 		if (Control.checkForGooglePlayServices(parentActivity)
-				&& Control.checkForGPS(parentActivity)) {
+				&& Control.checkForGPS(parentActivity) && !asyncRunning) {
 			(new getNewLocation(callback)).execute();
 		}
 	}
@@ -156,7 +158,9 @@ public class Control {
 	 *            been retrieved
 	 */
 	public void getCurrentLocation(String address, AddressList... list) {
-		(new getAddressLocation(list)).execute(address);
+		if (!asyncRunning) {
+			(new getAddressLocation(list)).execute(address);
+		}
 	}
 
 	// **********************************************************************************************************
@@ -178,18 +182,19 @@ public class Control {
 	 */
 	public void getListOfResteraunts(Context context, String currentLocation,
 			RestListAct callback, String... options) {
-
-		if (currentLocation == Control.NO_ADDRESS && !this.gMaps.gpsOn()) {
-			buildAlertMessageNoGps(
-					"Your GPS seems to be disabled, do you want to enable it?",
-					android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-		} else if (!isConnectingToInternet()) {
-			buildAlertMessageNoGps(
-					"Your Internet seems to be off, would you like to check it?",
-					android.provider.Settings.ACTION_WIFI_SETTINGS);
-		} else {
-			// Add functions to get location based on given values
-			(new getList(options, callback)).execute(currentLocation);
+		if (!asyncRunning) {
+			if (currentLocation == Control.NO_ADDRESS && !this.gMaps.gpsOn()) {
+				buildAlertMessageNoGps(
+						"Your GPS seems to be disabled, do you want to enable it?",
+						android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			} else if (!isConnectingToInternet()) {
+				buildAlertMessageNoGps(
+						"Your Internet seems to be off, would you like to check it?",
+						android.provider.Settings.ACTION_WIFI_SETTINGS);
+			} else {
+				// Add functions to get location based on given values
+				(new getList(options, callback)).execute(currentLocation);
+			}
 		}
 	}
 
@@ -222,8 +227,7 @@ public class Control {
 				.setCancelable(false)
 				.setPositiveButton("Yes",
 						new DialogInterface.OnClickListener() {
-							public void onClick(
-									final DialogInterface dialog,
+							public void onClick(final DialogInterface dialog,
 									final int id) {
 								parentActivity
 										.startActivity(new Intent(intent));
@@ -244,7 +248,9 @@ public class Control {
 	// **********************************************************************************************************
 
 	public void getMoreResteraunts(Context context, RestListAct callback) {
-		(new getList(callback)).execute(Control.GET_MORE);
+		if (!asyncRunning) {
+			(new getList(callback)).execute(Control.GET_MORE);
+		}
 	}
 
 	// **********************************************************************************************************
@@ -257,7 +263,9 @@ public class Control {
 	 *            The place whose details are desired
 	 */
 	public void getDetails(Place places, RestListAct callback) {
-		(new GetDetails(callback)).execute(places);
+		if (!asyncRunning) {
+			(new GetDetails(callback)).execute(places);
+		}
 	}
 
 	// **********************************************************************************************************
@@ -346,8 +354,8 @@ public class Control {
 	 */
 	public static void showMap(String latitude, String longitude,
 			Context context) {
-		Uri current = Uri.parse("http://maps.google.com/maps?f=d" + "&daddr=" + latitude
-				+ "," + longitude);
+		Uri current = Uri.parse("http://maps.google.com/maps?f=d" + "&daddr="
+				+ latitude + "," + longitude);
 
 		showMap(current, context);
 	}
@@ -394,7 +402,8 @@ public class Control {
 	 * {@value #BOOLEAN_LIST} for the booleans and {@value #STRING_LIST} for the
 	 * strings.
 	 * 
-	 * @param stringOptions options to update
+	 * @param stringOptions
+	 *            options to update
 	 */
 	public void setSettings(String[] stringOptions) {
 
@@ -453,7 +462,8 @@ public class Control {
 
 		private AddressCallback[] callback;
 		private String[] options;
-		//private int pathway; // Variable to decide path to travel down
+
+		// private int pathway; // Variable to decide path to travel down
 
 		// ***********************************
 		// Constructors
@@ -532,7 +542,7 @@ public class Control {
 	 * @author David Get GPS Location from gps and return an address
 	 */
 	private class getNewAddress extends AsyncTask<Void, Location, String> {
-		
+
 		@SuppressWarnings("unused")
 		private MapsAPI currentMapsAPI;
 		private AddressCallback[] callback;
@@ -687,7 +697,7 @@ public class Control {
 					opt[0] = "" + value.get(0).getLatitude();
 					opt[1] = "" + value.get(0).getLongitude();
 					currentPlaces = places.getPlaces(opt);
-					
+
 				}
 
 				return currentPlaces;
@@ -698,8 +708,6 @@ public class Control {
 			}
 			return null;
 		}
-		
-		
 
 		@Override
 		protected void onPostExecute(ArrayList<Place> temp) {
@@ -723,11 +731,11 @@ public class Control {
 	private class GetDetails extends AsyncTask<Place, Void, Place> {
 
 		private RestListAct callback;
-		
-		public GetDetails(RestListAct callback){
+
+		public GetDetails(RestListAct callback) {
 			this.callback = callback;
 		}
-		
+
 		@Override
 		protected void onPreExecute() {
 			Control.onStartAsync(parentActivity);
@@ -739,7 +747,6 @@ public class Control {
 			places.getDetails(params[0]);
 			return null;
 		}
-		
 
 		protected void onPostExecute(Place vell) {
 			this.callback.execute(vell);
@@ -837,6 +844,7 @@ public class Control {
 	public static void onStartAsync(Activity parentActivity) {
 		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
 				.setVisibility(View.VISIBLE);
+		asyncRunning = true;
 	}
 
 	// **********************************************************************************************************
@@ -852,6 +860,7 @@ public class Control {
 	public static void onStopAsync(Activity parentActivity) {
 		((ProgressBar) parentActivity.findViewById(R.id.spinnerProgress))
 				.setVisibility(View.GONE);
+		asyncRunning = false;
 	}
 
 	// **********************************************************************************************************
