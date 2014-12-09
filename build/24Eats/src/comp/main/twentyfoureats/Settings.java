@@ -125,7 +125,7 @@ public class Settings extends ActionBarActivity {
 			}
 		}
 
-		for (int i = textSettings.length, j = 0; i < toggleValues.length; i++, j++) {
+		for (int i = textSettings.length, j = 0; i <= toggleValues.length; i++, j++) {
 			settings[i] = isChecked(toggleValues[j]);
 		}
 

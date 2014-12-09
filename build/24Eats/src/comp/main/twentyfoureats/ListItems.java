@@ -22,80 +22,95 @@ public class ListItems extends ActionBarActivity {
 	// MySimpleArrayAdapter adapter;
 	boolean visible;
 	// ArrayList<Place> list;
-	Control mainControl;
+	private Control mainControl;
 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-        
-        ((GlobalApplication) getApplication()).mainControl.setContext(this);
-		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
-        
-		OverScrolledListView listView = (OverScrolledListView) findViewById(R.id.listView);
-        
-        List<Place> temp = this.mainControl.getRestList();
-        
-        if(temp!=null){
-        
-        
-	       final SparseArray<Place> list = new SparseArray<Place>();
-	       int i=0;
-	       for(Place item : temp){
-	    	   
-	          list.append(i,item);
-	          i++;
-	        }
-        
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_list);
 
-	        final ExpandListAdapter adapter = new ExpandListAdapter(this,list);
-	        listView.setAdapter(adapter);
-	        listView.setControl(this.mainControl,adapter);
-	        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-				
+		((GlobalApplication) getApplication()).mainControl.setContext(this);
+		this.mainControl = ((GlobalApplication) getApplication()).mainControl;
+
+		OverScrolledListView listView = (OverScrolledListView) findViewById(R.id.listView);
+
+		List<Place> temp = this.mainControl.getRestList();
+
+		if (temp != null) {
+
+			final SparseArray<Place> list = new SparseArray<Place>();
+			int i = 0;
+			for (Place item : temp) {
+
+				list.append(i, item);
+				i++;
+			}
+
+			final ExpandListAdapter adapter = new ExpandListAdapter(this, list);
+			listView.setAdapter(adapter);
+			listView.setControl(this.mainControl, adapter);
+			listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+
 				@Override
 				public boolean onGroupClick(ExpandableListView parent, View v,
-						int groupPosition, long id) {
-					Place item = (Place) adapter.getGroup(groupPosition);
-					if(adapter.getLastOpen()!=-1){
-						parent.collapseGroup(adapter.getLastOpen());
-						adapter.setLastOpen(groupPosition);
-					}else if(adapter.getLastOpen()==groupPosition){
-						adapter.setLastOpen(-1);
-					}else{
-						adapter.setLastOpen(groupPosition);
-					}
-					final ExpandableListView parent2 = parent;
-					final int groupNum = groupPosition;
-					if (!item.isDetailed()) {
-						mainControl.getDetails(item,new RestListAct(){
+						final int groupPosition, long id) {
 
-							@Override
-							public void execute(Place places) {
-								parent2.expandGroup(groupNum);
-							}
+					if (!mainControl.getAsyncRunning()) {
+						Place item = (Place) adapter.getGroup(groupPosition);
+						// Close last one and expand new one
+						
+						
+						final ExpandableListView parent2 = parent;
+						final int groupNum = groupPosition;
+						if (!item.isDetailed()) {
+							mainControl.getDetails(item, new RestListAct() {
 
-							@Override
-							public void execute(ArrayList<Place> places) {
-								// TODO Auto-generated method stub
-								
+								@Override
+								public void execute(Place places) {
+									if (adapter.getLastOpen() != -1) {
+										parent2.collapseGroup(adapter.getLastOpen());
+										adapter.setLastOpen(groupPosition);
+									} else if (adapter.getLastOpen() == groupPosition) {
+										adapter.setLastOpen(-1);
+									} else {
+										adapter.setLastOpen(groupPosition);
+									}
+									parent2.expandGroup(groupNum);
+								}
+
+								@Override
+								public void execute(ArrayList<Place> places) {
+									// TODO Auto-generated method stub
+
+								}
+
+							});
+							return true;
+						} else {
+							if (adapter.getLastOpen() != -1) {
+								parent.collapseGroup(adapter.getLastOpen());
+								adapter.setLastOpen(groupPosition);
+							} else if (adapter.getLastOpen() == groupPosition) {
+								adapter.setLastOpen(-1);
+							} else {
+								adapter.setLastOpen(groupPosition);
 							}
-							
-						});
+							parent.expandGroup(groupPosition);
+							return true;
+						}
+					} else {
 						return true;
-					}else{
-						return false;
 					}
 				}
 			});
-	        
-	        visible = false;
-        }else{
-        	Toast.makeText(this, "No Locations Nearby", Toast.LENGTH_LONG).show();
-        }
-        
 
-    }
+			visible = false;
+		} else {
+			Toast.makeText(this, "No Locations Nearby", Toast.LENGTH_LONG)
+					.show();
+		}
+
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
