@@ -12,6 +12,12 @@
         android:id="@+id/hours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/hours_all"
+        android:layout_width="75dp"
+        android:layout_height="30dp"
+        
+        />
 
     <TextView
         android:id="@+id/tilClose"
@@ -35,7 +41,7 @@
         android:id="@+id/address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hours" />
+        android:layout_below="@+id/hours_all" />
     
     <ImageView
         android:id="@+id/map_icon"

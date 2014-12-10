@@ -2,6 +2,7 @@ package comp.main.twentyfoureats;
 
 import java.util.ArrayList;
 
+
 import placesAPI.Place;
 import android.app.Activity;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import applic.GlobalApplication;
 import control.Control;
@@ -45,6 +47,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 	static class ViewHolderChild {
 		public TextView text;
 		public TextView hours;
+		public ImageView allDay;
 		public TextView time;
 		public TextView phone;
 		public TextView address;
@@ -83,6 +86,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 			ViewHolderChild viewHolder = new ViewHolderChild();
 			viewHolder.time = (TextView) rowView.findViewById(R.id.tilClose);
 			viewHolder.hours = (TextView) rowView.findViewById(R.id.hours);
+			viewHolder.allDay = (ImageView) rowView.findViewById(R.id.hours_all);
 			viewHolder.address = (TextView) rowView.findViewById(R.id.address);
 			viewHolder.phone = (TextView) rowView.findViewById(R.id.phone);
 			viewHolder.rating = (ImageView) rowView.findViewById(R.id.rating);
@@ -167,16 +171,28 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
 			stars = R.drawable.ten;
 			break;
 		}
+		
+		int twentyfour = R.drawable.twentyfour_hours;
 
 		// fill data
 		ViewHolderChild holder = (ViewHolderChild) rowView.getTag();
-		holder.hours.setText(item.getHours());// item.getHours());
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.address.getLayoutParams();
+		
+		if (item.getHours()=="24Hours"){
+			holder.allDay.setBackgroundResource(twentyfour);
+			holder.hours.setText("");
+			params.addRule(RelativeLayout.BELOW, R.id.hours_all);
+		}else{
+			holder.hours.setText(item.getHours());
+			holder.allDay.setBackgroundResource(R.drawable.none);
+			params.addRule(RelativeLayout.BELOW, R.id.hours);
+		}
 		holder.time.setText(item.timeUntilClose());
-		// holder.text.setText(item.getName());
+		
+		
 		holder.address.setText(item.getAddress());
 		holder.phone.setText(item.getPhone());
 		holder.rating.setBackgroundResource(stars);
-		// holder.rating.setText(item.getRating()+"");
 		holder.price.setText(dollars);
 		holder.web.setText(item.getWebsite());
 		holder.web.setOnClickListener(new OnClickListener() {

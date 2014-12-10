@@ -55,7 +55,7 @@
 
         <EditText
             android:id="@+id/Location"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:background="#33ffffff"
             android:ems="12"
@@ -69,14 +69,15 @@
 
         <Button
             android:id="@+id/LocButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="4dp" 
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/Location"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="5dp"
+			android:layout_toRightOf="@+id/Location"
             android:background="@drawable/get_address" />
     </RelativeLayout>
-
+           <!--  android:layout_marginTop="4dp" 
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/Location" -->
     
     <ProgressBar
         android:id="@+id/spinnerProgress"
@@ -110,7 +111,7 @@
 
         <EditText
             android:id="@+id/distance"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:background="#33ffffff"
             android:ems="12"
@@ -125,14 +126,15 @@
 
         <Button
             android:id="@+id/DistButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/distance"
-            android:layout_marginTop="4dp" 
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="5dp"
+			android:layout_toRightOf="@+id/distance"
             android:background="@drawable/get_addy_time" />
     </RelativeLayout>
-
+ <!--            android:layout_centerInParent="true"
+            android:layout_below="@+id/distance"
+            android:layout_marginTop="4dp"  -->
 
     <!--
      	<Button
